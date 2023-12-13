@@ -1,0 +1,33 @@
+{
+  "name": "iconnected-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/iconnected-app-e2e/src",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/iconnected-app-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "iconnected-app:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "iconnected-app:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "iconnected-app:serve-static"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/iconnected-app-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["iconnected-app"]
+}
