@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@ihomer/api": ["libs/shared/api/src/index.ts"],
+      "@ihomer/backend/features": ["libs/backend/features/src/index.ts"]
       "@iConnected/shared/util-env": ["libs/shared/util-env/src/index.ts"],
-      "@ihomer/api": ["libs/shared/api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
