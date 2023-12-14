@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@iConnected/shared/util-env": ["libs/shared/util-env/src/index.ts"],
       "@ihomer/api": ["libs/shared/api/src/index.ts"]
     }
   },
