@@ -1,1 +1,1 @@
-
+export * from './entities/user.interface';
