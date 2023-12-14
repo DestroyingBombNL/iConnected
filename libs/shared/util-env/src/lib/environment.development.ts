@@ -3,7 +3,6 @@ import { IEnvironment } from './environment.interface';
 export const environment: IEnvironment = {
   production: false,
   backendUrl: 'http://localhost:3000',
-  graphDBConnectionString: '07b40077.databases.neo4j.io:7687',
   neo4j: {
     username: 'neo4j',
     password: '',
