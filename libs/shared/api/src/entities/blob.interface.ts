@@ -1,23 +1,17 @@
+import { type } from "./type.interface";
 import { IUser } from "./user.interface"
 
 export interface IBlob {
-    _id: string,
-    name: string,
-    creationDate: Date,
-    slack: string,
-    mandate: string,
-    userIds: string[],
+    id: string;
+    name: string;
+    creationDate: Date;
+    slackChannel: string;
+    mandate: string;
+    image: string;
+    type: type;
+    userIds: string[];
 }
 
 export interface IBlobResponse {
     users: IUser[]
-}
-
-export interface IPopulatedBlobResponse {
-    _id: string,
-    name: string,
-    creationDate: Date,
-    slack: string,
-    mandate: string,
-    userIds: IUser[],
 }
