@@ -4,7 +4,6 @@ import { environment } from '@ihomer/shared/util-env';
 import { Neo4jModule, Neo4jScheme } from "nest-neo4j/dist";
 import { ConfigModule } from "@nestjs/config";
 
-console.log(environment);
 @Module({
   imports: [
     UserModule, 
