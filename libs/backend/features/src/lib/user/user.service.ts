@@ -11,16 +11,15 @@ export class UserService {
     async create(user: IUser): Promise<IUser | undefined> {
         this.logger.log('Create');
         const result = await this.neo4jService.write(
-            'MERGE(user:User{email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthDate: $birthDay, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password}) RETURN user, ID(user) AS userId',
+            'MERGE(user:User{uuid: randomUUID(), email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthDate: $birthDay, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password}) RETURN user, ID(user) AS userId',
             user
         );
         
         const createdUsers = result.records.map((record: any) => {
             const fields = record._fields[0];
-            const user = fields.properties as IUser;
-            let elementId: string = fields.elementId;
-            elementId = elementId.substring(elementId.lastIndexOf(':') + 1);
-            user.id = elementId;
+            const dbUser = fields.properties;
+            const {uuid, ...user} = dbUser;
+            user.id = uuid;
             return user;
         });
         return createdUsers[0];
