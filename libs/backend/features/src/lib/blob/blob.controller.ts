@@ -1,10 +1,10 @@
 import { IUser } from '@ihomer/api';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { UserService } from './blob.service';
+import { BlobService } from './blob.service';
 
 @Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly blobService: BlobService) {}
 
     @Get()
     getAll(): IUser[] {
