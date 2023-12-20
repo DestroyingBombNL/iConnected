@@ -15,9 +15,6 @@ export class UserService {
             'MERGE(user:User{uuid: randomUUID(), email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthDate: $birthDay, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password}) RETURN user',
             user
         );
-        
-        // ONLY FOR TESTING.
-        this.getPassword(user.email!);
 
         return this.convertFromDb(result);
     }
