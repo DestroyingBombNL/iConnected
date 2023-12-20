@@ -6,7 +6,7 @@ export interface IUser {
     infix: string;
     lastName: string;
     bio: string;
-    birthDay: Date;
+    birthday: Date;
     street: string;
     houseNumber: string;
     postalCode: string;

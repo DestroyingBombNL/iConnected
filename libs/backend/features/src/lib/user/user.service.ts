@@ -1,5 +1,6 @@
 import { ICreateUser, IUpdateUser, IUser } from "@ihomer/api";
 import { Injectable, Logger } from "@nestjs/common";
+import { QueryResult, RecordShape } from "neo4j-driver-core";
 import { Neo4jService } from "nest-neo4j/dist";
 
 @Injectable()
@@ -12,11 +13,13 @@ export class UserService {
         this.logger.log('Create');
 
         const result = await this.neo4jService.write(
-            'MERGE(user:User{uuid: randomUUID(), email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthDate: $birthDay, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password}) RETURN user',
+            'MERGE(user:User{uuid: randomUUID(), email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password}) RETURN user',
             user
         );
 
-        return this.convertFromDb(result);
+        const users = this.convertFromDb(result);
+        if (!users) return undefined;
+        return users[0];
     }
 
     async read(id: string): Promise<IUser | undefined> {
@@ -27,7 +30,20 @@ export class UserService {
             {id}
         );
 
-        return this.convertFromDb(result);
+        const users = this.convertFromDb(result);
+        if (!users) return undefined;
+        return users[0];
+    }
+
+    async getAll(): Promise<IUser[]> {
+        this.logger.log('getAll');
+
+        const result = await this.neo4jService.read(
+            'MATCH(user:User) return user'
+        );
+
+        const users = this.convertFromDb(result);
+        return users ?? [];
     }
 
     async delete(id: string): Promise<boolean> {
@@ -58,7 +74,7 @@ export class UserService {
             infix: user.infix,
             lastName: user.lastName,
             bio: user.bio,
-            birthDay: user.birthDay,
+            birthday: user.birthday,
             street: user.street,
             houseNumber: user.houseNumber,
             postalCode: user.postalCode,
@@ -68,10 +84,12 @@ export class UserService {
         }
 
         const result = await this.neo4jService.write(
-            'MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthDate: $birthDay, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password} RETURN user',
+            'MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password} RETURN user',
             params
         );
-        return this.convertFromDb(result);
+        const users = this.convertFromDb(result);
+        if (!users) return undefined;
+        return users[0];
     }
 
     async getPassword(email: string): Promise<string | undefined> {
@@ -88,14 +106,15 @@ export class UserService {
         return password;
     }
 
-    private convertFromDb(result: any): IUser | undefined {
+    private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
         const createdUsers = result.records.map((record: any) => {
             const fields = record._fields[0];
             const dbUser = fields.properties;
             const {uuid, ...user} = dbUser;
+            if (!includePassword) user.password = '';
             user.id = uuid;
             return user;
         });
-        return createdUsers[0] as IUser;
+        return createdUsers as IUser[];
     }
 }
