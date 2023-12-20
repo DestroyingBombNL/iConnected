@@ -1,4 +1,4 @@
-import { ICreateUser, IUpdateUser } from "@ihomer/api";import {
+import { ICreateUser } from "@ihomer/api";import {
     IsNotEmpty,
     IsString,
     IsOptional,
