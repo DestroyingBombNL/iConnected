@@ -10,7 +10,7 @@ export const environment: IEnvironment = {
     username: 'neo4j',
     password: process.env.GRAPH_PASSWORD,
     scheme: 'neo4j',
-    host: '07b40077.databases.neo4j.io',
+    host: 'localhost',
     database: 'iHomer',
     port: 7687,
   },
