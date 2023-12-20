@@ -2,7 +2,7 @@ import { Observable, throwError } from 'rxjs';
 import {
   HttpClient,
   HttpErrorResponse,
-  HttpHeaders,
+  // HttpHeaders,
 } from '@angular/common/http';
 import { map, tap, catchError } from 'rxjs/operators';
 import { IBlob, ApiResponse } from '@ihomer/shared/api';
