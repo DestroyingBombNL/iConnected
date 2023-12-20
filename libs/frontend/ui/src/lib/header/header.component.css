@@ -1,0 +1,14 @@
+.navbar a {
+    font-size: 2em;
+ }
+ 
+ button:hover {
+    background-color: lightblue;
+    -webkit-text-fill-color: black;
+    border-radius: 10px;
+ }
+ 
+ button {
+    border-radius: 10px;
+    font-size: 1.25em;
+ }

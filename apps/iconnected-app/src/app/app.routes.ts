@@ -1,17 +1,25 @@
-import { Route, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { BlobsOverviewComponent } from '@ihomer/frontend/features';
+import { Route, RouterModule } from '@angular/router';
+
+import { BlobsOverviewComponent, DeelnemerNewComponent } from '@ihomer/frontend/features';
 
 export const appRoutes: Route[] = [
-    { //blobsOverview
+    {
         path: 'blobs',
         pathMatch: 'full',
-        component: BlobsOverviewComponent,
+        component: BlobsOverviewComponent
     },
+    {
+        path: 'deelnemers',
+        pathMatch: 'full',
+        component: DeelnemerNewComponent
+    }
 ];
 
-NgModule({
+
+@NgModule({
     imports: [RouterModule.forRoot(appRoutes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
+
 export class AppRoutingModule {}
