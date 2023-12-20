@@ -12,13 +12,13 @@ export class UserController {
     }
 
     @Get(':id')
-    get(@Param('id') id: string): IUser | undefined {
-        return undefined;
+    async get(@Param('id') id: string): Promise<IUser | undefined> {
+        return this.userService.read(id);
     }
 
     @Post()
-    create(@Body() user: IUser): IUser | undefined {
-        return undefined;
+    async create(@Body() user: IUser): Promise<IUser | undefined> {
+        return this.userService.create(user);
     }
 
     @Put(':id')

@@ -9,7 +9,7 @@ export interface IBlob {
     mandate: string;
     image: string;
     type: type;
-    userIds: string[];
+    users: IUser[];
 }
 
 export interface IBlobResponse {

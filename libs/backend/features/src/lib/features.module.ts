@@ -5,7 +5,6 @@ import { Neo4jModule, Neo4jScheme } from "nest-neo4j/dist";
 import { ConfigModule } from "@nestjs/config";
 import { BlobModule } from './blob/blob.module';
 
-console.log(environment);
 @Module({
   imports: [
     UserModule,
