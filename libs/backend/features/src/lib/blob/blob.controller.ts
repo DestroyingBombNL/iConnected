@@ -1,33 +1,33 @@
-import { IUser } from '@ihomer/api';
+import { IBlob } from '@ihomer/api';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { BlobService } from './blob.service';
 
-@Controller('users')
-export class UserController {
+@Controller('blobs')
+export class BlobController {
     constructor(private readonly blobService: BlobService) {}
 
     @Get()
-    getAll(): IUser[] {
-        return [];
+    getAll(): Promise<IBlob[]> {
+        return this.blobService.getAll();
     }
 
     @Get(':id')
-    get(@Param('id') id: string): IUser | undefined {
-        return undefined;
+    get(@Param('id') id: string): Promise<IBlob> | undefined {
+        return this.blobService.get(id);
     }
 
     @Post()
-    create(@Body() user: IUser): IUser | undefined {
-        return undefined;
+    create(@Body() blob: IBlob): Promise<IBlob> | undefined {
+        return this.blobService.createBlob(blob);
     }
 
     @Put(':id')
-    update(@Body() user: IUser): IUser | undefined {
-        return undefined;
+    update(@Body() blob: IBlob, @Param('id') id: string): Promise<IBlob> | undefined {
+        return this.blobService.updateBlob(blob, id);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: string): boolean {
-        return false;
+    delete(@Param('id') id: string): Promise<boolean> {
+        return this.blobService.deleteBlob(id);
     }
 }

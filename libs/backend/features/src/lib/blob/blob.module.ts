@@ -1,10 +1,9 @@
-import { Module } from "@nestjs/common";
-import { UserController } from "./blob.controller";
-import { BlobService } from "./blob.service";
+import { Module } from '@nestjs/common';
+import { BlobController } from './blob.controller';
+import { BlobService } from './blob.service';
 
 @Module({
-    controllers: [UserController],
-    providers: [BlobService],
-    exports: []
+  controllers: [BlobController],
+  providers: [BlobService]
 })
 export class BlobModule {}
