@@ -29,11 +29,18 @@ export class UserService {
         this.logger.log('Read');
 
         const result = await this.neo4jService.read(
-            'MATCH(user:User{id: $id}) RETURN(user)',
+            'MATCH(user:User{uuid: $id}) RETURN(user)',
             {id}
         );
         console.log("%j", result.records);
-        const createdUser = result.records.map((record: any) => record._fields[0].properties);
-        return createdUser[0] as IUser;
+
+        const createdUsers = result.records.map((record: any) => {
+            const fields = record._fields[0];
+            const dbUser = fields.properties;
+            const {uuid, ...user} = dbUser;
+            user.id = uuid;
+            return user;
+        });
+        return createdUsers[0] as IUser;
     }
 }
