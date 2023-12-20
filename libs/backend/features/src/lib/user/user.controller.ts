@@ -1,4 +1,4 @@
-import { IUser } from '@ihomer/api';
+import { ICreateUser, IUpdateUser, IUser } from '@ihomer/api';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -13,17 +13,26 @@ export class UserController {
 
     @Get(':id')
     async get(@Param('id') id: string): Promise<IUser | undefined> {
-        return this.userService.read(id);
+        const user = await this.userService.read(id);
+        if (!user) return undefined;
+        user.password = '';
+        return user;
     }
 
     @Post()
-    async create(@Body() user: IUser): Promise<IUser | undefined> {
-        return this.userService.create(user);
+    async create(@Body() user: ICreateUser): Promise<IUser | undefined> {
+        const newUser = await this.userService.create(user);
+        if (!newUser) return undefined;
+        newUser.password = '';
+        return newUser;
     }
 
     @Put(':id')
-    update(@Body() user: IUser): IUser | undefined {
-        return undefined;
+    async update(@Param('id') id: string, @Body() user: IUpdateUser): Promise<IUser | undefined> {
+        const updatedUser = await this.userService.update(id, user);
+        if (!updatedUser) return undefined;
+        updatedUser.password = '';
+        return updatedUser;
     }
 
     @Delete(':id')

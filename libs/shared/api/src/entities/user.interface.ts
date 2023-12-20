@@ -14,3 +14,6 @@ export interface IUser {
     tags: string[];
     password: string;
 }
+
+export type ICreateUser = Partial<Omit<IUser, 'id'>>;
+export type IUpdateUser = ICreateUser;
