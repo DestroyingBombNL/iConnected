@@ -18,7 +18,11 @@
       "@ihomer/api": ["libs/shared/api/src/index.ts"],
       "@ihomer/backend/": ["libs/backend/features/src/index.ts"],
       "@ihomer/backend/features": ["libs/backend/features/src/index.ts"],
-      "@ihomer/shared/util-env": ["libs/shared/util-env/src/index.ts"]
+      "@ihomer/frontend/common": ["libs/frontend/common/src/index.ts"],
+      "@ihomer/frontend/features": ["libs/frontend/features/src/index.ts"],
+      "@ihomer/frontend/ui": ["libs/frontend/ui/src/index.ts"],
+      "@ihomer/shared/util-env": ["libs/shared/util-env/src/index.ts"],
+      "@ihomer/shared/api": ["libs/shared/api/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
