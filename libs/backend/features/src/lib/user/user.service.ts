@@ -33,6 +33,23 @@ export class UserService {
         return this.convertFromDb(result);
     }
 
+    async delete(id: string): Promise<boolean> {
+        this.logger.log('Delete');
+        if (!id) return false;
+
+        const result = await this.neo4jService.write(
+            'MATCH(user:User{uuid:$id}) DETACH DELETE user RETURN COUNT(user) as deleted',
+            { id }
+        );
+
+        const amountDeleted = result.records.map((record: any) => {
+            const deletedCount = record._fields[0];
+            return deletedCount;
+        })[0];
+        this.logger.log(`Deleted ${amountDeleted} user(s).`)
+        return amountDeleted > 0;
+    }
+
     async update(id: string, user: IUpdateUser): Promise<IUser | undefined> {
         this.logger.log('Update');
 
