@@ -1,0 +1,6 @@
+.container-fluid {
+    background-image: url('/apps/iconnected-app/src/assets/backgroundiHomer.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
