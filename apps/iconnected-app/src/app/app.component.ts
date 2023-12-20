@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterModule, RouterLink, RouterOutlet } from '@angular/router';
-import { FrontendFeaturesModule } from '@ihomer/frontend/features';
-import { UiModule } from '@ihomer/frontend/ui';
-
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, RouterOutlet, RouterLink, FrontendFeaturesModule, UiModule],
+  imports: [RouterModule],
   selector: 'ihomer-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
