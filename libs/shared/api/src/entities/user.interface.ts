@@ -6,7 +6,7 @@ export interface IUser {
     infix: string;
     lastName: string;
     bio: string;
-    birthDay: Date;
+    birthday: Date;
     street: string;
     houseNumber: string;
     postalCode: string;
@@ -14,3 +14,6 @@ export interface IUser {
     tags: string[];
     password: string;
 }
+
+export type ICreateUser = Partial<Omit<IUser, 'id'>>;
+export type IUpdateUser = ICreateUser;

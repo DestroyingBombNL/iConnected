@@ -164,7 +164,7 @@ export class BlobService {
                     infix: users[i].properties.infix,
                     lastName: users[i].properties.lastName,
                     bio: users[i].properties.bio,
-                    birthDay: users[i].properties.birthDay,
+                    birthday: users[i].properties.birthDay,
                     street: users[i].properties.street,
                     houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
