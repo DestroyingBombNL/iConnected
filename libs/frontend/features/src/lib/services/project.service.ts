@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EntityService } from './entity.service';
-import { IUser } from '@ihomer/shared/api';
+import { IProject } from '@ihomer/shared/api';
 import { NotificationService } from './notifications/notification.service';
 import { Injectable } from '@angular/core';
 
@@ -8,9 +8,10 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 
-export class UserService extends EntityService<IUser> {
+
+export class ProjectService extends EntityService<IProject> {
     constructor(http: HttpClient, notificationService: NotificationService
     ) {
-        super(http, 'http://localhost:3000/api', 'users', notificationService);
+        super(http, 'http://localhost:3000/api', 'projects', notificationService);
     }
 }
