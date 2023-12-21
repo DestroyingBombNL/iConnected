@@ -67,6 +67,11 @@ export class UserService {
             catchError(this.handleError)
           );
     }
+    
+    getDistinctTagsForAllUsers(): Observable<string[]> {
+        return this.http.get<string[]>(`${this.endpoint}/tags`);
+    }
+    
 
     // public update(user: IUser): Observable<IUser> {
     //     console.log(`update ${this.endpoint}/${user._id}`);

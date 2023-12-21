@@ -34,4 +34,9 @@ export class UserController {
     async delete(@Param('id') id: string): Promise<boolean> {
         return await this.userService.delete(id);
     }
+
+    @Get('/tags')
+    async getTags(): Promise<string[]> {
+        return this.userService.getDistinctTagsForAllUsers();
+    }
 }

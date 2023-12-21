@@ -117,4 +117,18 @@ export class UserService {
         });
         return createdUsers as IUser[];
     }
+
+    async getDistinctTagsForAllUsers(): Promise<string[]> {
+        this.logger.log('Tags');
+
+        const result = await this.neo4jService.read(
+          'MATCH (user:User) UNWIND user.tags AS tag RETURN DISTINCT tag'
+        );
+    
+        console.log("%j", result.records);
+        const distinctTags = result.records.map((record: any) => record.get('tag'));
+        return distinctTags;
+    }
+    
+    
 }

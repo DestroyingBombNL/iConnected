@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import {RouterModule, RouterLink} from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
@@ -12,7 +13,7 @@ import { BlobsService } from './services/blobs.service';
 import { UserService } from './services/user.service';
 
 @NgModule({
-  imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule,],
+  imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
   declarations: [BlobsOverviewComponent, DeelnemerNewComponent],
   providers: [BlobsService, UserService],
   exports: [BlobsOverviewComponent, DeelnemerNewComponent],

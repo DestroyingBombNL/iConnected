@@ -7,7 +7,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { ApiResponseInterceptor } from '@ihomer/backend/features';
+import { ApiResponseInterceptor } from '@ihomer/backend/';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
