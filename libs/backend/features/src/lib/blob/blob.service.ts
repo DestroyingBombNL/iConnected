@@ -1,5 +1,6 @@
 import { IBlob, IUser } from "@ihomer/api";
 import { Injectable, Logger } from "@nestjs/common";
+import { QueryResult, RecordShape } from "neo4j-driver";
 import { Neo4jService } from "nest-neo4j/dist";
 
 @Injectable()
@@ -8,53 +9,18 @@ export class BlobService {
     
     constructor(private readonly neo4jService: Neo4jService) {}
 
-    async getAll(): Promise<IBlob[]> {
+    async getAll(): Promise<IBlob[] | undefined> {
         this.logger.log('getAll');
     
         const readQuery = `
             MATCH (blob:Blob)-[]-(user:User)
             WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
             RETURN blob, users ORDER BY firstNames ASC`;
-    
         const result = await this.neo4jService.read(readQuery);
     
-        const blobs: IBlob[] = result.records.map((record) => {
-            const blobData: any = record.get('blob');
-            const users: any = record.get('users');
-
-            const blob: IBlob = {
-                id: blobData.properties.uuid,
-                name: blobData.properties.name,
-                creationDate: blobData.properties.creationDate,
-                slack: blobData.properties.slack,
-                mandate: blobData.properties.mandate,
-                image: blobData.properties.image,
-                type: blobData.properties.type,
-                users: []
-            };
-
-            for (let i = 0; i < users.length; i++) {
-                const user: IUser = {
-                    firstName: users[i].properties.firstName,
-                    profilePicture: users[i].properties.profilePicture,
-                    id: users[i].properties.uuid,
-                    email: users[i].properties.email,
-                    infix: users[i].properties.infix,
-                    lastName: users[i].properties.lastName,
-                    bio: users[i].properties.bio,
-                    birthDay: users[i].properties.birthDay,
-                    street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber,
-                    postalCode: users[i].properties.postalCode,
-                    city: users[i].properties.city,
-                    tags: users[i].properties.tags,
-                    password: users[i].properties.password
-                };
-                blob.users.push(user);
-            }
-            return blob;
-        });
-        return blobs;
+        const blobs = this.convertFromDB(result);
+        if (!blobs) return undefined;
+        return blobs;    
     }    
 
     async get(id: string): Promise<IBlob | undefined> {
@@ -65,64 +31,19 @@ export class BlobService {
             WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
             WHERE blob.uuid = $id
             RETURN blob, users ORDER BY firstNames ASC`;
-    
+        this.logger.log(id);
+        this.logger.log(readQuery);
         const result = await this.neo4jService.read(readQuery, { id });
-    
-        if (result.records.length > 0) {
-            const record = result.records[0];
-    
-            const blobData: any = record.get('blob');
-            const users: any = record.get('users');
 
-            const blob: IBlob = {
-                id: blobData.properties.uuid,
-                name: blobData.properties.name,
-                creationDate: blobData.properties.creationDate,
-                slack: blobData.properties.slack,
-                mandate: blobData.properties.mandate,
-                image: blobData.properties.image,
-                type: blobData.properties.type,
-                users: []
-            };
-
-            for (let i = 0; i < users.length; i++) {
-                const user: IUser = {
-                    firstName: users[i].properties.firstName,
-                    profilePicture: users[i].properties.profilePicture,
-                    id: users[i].properties.uuid,
-                    email: users[i].properties.email,
-                    infix: users[i].properties.infix,
-                    lastName: users[i].properties.lastName,
-                    bio: users[i].properties.bio,
-                    birthDay: users[i].properties.birthDay,
-                    street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber,
-                    postalCode: users[i].properties.postalCode,
-                    city: users[i].properties.city,
-                    tags: users[i].properties.tags,
-                    password: users[i].properties.password
-                };
-                blob.users.push(user);
-            }
-            return blob;
-        } else {
-            return undefined;
-        }
+        const blobs = this.convertFromDB(result);
+        if (!blobs) return undefined;
+        return blobs[0];    
     }
     
     async createBlob(blob: IBlob): Promise<IBlob | undefined> {
         this.logger.log('createBlob');
         
-        const writeQuery = `
-            CREATE(blob:Blob {
-                uuid: randomUUID(),
-                name: $name, 
-                creationDate: $creationDate, 
-                slack: $slack, 
-                mandate: $mandate, 
-                image: $image, 
-                type: $type
-            })`;
+        const writeQuery = `CREATE(blob:Blob {uuid: randomUUID(), name: $name,  creationDate: $creationDate, slack: $slack, mandate: $mandate, type: $type, image: $image})`;
     
         const params = {
             name: blob.name,
@@ -134,29 +55,26 @@ export class BlobService {
         };
     
         const userWrites: string[] = [];
+
         for (let i = 0; i < blob.users.length; i++) {
             const userKey = `userId${i}`;
             userWrites.push(
                 `WITH blob
                 MATCH (user${i}:User {uuid: $${userKey}})
-                CREATE (user${i})-[:BELONGS_TO]->(blob)`
+                CREATE (user${i})-[:BELONGS_TO]->(blob)` 
             );
             params[userKey] = blob.users[i].id;
         }
-    
         const write = `${writeQuery} ${userWrites.join(' ')} WITH blob RETURN blob`;
+        await this.neo4jService.write(write, params);
     
-        const result = await this.neo4jService.write(write, params);
-    
-        if (result.records.length > 0) {
-            const record = result.records[0];
-            const blobId = record.get('blob')?.properties?.uuid;
-    
-            if (blobId) {
-                return this.get(blobId);
-            }
-        }
-        return undefined;
+        const readQuery = `
+            MATCH (blob:Blob)
+            WHERE blob.name = $name
+            RETURN blob`;
+        const readResult = await this.neo4jService.read(readQuery, params);
+        const uuid = await readResult.records[0].get('blob').properties.uuid;
+        return this.get(uuid);
     }
     
     async updateBlob(blob: IBlob, id: string): Promise<IBlob | undefined> {
@@ -222,6 +140,44 @@ export class BlobService {
         } else {
             return false;
         }
-    }     
-     
+    }
+    
+    private convertFromDB(result: QueryResult<RecordShape>): IBlob[] | undefined {
+        const createdBlobs = result.records.map((record: any) => {
+            const blobData = record.get('blob');
+            const users = record.get('users');
+            const blob: IBlob = {
+                id: blobData.properties.uuid,
+                name: blobData.properties.name,
+                creationDate: blobData.properties.creationDate,
+                slack: blobData.properties.slack,
+                mandate: blobData.properties.mandate,
+                image: blobData.properties.image,
+                type: blobData.properties.type,
+                users: []
+            };
+    
+            for (let i = 0; i < users.length; i++) {
+                const user: IUser = {
+                    firstName: users[i].properties.firstName,
+                    profilePicture: users[i].properties.profilePicture,
+                    id: users[i].properties.uuid,
+                    email: users[i].properties.email,
+                    infix: users[i].properties.infix,
+                    lastName: users[i].properties.lastName,
+                    bio: users[i].properties.bio,
+                    birthDay: users[i].properties.birthDay,
+                    street: users[i].properties.street,
+                    houseNumber: users[i].properties.houseNumber,
+                    postalCode: users[i].properties.postalCode,
+                    city: users[i].properties.city,
+                    tags: users[i].properties.tags,
+                    password: users[i].properties.password
+                };
+                blob.users.push(user);
+            }
+            return blob;
+        });
+        return createdBlobs;
+    }
 }
