@@ -1,4 +1,4 @@
-import { IBlob } from "@ihomer/api";
+import { IBlob, IUser } from "@ihomer/api";
 import { Injectable, Logger } from "@nestjs/common";
 import { Neo4jService } from "nest-neo4j/dist";
 
@@ -13,34 +13,45 @@ export class BlobService {
     
         const readQuery = `
             MATCH (blob:Blob)-[]-(user:User)
-            WITH blob, COLLECT(user.image) AS profilePicture, COLLECT(user.name) AS name, COLLECT(user.uuid) AS id
-            RETURN blob, profilePicture, name, id ORDER BY name ASC`;
+            WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
+            RETURN blob, users ORDER BY firstNames ASC`;
     
         const result = await this.neo4jService.read(readQuery);
     
         // Map the QueryResult to IBlob[]
         const blobs: IBlob[] = result.records.map((record) => {
             const blobData: any = record.get('blob');
-            const name: string[] = record.get('profilePicture');
-            const profilePicture: string[] = record.get('name');
-            const id: string[] = record.get('id');
-            
-            // Construct IBlob object using relevant fields from blobData and names
+            const users: any = record.get('users');
+
             const blob: IBlob = {
-                id: blobData.id, // Assuming 'id' is the property name in 'blobData'
-                name: blobData.name,
-                creationDate: blobData.creationDate,
-                slackChannel: blobData.slackChannel,
-                mandate: blobData.mandate,
-                image: blobData.image,
-                type: blobData.type,
+                id: blobData.properties.uuid,
+                name: blobData.properties.name,
+                creationDate: blobData.properties.creationDate,
+                slack: blobData.properties.slack,
+                mandate: blobData.properties.mandate,
+                image: blobData.properties.image,
+                type: blobData.properties.type,
                 users: []
-                // ... Add other properties as needed
             };
-            for (let i = 0; i < name.length; i++) {
-                blob.users[i].firstName = name[i];
-                blob.users[i].profilePicture = profilePicture[i];
-                blob.users[i].id = id[i];
+
+            for (let i = 0; i < users.length; i++) {
+                const user: IUser = {
+                    firstName: users[i].properties.firstName,
+                    profilePicture: users[i].properties.profilePicture,
+                    id: users[i].properties.uuid,
+                    email: users[i].properties.email,
+                    infix: users[i].properties.infix,
+                    lastName: users[i].properties.lastName,
+                    bio: users[i].properties.bio,
+                    birthDay: users[i].properties.birthDay,
+                    street: users[i].properties.street,
+                    houseNumber: users[i].properties.houseNumber,
+                    postalCode: users[i].properties.postalCode,
+                    city: users[i].properties.city,
+                    tags: users[i].properties.tags,
+                    password: users[i].properties.password
+                };
+                blob.users.push(user);
             }
             return blob;
         });
@@ -52,180 +63,146 @@ export class BlobService {
     
         const readQuery = `
             MATCH (blob:Blob)-[]-(user:User)
-            WITH blob, COLLECT(user.image) AS profilePicture, COLLECT(user.name) AS name, COLLECT(user.uuid) AS id
+            WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
             WHERE blob.uuid = $id
-            RETURN blob, profilePicture, name, id ORDER BY name ASC`;
+            RETURN blob, users ORDER BY firstNames ASC`;
     
         const result = await this.neo4jService.read(readQuery, { id });
-        this.logger.log(readQuery);
+    
         if (result.records.length > 0) {
-            const returnBlob: IBlob = result.records.map((record) => { 
-                const blobData: any = record.get('blob');
-                const name: string[] = record.get('profilePicture');
-                const profilePicture: string[] = record.get('name');
-                const id: string[] = record.get('id');
+            const record = result.records[0];
+    
+            const blobData: any = record.get('blob');
+            const users: any = record.get('users');
 
-                            // Construct IBlob object using relevant fields from blobData and names
-                const blob: IBlob = {
-                    id: blobData.id, // Assuming 'id' is the property name in 'blobData'
-                    name: blobData.name,
-                    creationDate: blobData.creationDate,
-                    slackChannel: blobData.slackChannel,
-                    mandate: blobData.mandate,
-                    image: blobData.image,
-                    type: blobData.type,
-                    users: []
+            const blob: IBlob = {
+                id: blobData.properties.uuid,
+                name: blobData.properties.name,
+                creationDate: blobData.properties.creationDate,
+                slack: blobData.properties.slack,
+                mandate: blobData.properties.mandate,
+                image: blobData.properties.image,
+                type: blobData.properties.type,
+                users: []
+            };
+
+            for (let i = 0; i < users.length; i++) {
+                const user: IUser = {
+                    firstName: users[i].properties.firstName,
+                    profilePicture: users[i].properties.profilePicture,
+                    id: users[i].properties.uuid,
+                    email: users[i].properties.email,
+                    infix: users[i].properties.infix,
+                    lastName: users[i].properties.lastName,
+                    bio: users[i].properties.bio,
+                    birthDay: users[i].properties.birthDay,
+                    street: users[i].properties.street,
+                    houseNumber: users[i].properties.houseNumber,
+                    postalCode: users[i].properties.postalCode,
+                    city: users[i].properties.city,
+                    tags: users[i].properties.tags,
+                    password: users[i].properties.password
                 };
-
-                for (let i = 0; i < name.length; i++) {
-                    blob.users[i].firstName = name[i];
-                    blob.users[i].profilePicture = profilePicture[i];
-                    blob.users[i].id = id[i];
-                }
-                return blob;
-            })
-            return returnBlob;
+                blob.users.push(user);
+            }
+            return blob;
         } else {
-            // If no blob found with the provided ID, handle this case accordingly
             throw new Error('Blob not found');
         }
-    }    
+    }
     
     async createBlob(blob: IBlob): Promise<IBlob> {
         this.logger.log('createBlob');
         
-        let write = `
-            CREATE(blob:Blob {uuid: randomUUID(),
+        const writeQuery = `
+            CREATE(blob:Blob {
+                uuid: randomUUID(),
                 name: $name, 
                 creationDate: $creationDate, 
-                slackChannel: $slackChannel, 
+                slack: $slack, 
                 mandate: $mandate, 
                 image: $image, 
-                type: $type})`;
+                type: $type
+            })`;
     
         const params = {
             name: blob.name,
             creationDate: blob.creationDate,
-            slackChannel: blob.slackChannel,
+            slack: blob.slack,
             mandate: blob.mandate,
             image: blob.image,
             type: blob.type
         };
     
-        for (let i = 0; i < blob.userIds.length; i++) {
+        const userWrites: string[] = [];
+        for (let i = 0; i < blob.users.length; i++) {
             const userKey = `userId${i}`;
-            write += ` WITH blob 
+            userWrites.push(
+                `WITH blob
                 MATCH (user${i}:User {uuid: $${userKey}})
-                CREATE (user${i})-[:BELONGS_TO]->(blob)`;
-            params[userKey] = blob.userIds[i];
+                CREATE (user${i})-[:BELONGS_TO]->(blob)`
+            );
+            params[userKey] = blob.users[i].id;
         }
     
-        write += ` RETURN blob`;
+        const write = `${writeQuery} ${userWrites.join(' ')} WITH blob RETURN blob`;
     
-        // Execute the write operation to create the blob
-        await this.neo4jService.write(write, params);
-    
-        // Get more details about the created blob using its attributes
-        const readQuery = `
-            MATCH (blob:Blob)
-            WHERE blob.name = $name
-            RETURN blob`;
-    
-        const readParams = {
-            name: blob.name
-        };
-    
-        const result = await this.neo4jService.read(readQuery, readParams);
+        const result = await this.neo4jService.write(write, params);
     
         if (result.records.length > 0) {
             const record = result.records[0];
-            const blobProperties = record.get('blob')?.properties;
+            const blobId = record.get('blob')?.properties?.uuid;
     
-            if (blobProperties) {
-                // Extract the relevant data and construct IBlob object
-                const createdBlob: IBlob = {
-                    id: blobProperties.uuid,
-                    name: blobProperties.name,
-                    creationDate: blobProperties.creationDate,
-                    slackChannel: blobProperties.slackChannel,
-                    mandate: blobProperties.mandate,
-                    image: blobProperties.image,
-                    type: blobProperties.type,
-                    userIds: blob.userIds // Assuming userIds are already present in the input blob
-                    // ... Add other properties as needed
-                };
-    
-                // Log the properties of the blob
-                this.logger.log(blobProperties);
-    
-                // Perform operations with 'createdBlob' as needed here
-                // For instance, you can push 'createdBlob' to an array or process it further
-    
-                return createdBlob;
+            if (blobId) {
+                return this.get(blobId);
             }
         }
     
-        throw new Error("Blob couldn't be created")
+        throw new Error("Blob creation failed or ID not retrieved");
     }
-
+    
     async updateBlob(blob: IBlob, id: string): Promise<IBlob> {
         this.logger.log('updateBlob');
         
-        // Build SET clause dynamically based on the properties in the 'blob' object
+        const params: { [key: string]: any } = { id };
         let setClause = 'SET ';
-        const params = { id };
     
+        // Construct the SET clause dynamically based on the properties in the 'blob' object
         Object.keys(blob).forEach((key, index) => {
-            setClause += `blob.${key} = $${key}`;
-            params[key] = blob[key];
+            if (key !== 'id' && key !== 'users') { // Exclude 'id' and 'users' properties
+                setClause += `blob.${key} = $${key}`;
     
-            if (index < Object.keys(blob).length - 1) {
-                setClause += ', ';
+                // Add the property to the parameters
+                params[key] = blob[key];
+    
+                if (index < Object.keys(blob).length - 1) {
+                    setClause += ', ';
+                }
             }
         });
     
-        // Perform the update operation based on the dynamically built SET clause
-        this.logger.log(setClause);
         const updateQuery = `
             MATCH (blob:Blob)
             WHERE blob.uuid = $id
             ${setClause} 
             RETURN blob`;
     
+        // Perform the update operation based on the dynamically built SET clause
         const updateResult = await this.neo4jService.write(updateQuery, params);
     
-        // Get the updated blob details
-        const readQuery = `
-            MATCH (blob:Blob)
-            WHERE blob.uuid = $id
-            RETURN blob`;
+        if (updateResult.records.length > 0) {
+            const updatedBlobId = updateResult.records[0].get('blob').properties.uuid;
     
-        const readResult = await this.neo4jService.read(readQuery, { id });
+            // Fetch the updated blob using its ID
+            const updatedBlob = await this.get(updatedBlobId);
     
-        if (readResult.records.length > 0) {
-            const record = readResult.records[0];
-            const blobProperties = record.get('blob')?.properties;
-    
-            if (blobProperties) {
-                // Extract the relevant data and construct IBlob object
-                const updatedBlob: IBlob = {
-                    id: blobProperties.uuid,
-                    name: blobProperties.name,
-                    creationDate: blobProperties.creationDate,
-                    slackChannel: blobProperties.slackChannel,
-                    mandate: blobProperties.mandate,
-                    image: blobProperties.image,
-                    type: blobProperties.type,
-                    userIds: blob.userIds // Assuming userIds are already present in the input blob
-                    // ... Add other properties as needed
-                };
-    
+            if (updatedBlob) {
                 return updatedBlob;
             }
         }
     
-        throw new Error("Blob couldn't be updated")
-    }
+        throw new Error("Blob couldn't be updated or retrieved");
+    }    
     
     async deleteBlob(id: string): Promise<boolean> {
         this.logger.log('deleteBlob');
