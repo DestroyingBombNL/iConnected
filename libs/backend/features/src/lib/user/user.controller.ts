@@ -11,6 +11,11 @@ export class UserController {
     async getAll(): Promise<IUser[]> {
         return await this.userService.getAll();
     }
+    
+    @Get('/tags')
+    async getTags(): Promise<string[]> {
+        return this.userService.getDistinctTagsForAllUsers();
+    }
 
     @Get(':id')
     async get(@Param('id') id: string): Promise<IUser | undefined> {
@@ -35,8 +40,4 @@ export class UserController {
         return await this.userService.delete(id);
     }
 
-    @Get('/tags')
-    async getTags(): Promise<string[]> {
-        return this.userService.getDistinctTagsForAllUsers();
-    }
 }
