@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule, RouterLink, RouterOutlet } from '@angular/router';
 import { FrontendFeaturesModule } from '@ihomer/frontend/features';
 import { UiModule } from '@ihomer/frontend/ui';
+import { frontendEnvironment } from '@ihomer/shared/util-env';
 
 @Component({
   standalone: true,
@@ -15,5 +16,6 @@ export class AppComponent {
   imagePath?: string;
   constructor() {
     this.imagePath = 'assets/logoiHomer.png';
+    console.log(frontendEnvironment)
   }
 }

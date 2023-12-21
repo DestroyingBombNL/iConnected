@@ -1,6 +1,5 @@
 export interface IEnvironment {
   production: boolean;
-  backendUrl: string;
   neo4j: {
     username: string;
     password: string;

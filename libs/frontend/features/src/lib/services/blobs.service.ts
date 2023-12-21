@@ -7,7 +7,7 @@ import {
 import { map, tap, catchError } from 'rxjs/operators';
 import { IBlob, ApiResponse } from '@ihomer/shared/api';
 import { Injectable } from '@angular/core';
-import { environment } from '@ihomer/shared/util-env';
+import { frontendEnvironment } from '@ihomer/shared/util-env';
 
 export const httpOptions = {
   observe: 'body',
@@ -18,7 +18,7 @@ export const httpOptions = {
   providedIn: 'root',
 })
 export class BlobsService {
-  endpoint = `${environment.backendUrl}/blobs`;
+  endpoint = `${frontendEnvironment.backendUrl}/blobs`;
 
   constructor(private readonly http: HttpClient) {}
 

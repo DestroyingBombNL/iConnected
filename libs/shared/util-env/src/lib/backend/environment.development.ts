@@ -1,14 +1,13 @@
 import { IEnvironment } from './environment.interface';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
-export const environment: IEnvironment = {
+export const backendEnvironment: IEnvironment = {
   production: false,
-  backendUrl: 'http://localhost:3000',
   neo4j: {
     username: 'neo4j',
-    password: process.env.GRAPH_PASSWORD,
+    password: process.env["GRAPH_PASSWORD"] ?? "",
     scheme: 'neo4j',
     host: 'localhost',
     database: 'iHomer',

@@ -24,6 +24,12 @@
       },
       "configurations": {
         "production": {
+          "fileReplacements": [
+            {
+              "replace": "/libs/shared/util-env/src/lib/frontend/environment.ts",
+              "with": "/libs/shared/util-env/src/lib/frontend/environment.development.ts"
+            }
+          ],
           "budgets": [
             {
               "type": "initial",
@@ -44,7 +50,13 @@
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": true
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "/libs/shared/util-env/src/lib/frontend/environment.ts",
+              "with": "/libs/shared/util-env/src/lib/frontend/environment.development.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"

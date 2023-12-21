@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, IUser } from '@ihomer/shared/api';
 import { Injectable } from '@angular/core';
-import { environment } from '@ihomer/shared/util-env';
+import { frontendEnvironment } from '@ihomer/shared/util-env';
 
 export const httpOptions = {
     observe: 'body',
@@ -14,7 +14,7 @@ export const httpOptions = {
 @Injectable()
 export class UserService {
 
-    endpoint = `${environment.backendUrl}/users`;
+    endpoint = `${frontendEnvironment.backendUrl}/users`;
 
 
     constructor(
