@@ -3,4 +3,4 @@ export * from './lib/services/blobs.service';
 export * from './lib/blobs/blobs-overview/blobs-overview.component';
 export * from './lib/deelnemer/deelnemer-new.component';
 export * from './lib/services/models/project.model';
-export * from './lib/services/genericServices/projects.service';
+export * from './lib/services/projects.service';
