@@ -5,13 +5,9 @@ export interface IBlob {
     id: string;
     name: string;
     creationDate: Date;
-    slackChannel: string;
+    slack: string;
     mandate: string;
-    image: string;
     type: type;
-    userIds: string[];
-}
-
-export interface IBlobResponse {
-    users: IUser[]
+    image: string;
+    users: IUser[];
 }
