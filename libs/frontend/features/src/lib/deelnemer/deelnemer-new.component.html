@@ -49,13 +49,8 @@
               </div>
           </div>
         </div>
-       
-          
-          
-          
-          <div class="row">
-
-
+    
+        <div class="row">
             <div class="col-md-9" [ngClass]="{'has-error': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">
               <div class="form-group mb-4">
                 <label for="InputStreet" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">Straatnaam</label>
@@ -77,14 +72,7 @@
                 <div *ngIf="newDeelnemer.get('houseNumber')?.hasError('invalidHouseNumber') && !newDeelnemer.get('houseNumber')?.hasError('required') && newDeelnemer.get('houseNumber')?.touched" class="text-danger">
                 </div>
               </div>
-            </div>
-            
-          
-            <div class="form-group mb-4"> 
-              <label for="InputBirthdate" class="fw-bold">Geboortedatum</label>
-              <input type="date" class="form-control" id="InputDate" [(ngModel)]="user.birthday" name="birthDay" placeholder="Selecteer geboortedatum" required>
-            </div>
-         
+            </div>      
 
         </div>
       </div>
@@ -151,10 +139,10 @@
                 Ongeldig wachtwoord. Minimaal 8 tekens lang met ten minste 1 kleine letter, 1 hoofdletter en 1 cijfer.
               </div>
             </div>
-
+            
             <div class="form-group mb-4">
-              <label for="tag" class="fw-bold">Tag</label>
-              <ng-select [items]="distinctTags" bindLabel="tag" [(ngModel)]="selectedTag" name="tag" [searchable]="true"></ng-select>
+              <label for="tags" class="fw-bold">Tags</label>
+              <ng-select [items]="distinctTags" bindLabel="tag" [(ngModel)]="selectedTags" name="tags" [searchable]="true" [multiple]="true"></ng-select>
             </div>
             
             </div>

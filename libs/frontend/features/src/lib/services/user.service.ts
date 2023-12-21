@@ -17,6 +17,6 @@ export class UserService extends EntityService<IUser> {
 
     getDistinctTagsForAllUsers(): Observable<string[]> {
         return this.http
-        .get<string[]>('http://localhost:3000/api/tags');
+        .get<string[]>('http://localhost:3000/api/users/tags');
     }
 }

@@ -124,8 +124,7 @@ export class UserService {
         const result = await this.neo4jService.read(
           'MATCH (user:User) UNWIND user.tags AS tag RETURN DISTINCT tag'
         );
-    
-        console.log("%j", result.records);
+        
         const distinctTags = result.records.map((record: any) => record.get('tag'));
         return distinctTags;
     }

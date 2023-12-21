@@ -17,7 +17,7 @@ export class DeelnemerNewComponent implements OnInit {
     subscription: Subscription | null = null;
     backgroundImage?: string;
     distinctTags: string[] = [];
-    selectedTag: string | null = null;
+    selectedTags: string[] = [];
     
     newDeelnemer: FormGroup;
 
@@ -44,11 +44,12 @@ export class DeelnemerNewComponent implements OnInit {
 
       this.backgroundImage = '/assets/backgroundiHomer.png';
     }
-    
+
     ngOnInit(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
-        (tags: string[]) => {
-          this.distinctTags = tags;
+        (response: any) => {
+          // Assuming your response has a structure like { results: [...tags], info: {...} }
+          this.distinctTags = response.results;
           console.log('Distinct Tags for All Users:', this.distinctTags);
         },
         (error: any) => {
@@ -68,8 +69,7 @@ export class DeelnemerNewComponent implements OnInit {
         }
       });      
     }
-
-
+  
     goBack(): void {
       this.router.navigate(['/']);
     }
