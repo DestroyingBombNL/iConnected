@@ -12,4 +12,8 @@ import { UiModule } from '@ihomer/frontend/ui';
 })
 export class AppComponent {
   title = 'iconnected-app';
+  imagePath?: string;
+  constructor() {
+    this.imagePath = 'assets/logoiHomer.png';
+  }
 }

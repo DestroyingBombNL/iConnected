@@ -7,7 +7,7 @@ export class BlobController {
     constructor(private readonly blobService: BlobService) {}
 
     @Get()
-    getAll(): Promise<IBlob[]> {
+    getAll(): Promise<IBlob[] | undefined> {
         return this.blobService.getAll();
     }
 
