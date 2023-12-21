@@ -5,12 +5,14 @@ import { Neo4jModule, Neo4jScheme } from "nest-neo4j/dist";
 import { ConfigModule } from "@nestjs/config";
 import { BlobModule } from './blob/blob.module';
 import { BendeModule } from './bende/bende.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
     UserModule,
     BlobModule,
     BendeModule,
+    ProjectModule,
     Neo4jModule.forRoot({
         scheme: environment.neo4j.scheme as Neo4jScheme,
         host: environment.neo4j.host,
