@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { BlobsService } from './../../services/blobs.service';
+import { BlobService } from '../../services/blob.service';
 import { IBlob } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 
@@ -14,12 +14,12 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     subscription: Subscription | null = null;
     imageRoof?: string;
     
-    constructor(private blobsService: BlobsService) {
+    constructor(private blobService: BlobService) {
         this.imageRoof = 'assets/images/imageRoof.jpg'
     }
 
     ngOnInit() {
-        this.subscription = this.blobsService.readAll().subscribe((results) =>{
+        this.subscription = this.blobService.readAll().subscribe((results) =>{
             if (results !== null) {
                 this.blobs = results;
             }

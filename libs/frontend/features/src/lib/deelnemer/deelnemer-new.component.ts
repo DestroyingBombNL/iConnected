@@ -21,7 +21,7 @@ export class DeelnemerNewComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.subscription = this.userService.readAllUsers().subscribe((results) =>{
+        this.subscription = this.userService.readAll().subscribe((results) =>{
             if (results !== null) {
                 this.users = results;
             }
