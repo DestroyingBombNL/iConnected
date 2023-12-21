@@ -10,13 +10,18 @@ import { Observable } from 'rxjs';
 })
 
 export class UserService extends EntityService<IUser> {
+    private baseUrl: string;
+    private tagsEndpoint: string;
+
     constructor(http: HttpClient, notificationService: NotificationService
     ) {
         super(http, 'http://localhost:3000/api', 'users', notificationService);
+        this.baseUrl = 'http://localhost:3000/api';
+        this.tagsEndpoint = '/tags';
     }
 
     getDistinctTagsForAllUsers(): Observable<string[]> {
-        return this.http
-        .get<string[]>('http://localhost:3000/api/users/tags');
+        const tagsUrl = `${this.baseUrl}${this.tagsEndpoint}`;
+        return this.http.get<string[]>(tagsUrl);
     }
 }
