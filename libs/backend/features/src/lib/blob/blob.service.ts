@@ -18,7 +18,6 @@ export class BlobService {
     
         const result = await this.neo4jService.read(readQuery);
     
-        // Map the QueryResult to IBlob[]
         const blobs: IBlob[] = result.records.map((record) => {
             const blobData: any = record.get('blob');
             const users: any = record.get('users');
@@ -58,7 +57,7 @@ export class BlobService {
         return blobs;
     }    
 
-    async get(id: string): Promise<IBlob> {
+    async get(id: string): Promise<IBlob | undefined> {
         this.logger.log('get');
     
         const readQuery = `
@@ -107,11 +106,11 @@ export class BlobService {
             }
             return blob;
         } else {
-            throw new Error('Blob not found');
+            return undefined;
         }
     }
     
-    async createBlob(blob: IBlob): Promise<IBlob> {
+    async createBlob(blob: IBlob): Promise<IBlob | undefined> {
         this.logger.log('createBlob');
         
         const writeQuery = `
@@ -157,11 +156,10 @@ export class BlobService {
                 return this.get(blobId);
             }
         }
-    
-        throw new Error("Blob creation failed or ID not retrieved");
+        return undefined;
     }
     
-    async updateBlob(blob: IBlob, id: string): Promise<IBlob> {
+    async updateBlob(blob: IBlob, id: string): Promise<IBlob | undefined> {
         this.logger.log('updateBlob');
         
         const params: { [key: string]: any } = { id };
@@ -187,21 +185,18 @@ export class BlobService {
             ${setClause} 
             RETURN blob`;
     
-        // Perform the update operation based on the dynamically built SET clause
         const updateResult = await this.neo4jService.write(updateQuery, params);
     
         if (updateResult.records.length > 0) {
             const updatedBlobId = updateResult.records[0].get('blob').properties.uuid;
     
-            // Fetch the updated blob using its ID
             const updatedBlob = await this.get(updatedBlobId);
     
             if (updatedBlob) {
                 return updatedBlob;
             }
         }
-    
-        throw new Error("Blob couldn't be updated or retrieved");
+        return undefined;
     }    
     
     async deleteBlob(id: string): Promise<boolean> {
@@ -209,7 +204,6 @@ export class BlobService {
     
         const params = { id };
     
-        // Query to check if the blob exists and has connected users
         const checkQuery = `
             MATCH (blob:Blob {uuid: $id})-[:BELONGS_TO]-(user:User)
             RETURN count(user) AS userCount`;
@@ -218,16 +212,15 @@ export class BlobService {
         const userCount = checkResult.records[0].get('userCount').toNumber();
     
         if (userCount > 0) {
-            // If the blob has connected users, execute a separate write transaction to delete it
             const deleteQuery = `
                 MATCH (blob:Blob {uuid: $id})
                 DETACH DELETE blob`;
     
             await this.neo4jService.write(deleteQuery, params);
     
-            return true; // Blob had matches and was deleted
+            return true;
         } else {
-            return false; // No matches or no connected users
+            return false;
         }
     }     
      
