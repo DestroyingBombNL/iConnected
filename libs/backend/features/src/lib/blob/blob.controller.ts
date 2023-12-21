@@ -12,17 +12,17 @@ export class BlobController {
     }
 
     @Get(':id')
-    get(@Param('id') id: string): Promise<IBlob> | undefined {
+    get(@Param('id') id: string): Promise<IBlob | undefined> {
         return this.blobService.get(id);
     }
 
     @Post()
-    create(@Body() blob: IBlob): Promise<IBlob> | undefined {
+    create(@Body() blob: IBlob): Promise<IBlob | undefined>{
         return this.blobService.createBlob(blob);
     }
 
     @Put(':id')
-    update(@Body() blob: IBlob, @Param('id') id: string): Promise<IBlob> | undefined {
+    update(@Body() blob: IBlob, @Param('id') id: string): Promise<IBlob | undefined> {
         return this.blobService.updateBlob(blob, id);
     }
 
