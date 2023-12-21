@@ -31,8 +31,6 @@ export class BlobService {
             WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
             WHERE blob.uuid = $id
             RETURN blob, users ORDER BY firstNames ASC`;
-        this.logger.log(id);
-        this.logger.log(readQuery);
         const result = await this.neo4jService.read(readQuery, { id });
 
         const blobs = this.convertFromDB(result);
