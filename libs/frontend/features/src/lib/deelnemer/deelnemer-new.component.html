@@ -38,18 +38,17 @@
               </div>
             </div>
             
-            <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('birthDay')?.invalid && newDeelnemer.get('birthDay')?.touched}">
-              <label for="InputBirthdate" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('birthDay')?.invalid && newDeelnemer.get('birthDay')?.touched}">Geboortedatum</label>
-              <input type="date" class="form-control" id="InputDate" formControlName="birthDay">
+            <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('birthday')?.invalid && newDeelnemer.get('birthday')?.touched}">
+              <label for="InputBirthdate" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('birthday')?.invalid && newDeelnemer.get('birthday')?.touched}">Geboortedatum</label>
+              <input type="date" class="form-control" id="InputDate" formControlName="birthday">
                       
-              <div *ngIf="newDeelnemer.get('birthDay')?.hasError('required') && newDeelnemer.get('birthDay')?.touched" class="text-danger">
+              <div *ngIf="newDeelnemer.get('birthday')?.hasError('required') && newDeelnemer.get('birthday')?.touched" class="text-danger">
               </div>
                     
-              <div *ngIf="(newDeelnemer.get('birthDay')?.hasError('dateInFuture') || newDeelnemer.get('birthDay')?.hasError('dateBefore1900')) && !newDeelnemer.get('birthDay')?.hasError('required') && newDeelnemer.get('birthDay')?.touched" class="text-danger">
+              <div *ngIf="(newDeelnemer.get('birthday')?.hasError('dateInFuture') || newDeelnemer.get('birthday')?.hasError('dateBefore1900')) && !newDeelnemer.get('birthday')?.hasError('required') && newDeelnemer.get('birthday')?.touched" class="text-danger">
               </div>
-          </div>
-        </div>
-    
+            </div>
+
         <div class="row">
             <div class="col-md-9" [ngClass]="{'has-error': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">
               <div class="form-group mb-4">
@@ -72,10 +71,17 @@
                 <div *ngIf="newDeelnemer.get('houseNumber')?.hasError('invalidHouseNumber') && !newDeelnemer.get('houseNumber')?.hasError('required') && newDeelnemer.get('houseNumber')?.touched" class="text-danger">
                 </div>
               </div>
-            </div>      
+            </div>  
+            
+            <div class="form-group mb-4">
+              <label for="tags" class="fw-bold">Tags</label>
+              <ng-select [items]="distinctTags" bindLabel="tags" [(ngModel)]="selectedTags" name="tags" [searchable]="true" [multiple]="true"></ng-select>
+            </div>
 
         </div>
       </div>
+    </div>
+    
 
         <!-- Right column -->   
         <div class="col-md-6">
@@ -140,25 +146,21 @@
               </div>
             </div>
             
-            <div class="form-group mb-4">
-              <label for="tags" class="fw-bold">Tags</label>
-              <ng-select [items]="distinctTags" bindLabel="tag" [(ngModel)]="selectedTags" name="tags" [searchable]="true" [multiple]="true"></ng-select>
-            </div>
             
             </div>
         </div>
 
         </div>
 
+        
+      <div class="text-center">
+        <button type="button" class="btn btn-danger" (click)="createUser()" [disabled]="!newDeelnemer.valid">
+          Deelnemer aanmaken
+        </button>
+        <button type="button" class="btn btn-dark ms-4" (click)="goBack()">
+          Annuleren
+        </button>
+      </div>  
+
     </form>
-
-
-    <div class="text-center">
-      <button type="button" class="btn btn-danger" (click)="createUser()" [disabled]="!newDeelnemer.valid">
-        Deelnemer aanmaken
-      </button>
-      <button type="button" class="btn btn-dark ms-4" (click)="goBack()">
-        Annuleren
-      </button>
-    </div>
 </div>
