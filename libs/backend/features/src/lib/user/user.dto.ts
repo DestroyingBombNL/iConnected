@@ -2,10 +2,10 @@ import { ICreateUser } from "@ihomer/api";import {
     IsNotEmpty,
     IsString,
     IsOptional,
-    IsDate,
     IsEmail,
     IsArray,
-    IsPostalCode
+    IsPostalCode,
+    IsDateString
 } from 'class-validator';
 
 export class CreateUserDTO implements ICreateUser {
@@ -13,7 +13,7 @@ export class CreateUserDTO implements ICreateUser {
     @IsNotEmpty()
     bio?: string | undefined;
 
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     birthday?: Date | undefined;
 
