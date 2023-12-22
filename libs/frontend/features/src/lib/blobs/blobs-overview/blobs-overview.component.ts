@@ -13,9 +13,11 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     blobs: IBlob[] = [];
     subscription: Subscription | null = null;
     darkRoof?: string;
+    whitedoor?: string;
     
     constructor(private blobsService: BlobsService) {
         this.darkRoof = 'assets/images/dark-roof.png'
+        this.whitedoor = 'assets/images/whitedoor.png'
     }
 
     ngOnInit() {

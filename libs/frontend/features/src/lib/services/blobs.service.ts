@@ -18,7 +18,7 @@ export const httpOptions = {
   providedIn: 'root',
 })
 export class BlobsService {
-  endpoint = `${environment.backendUrl}/blobs`;
+  endpoint = `${environment.backendUrl}/api/blobs`;
 
   constructor(private readonly http: HttpClient) {}
 
