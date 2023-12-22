@@ -10,6 +10,16 @@ export const appRoutes: Route[] = [
         component: BlobsOverviewComponent
     },
     {
+        path: 'bendes',
+        pathMatch: 'full',
+        redirectTo: 'blobs'
+    },
+    {
+        path: 'projects',
+        pathMatch: 'full',
+        redirectTo: 'blobs'
+    },
+    {
         path: 'deelnemers',
         pathMatch: 'full',
         component: DeelnemerNewComponent
