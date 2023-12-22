@@ -2,10 +2,8 @@ import { ICreateUser } from "@ihomer/api";import {
     IsNotEmpty,
     IsString,
     IsOptional,
-    IsDate,
     IsEmail,
     IsArray,
-    IsPostalCode,
     IsDateString,
     Matches
 } from 'class-validator';
