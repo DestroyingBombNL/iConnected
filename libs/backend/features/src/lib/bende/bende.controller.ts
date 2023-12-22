@@ -7,7 +7,7 @@ export class BendeController {
     constructor(private readonly bendeService: BendeService) {}
 
     @Get()
-    getAll(): Promise<IBende[] | undefined> {
+    getAll(): Promise<IBende[]> {
         return this.bendeService.getAll();
     }
 
