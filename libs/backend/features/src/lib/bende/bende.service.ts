@@ -9,7 +9,7 @@ export class BendeService {
     
     constructor(private readonly neo4jService: Neo4jService) {}
 
-    async getAll(): Promise<IBende[] | undefined> {
+    async getAll(): Promise<IBende[]> {
         this.logger.log('getAll');
     
         const readQuery = `
@@ -19,8 +19,8 @@ export class BendeService {
         const result = await this.neo4jService.read(readQuery);
     
         const bendes = this.convertFromDB(result);
-        if (!bendes) return undefined;
-        return bendes;    
+
+        return bendes ?? [];
     }    
 
     async get(id: string): Promise<IBende | undefined> {

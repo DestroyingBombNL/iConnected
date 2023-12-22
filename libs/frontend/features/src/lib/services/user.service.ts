@@ -4,19 +4,19 @@ import { IUser } from '@ihomer/shared/api';
 import { NotificationService } from './notifications/notification.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { frontendEnvironment } from '@ihomer/shared/util-env';
 
 @Injectable({
     providedIn: 'root'
 })
-
 export class UserService extends EntityService<IUser> {
     private baseUrl: string;
     private tagsEndpoint: string;
 
     constructor(http: HttpClient, notificationService: NotificationService
     ) {
-        super(http, 'http://localhost:3000/api', 'users', notificationService);
-        this.baseUrl = 'http://localhost:3000/api';
+        super(http, frontendEnvironment.backendUrl, 'users', notificationService);
+        this.baseUrl = frontendEnvironment.backendUrl;
         this.tagsEndpoint = '/tags';
     }
 
