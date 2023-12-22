@@ -10,18 +10,14 @@ import { frontendEnvironment } from '@ihomer/shared/util-env';
     providedIn: 'root'
 })
 export class UserService extends EntityService<IUser> {
-    private baseUrl: string;
-    private tagsEndpoint: string;
 
     constructor(http: HttpClient, notificationService: NotificationService
     ) {
         super(http, frontendEnvironment.backendUrl, 'users', notificationService);
-        this.baseUrl = frontendEnvironment.backendUrl;
-        this.tagsEndpoint = '/tags';
     }
 
     getDistinctTagsForAllUsers(): Observable<string[]> {
-        const tagsUrl = `${this.baseUrl}${this.tagsEndpoint}`;
+        const tagsUrl = `${this.url}${this.endpoint}/tags`;
         return this.http.get<string[]>(tagsUrl);
     }
 }
