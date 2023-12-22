@@ -12,10 +12,10 @@ import { Subscription } from 'rxjs';
 export class BlobsOverviewComponent implements OnInit, OnDestroy {
     blobs: IBlob[] = [];
     subscription: Subscription | null = null;
-    imageRoof?: string;
+    darkroof?: string;
     
     constructor(private blobService: BlobService) {
-        this.imageRoof = 'assets/images/imageRoof.jpg'
+        this.darkroof = 'assets/images/dark-roof.jpg'
     }
 
     ngOnInit() {
