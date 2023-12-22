@@ -1,4 +1,4 @@
-<header class="frosted-glass d-flex flex-wrap justify-content-center p-3">
+<header class="bg-white d-flex flex-wrap justify-content-center p-3">
     <a routerLink="" class="link-body-emphasis text-decoration-none">
         <span class="fs-4">iConnected</span>
     </a>
@@ -13,9 +13,9 @@
     </form>
     <ul class="nav nav-pills my-auto">
         <li class="nav-item my-auto" ngbDropdown display="dynamic" placement="bottom-end">
-            <img class="img-responsive" style="border-radius: 50%; height: 40px; cursor: pointer;" ngbDropdownToggle src="https://placehold.co/200x200/png"/>
+            <img class="img-fluid" style="border-radius: 50%; height: 50px; cursor: pointer;" ngbDropdownToggle src="https://placehold.co/200x200/png"/>
             <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
-                <a class="" ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault()">Mijn profiel</a>
+                <a ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault()">Mijn profiel</a>
                 <a class="text-danger" style="cursor: pointer;" ngbDropdownItem (click)="$event.preventDefault();">Uitloggen</a>
             </div>
         </li>
