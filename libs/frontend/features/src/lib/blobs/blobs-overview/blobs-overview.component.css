@@ -1,0 +1,28 @@
+.roof{
+    width: 100%;
+    height: auto;
+}
+
+.hall{
+    margin: 0 2rem;
+}
+
+.room{
+    border: 2px solid black;
+}
+
+.imgDoor{
+    width: 3rem;
+    height: auto;
+}
+
+.userImg{
+    width: 4rem;
+    height: auto;
+    margin: 0.2rem;
+    border-radius: 50%;
+}
+
+.door {
+    margin-top: auto;
+}

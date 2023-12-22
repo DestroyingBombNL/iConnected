@@ -1,5 +1,34 @@
-<div *ngFor="let blob of blobs">
-    <div class="bg-dark">
-        {{ blob.name }}
+<div class="container">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-center">
+            <img *ngIf="darkroof" [src]="darkroof" alt="darkroof" class="roof">
+        </div>
+        <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
+            <div *ngFor="let blob of blobRow" [ngClass]="calculateColumnClass(blobRow.length)" class="room d-flex flex-column">
+                <div class="roomname d-flex justify-content-center">
+                    <h5>{{ blob.name }}</h5>
+                </div>
+                
+                <!-- Wrap users and door in a flex container -->
+                <div class="d-flex justify-content-between flex-grow-1">
+                    <!-- Users are in a flex container that wraps -->
+                    <div class="d-flex flex-wrap justify-content-center flex-grow-1">
+                        <div *ngFor="let user of blob.users" class="user">
+                            <div class="userImg d-flex justify-content-center">
+                                <img [src]="user.profilePicture" class="userImg" alt="user avatar">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Door is always at the right -->
+                    <div class="door">
+                        <!-- margin door to bottom of room 0 -->
+                        <button class="btnDoor">
+                            <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
