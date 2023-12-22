@@ -1,4 +1,4 @@
-<div class="container-fluid d-flex justify-content-center">
+<div class="container mx-auto">
 
   <div class="image-box">
     <img *ngIf="backgroundImage" [src]="backgroundImage" alt="iHomer" class="background-image">
@@ -72,7 +72,6 @@
               <ng-select [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
             </div>
           </div>
-
         </div>
       </div>
     
