@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
 import { DeelnemerNewComponent } from './deelnemer/deelnemer-new.component';
+import { LoginComponent } from './deelnemer/register/deelnemer-register.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
@@ -16,9 +17,9 @@ import { BendeService } from './services/bende.service';
 
 @NgModule({
   imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
-  declarations: [BlobsOverviewComponent, DeelnemerNewComponent],
+  declarations: [BlobsOverviewComponent, DeelnemerNewComponent, LoginComponent],
   providers: [BlobService, UserService, ProjectService, BendeService],
-  exports: [BlobsOverviewComponent, DeelnemerNewComponent],
+  exports: [BlobsOverviewComponent, DeelnemerNewComponent, LoginComponent],
 })
 export class FrontendFeaturesModule {}
 

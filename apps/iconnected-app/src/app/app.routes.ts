@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 
-import { BlobsOverviewComponent, DeelnemerNewComponent } from '@ihomer/frontend/features';
+import { BlobsOverviewComponent, DeelnemerNewComponent, LoginComponent } from '@ihomer/frontend/features';
 const appName = 'iConnected | '
 
 export const appRoutes: Route[] = [
@@ -9,6 +9,11 @@ export const appRoutes: Route[] = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'blobs'
+    },
+    {
+        path: 'login',
+        pathMatch: 'full',
+        component: LoginComponent
     },
     {
         path: 'blobs',
@@ -32,7 +37,7 @@ export const appRoutes: Route[] = [
         path: 'deelnemers',
         pathMatch: 'full',
         component: DeelnemerNewComponent
-    }
+    },
 ];
 
 

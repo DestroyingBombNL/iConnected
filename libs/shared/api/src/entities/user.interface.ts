@@ -1,4 +1,5 @@
 export interface IUser {
+    token?: string;
     id: string;
     email: string;
     profilePicture: string;
@@ -13,6 +14,11 @@ export interface IUser {
     city: string;
     tags: string[];
     password: string;
+}
+
+export enum UserRole {
+    admin = 'admin',
+    deelnemer = 'deelnemer'
 }
 
 export type ICreateUser = Partial<Omit<IUser, 'id'>>;

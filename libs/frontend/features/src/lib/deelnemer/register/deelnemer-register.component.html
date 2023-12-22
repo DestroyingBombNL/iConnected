@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 d-flex align-items-center">
+        <div class="forms">
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <!-- Your form fields here -->
+                <div class="form-group mb-4">
+                  <label for="InputEmail" class="fw-bold">Emailadres</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="InputEmail"
+                    formControlName="email"
+                    placeholder="Emailadres"
+                    value="76daa108-0e7e-4285-81eb-5ab4c3f7a4ff@gmail.com"
+                    required
+                  />
+                </div>
+
+                <div class="form-group mb-4">
+                  <label for="Inputpassword" class="fw-bold">Wachtwoord</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="Inputpassword"
+                    formControlName="password"
+                    placeholder="Wachtwoord"
+                    required
+                  />
+                </div>
+
+                <!-- Your buttons here -->
+                <div class="text-center">
+                  <button type="submit" class="btn btn-info m-3">Inloggen</button>
+                  <button type="button" class="btn btn-dark m-3" (click)="goBack()">Annuleren</button>
+                </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
