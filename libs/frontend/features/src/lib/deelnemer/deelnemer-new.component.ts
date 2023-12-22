@@ -130,7 +130,7 @@ export class DeelnemerNewComponent implements OnInit {
     postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
       const postalCode = control.value;
   
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
+      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}[a-zA-Z]{2})|(\d{4}))$/;
   
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
     }

@@ -47,7 +47,7 @@ export class CreateUserDTO implements ICreateUser {
     password?: string | undefined;
 
     @IsString()
-    @Matches(/^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/, {
+    @Matches(/^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}[a-zA-Z]{2})|(\d{4}))$/, {
         message: 'PostalCode must be a valid NL or BE postal code.'
     })
     @IsNotEmpty()
