@@ -145,7 +145,7 @@ export class ProjectService {
                 id: projectData.properties.uuid,
                 name: projectData.properties.name,
                 slack: projectData.properties.slack,
-                creationDate: projectData.properties.creationDate,
+                creationDate: new Date(projectData.properties.creationDate.year.low, projectData.properties.creationDate.month.low - 1, projectData.properties.creationDate.day.low + 1),
                 image: projectData.properties.image,
                 users: []
             };
@@ -161,7 +161,7 @@ export class ProjectService {
                     bio: users[i].properties.bio,
                     birthday: users[i].properties.birthDay,
                     street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber,
+                    houseNumber: users[i].properties.houseNumber.low,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
