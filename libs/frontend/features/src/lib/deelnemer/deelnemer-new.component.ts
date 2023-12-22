@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+
 @Component({
   selector: 'ihomer-new-deelnemer',
   templateUrl: './deelnemer-new.component.html',
@@ -18,7 +19,6 @@ export class DeelnemerNewComponent implements OnInit {
     backgroundImage?: string;
     distinctTags: string[] = [];
     selectedTags: string[] = [];
-    
     newDeelnemer: FormGroup;
 
     constructor( 
@@ -28,17 +28,15 @@ export class DeelnemerNewComponent implements OnInit {
     ) 
     {
       this.newDeelnemer = this.formBuilder.group({
-        email: ['', [Validators.required, this.validEmail]],
-        profilePicture: ['', [Validators.required]],
         firstName: ['', [Validators.required]],
         infix: [''],
         lastName: ['', [Validators.required]],
-        birthDay: ['', [Validators.required, this.dateValidator]],
+        birthday: ['', [Validators.required, this.dateValidator]],
+        email: ['', [Validators.required, this.validEmail]],
         street: ['', [Validators.required]],
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        bio: [''],
         password: ['', [Validators.required, this.validPassword]]
       });
 
@@ -48,7 +46,6 @@ export class DeelnemerNewComponent implements OnInit {
     ngOnInit(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
         (response: any) => {
-          // Assuming your response has a structure like { results: [...tags], info: {...} }
           this.distinctTags = response.results;
           console.log('Distinct Tags for All Users:', this.distinctTags);
         },
@@ -59,17 +56,31 @@ export class DeelnemerNewComponent implements OnInit {
     }
 
     createUser(): void {
-      this.userService.create(this.user).subscribe({
-        next: (createdUser) => {
-          console.log('User created successfully:', createdUser);
-          this.router.navigate(['/']);
-        },
-        error: (error) => {
-          console.error('Error creating user:', error);
-        }
-      });      
+      console.log("create User aangeroepen");
+    
+      if (this.newDeelnemer.valid) {
+        const formData = this.newDeelnemer.value;
+    
+        // Add empty bio and profilePicture to formData
+        formData.bio = 'Vul hier je bio';
+        formData.profilePicture = 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg';
+    
+        console.log(this.selectedTags);
+    
+        this.userService.create(formData).subscribe({
+          next: (createdUser) => {
+            console.log('User created successfully:', createdUser);
+            this.router.navigate(['/']);
+          },
+          error: (error) => {
+            console.error('Error creating user:', error);
+          },
+        });
+    
+        this.newDeelnemer.reset();
+      }
     }
-  
+    
     goBack(): void {
       this.router.navigate(['/']);
     }
