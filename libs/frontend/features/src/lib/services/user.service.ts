@@ -20,4 +20,5 @@ export class UserService extends EntityService<IUser> {
         const tagsUrl = `${this.url}${this.endpoint}/tags`;
         return this.http.get<string[]>(tagsUrl);
     }
+    
 }

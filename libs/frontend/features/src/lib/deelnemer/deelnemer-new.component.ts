@@ -37,8 +37,7 @@ export class DeelnemerNewComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]],
-        tags: [[]]
+        password: ['', [Validators.required, this.validPassword]]
       });
 
       this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -67,7 +66,6 @@ export class DeelnemerNewComponent implements OnInit {
         formData.profilePicture = 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg';
     
         console.log(this.selectedTags);
-        formData.tags = this.selectedTags;
     
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
@@ -83,8 +81,6 @@ export class DeelnemerNewComponent implements OnInit {
       }
     }
     
-    
-  
     goBack(): void {
       this.router.navigate(['/']);
     }
