@@ -69,7 +69,7 @@
             
             <div class="form-group mb-4">
               <label for="tags" class="fw-bold">Tags</label>
-              <ng-select [items]="distinctTags" [(ngModel)]="selectedTags" name="tags" [searchable]="true" [multiple]="true"></ng-select>
+              <ng-select [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
             </div>
           </div>
 

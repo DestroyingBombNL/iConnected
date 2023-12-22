@@ -37,7 +37,8 @@ export class DeelnemerNewComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]]
+        password: ['', [Validators.required, this.validPassword]],
+        tags: [[]]
       });
 
       this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -55,6 +56,10 @@ export class DeelnemerNewComponent implements OnInit {
       );
     }
 
+    onTagSelectionChanged(tags: any) {
+      this.selectedTags = tags;
+    }
+
     createUser(): void {
       console.log("create User aangeroepen");
     
@@ -67,6 +72,7 @@ export class DeelnemerNewComponent implements OnInit {
     
         console.log(this.selectedTags);
     
+        formData.tags = this.selectedTags;
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
             console.log('User created successfully:', createdUser);
