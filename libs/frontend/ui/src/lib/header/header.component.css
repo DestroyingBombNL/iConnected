@@ -1,5 +1,6 @@
 .nav-link.active {
     background-color: #1f688c !important;
+    color: white;
 }
 
 .nav-link:not(.active) {
