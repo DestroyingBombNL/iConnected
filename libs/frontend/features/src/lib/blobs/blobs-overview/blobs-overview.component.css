@@ -1,11 +1,38 @@
-.container-house {
-    position: relative;
-    z-index: 1; /* Adjusted z-index for the house */
+
+.darkroof {
+    width: auto;
+    height: 21.7rem;
 }
 
-.roof {
+.roof-background {
+    background-image: url('/assets/cloudImage.jpg');
     width: 100%;
-    height: auto;
+}
+
+.house-background {
+    position: relative;
+    background-image: url('/assets/bluesky.png');
+    width: 100%;
+    min-height: calc(100vh - 26rem);
+    z-index: 0;
+}
+
+.house-contents {
+    position: relative;
+    z-index: 1;
+    top: 0;
+}
+
+.grass-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: url('/assets/grassImage.jpg');
+    width: 100%;
+    height: 15rem;
+    z-index: 0;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 40%;
 }
 
 .hall {
@@ -15,7 +42,7 @@
 .room {
     border: 2px solid black;
     background-color: lightgrey;
-}
+} 
 
 .imgDoor {
     width: 3rem;
@@ -31,47 +58,4 @@
 
 .door {
     margin-top: auto;
-}
-
-.cloudImage,
-.sky,
-.grass {
-    width: 100vw;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    
-}
-
-.cloudImage {
-    background-image: url('/assets/cloudImage.jpg');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    height: 60vh;
-    z-index: -2;
-    width: 100%;
-}
-
-.sky {
-    background-image: url('/assets/bluesky.png');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    height: 100vh; /* Adjusted height for blue sky */
-    z-index: -1;
-    width: 100vw;
-}
-
-.grass {
-    background-image: url('/assets/grassImage.jpg');
-    background-size: cover;
-    background-position: bottom;
-    background-repeat: no-repeat;
-    height: 30vh; /* Adjusted height for grass */
-    bottom: -10vh; 
-    z-index: -1;
-    border-top-right-radius: 70%;
-    border-top-left-radius: 70%;
-    right: 0;
 }
