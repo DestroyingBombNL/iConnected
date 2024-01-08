@@ -1,22 +1,55 @@
-.roof{
-    width: 100%;
-    height: auto;
+
+.darkroof {
+    width: auto;
+    height: 21.7rem;
 }
 
-.hall{
+.roof-background {
+    background-image: url('/assets/cloudImage.jpg');
+    width: 100%;
+}
+
+.house-background {
+    position: relative;
+    background-image: url('/assets/bluesky.png');
+    width: 100%;
+    min-height: calc(100vh - 26rem);
+    z-index: 0;
+}
+
+.house-contents {
+    position: relative;
+    z-index: 1;
+    top: 0;
+}
+
+.grass-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-image: url('/assets/grassImage.jpg');
+    width: 100%;
+    height: 15rem;
+    z-index: 0;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 40%;
+}
+
+.hall {
     margin: 0 2rem;
 }
 
-.room{
+.room {
     border: 2px solid black;
-}
+    background-color: lightgrey;
+} 
 
-.imgDoor{
+.imgDoor {
     width: 3rem;
     height: auto;
 }
 
-.userImg{
+.userImg {
     width: 4rem;
     height: auto;
     margin: 0.2rem;
