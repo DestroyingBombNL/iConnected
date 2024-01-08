@@ -13,6 +13,7 @@ import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
 import { AuthService } from './auth/auth.service';
+import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { AuthService } from './auth/auth.service';
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
+    LogoutComponent,
   ],
   providers: [
     BlobService,
@@ -38,12 +40,13 @@ import { AuthService } from './auth/auth.service';
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
-    AuthService
+    AuthService,
   ],
   exports: [
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
+    LogoutComponent,
   ],
 })
 export class FrontendFeaturesModule {}
