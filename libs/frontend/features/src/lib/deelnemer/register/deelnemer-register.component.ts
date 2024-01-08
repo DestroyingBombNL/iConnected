@@ -1,120 +1,137 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { IUser } from '@ihomer/shared/api';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
-import { IUser } from '@ihomer/shared/api';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
-  selector: 'ihomer-login',
+  selector: 'ihomer-register-deelnemer',
   templateUrl: './deelnemer-register.component.html',
   styleUrls: ['./deelnemer-register.component.css'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  loginForm: FormGroup = this.formBuilder.group({
-    email: [null, [Validators.required, Validators.email]],
-    password: [null, [Validators.required]],
-  });;
-  submitted = false;
-  subscription: Subscription | null = null;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
-  }
+export class RegisterComponent implements OnInit {
+    user = {} as IUser;
+    users: IUser[] = [];
+    subscription: Subscription | null = null;
+    backgroundImage?: string;
+    distinctTags: string[] = [];
+    selectedTags: string[] = [];
+    newDeelnemer: FormGroup;
 
-  ngOnInit(): void {
-    console.log(this,this.router.getCurrentNavigation());
-    this.subscription = this.authService
-      .getUserFromLocalStorage()
-      .subscribe((user: IUser | null) => {
-        if (!user) {
-          console.log('No user found in local storage');
-        }
+    constructor( 
+      private formBuilder: FormBuilder,
+      private userService: UserService,
+      private router: Router, 
+    ) 
+    {
+      this.newDeelnemer = this.formBuilder.group({
+        firstName: ['', [Validators.required]],
+        infix: [''],
+        lastName: ['', [Validators.required]],
+        birthday: ['', [Validators.required, this.dateValidator]],
+        email: ['', [Validators.required, this.validEmail]],
+        street: ['', [Validators.required]],
+        houseNumber: ['', [Validators.required, this.houseNumberValidator]],
+        postalCode: ['', [Validators.required, this.postalCodeValidator]],
+        city: ['', [Validators.required]],
+        password: ['', [Validators.required, this.validPassword]],
+        tags: [[]]
       });
-  }
 
-  onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.submitted = true;
-      const email = this.loginForm.value.email;
-      const password = this.loginForm.value.password;
-      this.authService
-        .login(email, password)
-        .subscribe((user: void | IUser | null) => {
-          if (user) {
-            console.log('Logged in');
-            this.router.navigate(['/deelnemers']);
-          }
-          this.submitted = false;
-        });
-    } else {
-      this.submitted = false;
-      console.error('loginForm invalid');
+      this.backgroundImage = '/assets/backgroundiHomer.png';
     }
-  }
 
-  initializeForm(): void {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
-  }
-
-  login(): void {
-    if (this.loginForm.valid) {
-      this.submitted = true;
-      const email = this.loginForm.value.email;
-      const password = this.loginForm.value.password;
-
-      this.subscription = this.authService.login(email, password).subscribe(
-        (user: void | IUser | null) => {
-          if (user) {
-            console.log('Logged in');
-            this.router.navigate(['/deelnemers']);
-          }
-          this.submitted = false;
+    ngOnInit(): void {
+      this.userService.getDistinctTagsForAllUsers().subscribe(
+        (response: any) => {
+          this.distinctTags = response.results;
+          console.log('Distinct Tags for All Users:', this.distinctTags);
         },
-        (error) => {
-          console.error('Error during login:', error);
-          this.submitted = false;
+        (error: any) => {
+          console.error('Error fetching distinct tags:', error);
         }
       );
-    } else {
-      this.submitted = false;
-      console.error('loginForm invalid');
     }
-  }
 
-  validEmail(control: FormControl): { [s: string]: boolean } | null {
-    const email = control.value;
-    const regexp = new RegExp(
-      '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
-    );
-    return regexp.test(email) ? null : { email: false };
-  }
-
-  validPassword(control: FormControl): { [s: string]: boolean } | null {
-    const password = control.value;
-    const regexp = new RegExp('^[a-zA-Z]([a-zA-Z0-9]){2,14}');
-    return regexp.test(password) ? null : { password: false };
-  }
-
-  ngOnDestroy(): void {
-    // Unsubscribe from subscriptions to avoid memory leaks
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    onTagSelectionChanged(tags: any) {
+      this.selectedTags = tags;
     }
-  }
 
-  goBack(): void {
-    this.router.navigate(['/']);
-  }
+    createUser(): void {
+      console.log("create User aangeroepen");
+    
+      if (this.newDeelnemer.valid) {
+        const formData = this.newDeelnemer.value;
+    
+        // Add empty bio and profilePicture to formData
+        formData.bio = 'Vul hier je bio';
+        formData.profilePicture = 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg';
+    
+        console.log(this.selectedTags);
+    
+        formData.tags = this.selectedTags;
+        this.userService.create(formData).subscribe({
+          next: (createdUser) => {
+            console.log('User created successfully:', createdUser);
+            this.router.navigate(['/']);
+          },
+          error: (error) => {
+            console.error('Error creating user:', error);
+          },
+        });
+    
+        this.newDeelnemer.reset();
+      }
+    }
+    
+    goBack(): void {
+      this.router.navigate(['/']);
+    }
+
+    validEmail(control: FormControl): { [s: string]: boolean } | null {
+      const email = control.value;
+      const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
+      return regexp.test(email) ? null : { invalidEmail: true };
+    }
+    
+  
+    validPassword(control: FormControl): { [s: string]: boolean } | null {
+      const password = control.value;
+      const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
+      return regexp.test(password) ? null : { invalidPassword: true };
+    }
+
+    houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
+      const houseNumber = control.value;
+      const regexp = /^[1-9]\d{0,4}([a-zA-Z]{1,2})?$/;
+
+      return regexp.test(houseNumber) ? null : { invalidhouseNumber: true };
+    }
+
+    dateValidator(control: FormControl): { [s: string]: boolean } | null {
+      const selectedDate = new Date(control.value);
+      const currentDate = new Date();
+      const minDate = new Date('1900-01-01');
+  
+      if (selectedDate > currentDate) {
+        return { dateInFuture: true };
+      }
+  
+      if (selectedDate < minDate) {
+        return { dateBefore1900: true };
+      }
+  
+      return null;
+    }
+
+    postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
+      const postalCode = control.value;
+  
+      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}[a-zA-Z]{2})|(\d{4}))$/;
+  
+      return regex.test(postalCode) ? null : { invalidPostalCode: true };
+    }
 }

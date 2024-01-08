@@ -1,0 +1,25 @@
+<div class="d-flex align-items-center">
+  <form class="mx-auto w-100 form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h1 class="h3 fw-normal">Log in</h1>
+      <div class="my-3">
+          <div class="form-floating">
+              <input type="email" autocomplete="username" class="form-control" [ngClass]="{'is-invalid': controls()['email'].touched && controls()['email'].invalid && submitted}" id="login-email" placeholder="name@example.com" formControlName="email" required>
+              <label for="login-email">E-mailadres</label>
+          </div>
+          <div class="form-floating mt-1">
+              <input type="password" autocomplete="current-password" class="form-control" [ngClass]="{'is-invalid': controls()['password'].touched && controls()['password'].invalid && submitted}" id="login-password" placeholder="Password" formControlName="password" required>
+              <label for="login-password">Wachtwoord</label>
+          </div>
+      </div>
+
+      <div class="mb-4">
+          <button *ngIf="!this.submitted" class="btn btn-primary w-100 py-2" type="submit" [disabled]="loginForm.invalid">Inloggen</button>    
+          <button *ngIf="this.submitted" class="btn btn-primary w-100 py-2" type="button" disabled>
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+              <span role="status"> Inloggen...</span>
+          </button>
+      </div>
+  
+      <small>Nog geen account? <a routerLink="/signup">Account aanmaken</a></small>
+  </form>
+</div>
