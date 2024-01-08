@@ -14,8 +14,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   subs: Subscription | undefined;
   submitted = false;
+  backgroundImage?: string;
 
-  constructor(private readonly authService: AuthService, private readonly router: Router) {}
+  constructor(private readonly authService: AuthService, private readonly router: Router) {
+    this.backgroundImage = '/assets/backgroundiHomer.png';
+  }
 
   controls() {
     return this.loginForm.controls;
@@ -62,23 +65,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   validEmail(control: FormControl): { [s: string]: boolean } | null {
     const email = control.value;
-    const regexp = new RegExp(
-      '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
-    );
-    if (regexp.test(email) !== true) {
-      return { email: false };
-    } else {
-      return null;
-    }
+    const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
+    return regexp.test(email) ? null : { invalidEmail: true };
   }
+  
 
   validPassword(control: FormControl): { [s: string]: boolean } | null {
     const password = control.value;
-    const regexp = new RegExp('^[a-zA-Z]([a-zA-Z0-9]){2,14}');
-    if (regexp.test(password) !== true) {
-      return { password: false };
-    } else {
-      return null;
-    }
+    const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
+    return regexp.test(password) ? null : { invalidPassword: true };
   }
 }
