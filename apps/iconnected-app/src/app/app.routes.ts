@@ -8,7 +8,7 @@ export const appRoutes: Route[] = [
     {
         path: '',
         pathMatch: 'full',
-        component: LoginComponent
+        component: BlobsOverviewComponent
     },
     {
         path: 'blobs',
@@ -29,14 +29,14 @@ export const appRoutes: Route[] = [
         title: `${appName}Projecten`
     },
     {
-        path: 'deelnemers',
-        pathMatch: 'full',
-        component: RegisterComponent
-    },
-    {
         path: 'login',
         pathMatch: 'full',
         component: LoginComponent
+    },
+    {
+        path: 'deelnemers',
+        pathMatch: 'full',
+        component: RegisterComponent
     },
 ];
 

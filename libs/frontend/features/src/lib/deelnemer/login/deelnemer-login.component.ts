@@ -6,8 +6,8 @@ import { AuthService } from '../../auth/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'ihomer-login',
-  templateUrl: './deelnemer-login.component.html',
+  selector: 'ihomer-login-deelnemer',
+  templateUrl: './deelnemer-login.component.html', 
   styleUrls: ['./deelnemer-login.component.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
@@ -26,10 +26,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: new FormControl("", [ Validators.required, this.validEmail.bind(this) ]),
       password: new FormControl("", [ Validators.required, this.validPassword.bind(this) ]),
     });
-
+    /*
     if (this.authService.getUserFromLocalStorage()) {
       this.router.navigate(['/']);
-    }
+    }*/
   }
 
   ngOnDestroy(): void {

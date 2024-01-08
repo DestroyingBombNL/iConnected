@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,16 +12,18 @@ import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
+    RouterLink,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
   ],
   declarations: [
     BlobsOverviewComponent, 
@@ -33,6 +35,10 @@ import { BendeService } from './services/bende.service';
     UserService,
     ProjectService,
     BendeService,
+    BlobsOverviewComponent, 
+    RegisterComponent, 
+    LoginComponent,
+    AuthService
   ],
   exports: [
     BlobsOverviewComponent, 
