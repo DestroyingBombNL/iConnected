@@ -8,11 +8,6 @@ export const appRoutes: Route[] = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'blobs'
-    },
-    {
-        path: 'login',
-        pathMatch: 'full',
         component: LoginComponent
     },
     {
@@ -37,6 +32,11 @@ export const appRoutes: Route[] = [
         path: 'deelnemers',
         pathMatch: 'full',
         component: RegisterComponent
+    },
+    {
+        path: 'login',
+        pathMatch: 'full',
+        component: LoginComponent
     },
 ];
 

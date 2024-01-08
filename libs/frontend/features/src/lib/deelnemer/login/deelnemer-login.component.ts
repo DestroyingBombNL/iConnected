@@ -2,14 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ILogin } from '@ihomer/shared/api';
-import { AuthService } from '@ihomer/frontend/features';
+import { AuthService } from '../../auth/auth.service';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'ihomer-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  templateUrl: './deelnemer-login.component.html',
+  styleUrls: ['./deelnemer-login.component.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
@@ -49,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         password: password
       }
       this.authService
-        .login(login)
+        .login(login.emailAddress, login.password)
         .subscribe((user) => {
           if (user) {
             this.router.navigate(['/']);
