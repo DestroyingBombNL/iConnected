@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: new FormControl("", [ Validators.required, this.validEmail.bind(this) ]),
       password: new FormControl("", [ Validators.required, this.validPassword.bind(this) ]),
     });
+    console.log(this.authService.getUserFromLocalStorage());
     /*
     if (this.authService.getUserFromLocalStorage()) {
       this.router.navigate(['/']);
