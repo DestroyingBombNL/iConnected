@@ -8,6 +8,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
+import { BlobDetailComponent } from './blobs/blob-detail/blob-detail.component';
 import { DeelnemerNewComponent } from './deelnemer/deelnemer-new.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
@@ -16,7 +17,7 @@ import { BendeService } from './services/bende.service';
 
 @NgModule({
   imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
-  declarations: [BlobsOverviewComponent, DeelnemerNewComponent],
+  declarations: [BlobsOverviewComponent, DeelnemerNewComponent, BlobDetailComponent],
   providers: [BlobService, UserService, ProjectService, BendeService],
   exports: [BlobsOverviewComponent, DeelnemerNewComponent],
 })

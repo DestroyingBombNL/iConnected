@@ -15,13 +15,15 @@
                     <div class="d-flex flex-wrap justify-content-center flex-grow-1">
                         <div *ngFor="let user of blob.users" class="user">
                             <button class="userImg d-flex justify-content-center" [routerLink]="user.id">
-                                <img [routerLink]="user.id" [src]="user.profilePicture" class="userImg" alt="user avatar">
+                                <img [routerLink]="user.id" [src]="user.profilePicture" class="userImg"
+                                    alt="user avatar">
                             </button>
                         </div>
                     </div>
                     <div class="door">
-                        <button [routerLink]="blob.id" class="btnDoor">
-                            <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door">
+                        <button class="btnDoor">
+                            <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door"
+                                (click)="open(content, blob.id)">
                         </button>
                     </div>
                 </div>
@@ -30,3 +32,26 @@
     </div>
     <div class="grass-footer"></div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ specificBlob.name }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="mb-3">
+                <p><img [src]="specificBlob.image" alt="blob image" width="100%"></p>
+                <p><strong>Aanmaakdatum:</strong> {{ specificBlob.creationDate | date:"dd-MM-yyyy"}}</p>
+                <p><strong>Type:</strong> {{ specificBlob.type }}</p>
+                <p><strong>Slack:</strong> {{ specificBlob.slack }}</p>
+                <span><strong>Deelnemers:</strong>
+                    <ul>
+                        <li *ngFor="let user of specificBlob?.users"> <img [src]="user.profilePicture" alt="Profiel" width="10%" style="border-radius: 25px;"> {{ user.firstName }} {{user.lastName}}</li>
+                    </ul>
+                </span>
+                <p><strong>Mandaat:</strong> {{ specificBlob.mandate }}</p>
+            </div>
+        </form>
+    </div>
+</ng-template>  
