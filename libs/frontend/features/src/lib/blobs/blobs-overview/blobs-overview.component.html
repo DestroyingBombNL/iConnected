@@ -14,13 +14,13 @@
                 <div class="d-flex justify-content-between flex-grow-1">
                     <div class="d-flex flex-wrap justify-content-center flex-grow-1">
                         <div *ngFor="let user of blob.users" class="user">
-                            <div class="userImg d-flex justify-content-center">
-                                <img [src]="user.profilePicture" class="userImg" alt="user avatar">
-                            </div>
+                            <button class="userImg d-flex justify-content-center" [routerLink]="user.id">
+                                <img [routerLink]="user.id" [src]="user.profilePicture" class="userImg" alt="user avatar">
+                            </button>
                         </div>
                     </div>
                     <div class="door">
-                        <button class="btnDoor">
+                        <button [routerLink]="blob.id" class="btnDoor">
                             <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door">
                         </button>
                     </div>
