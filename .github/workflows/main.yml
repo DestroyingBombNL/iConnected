@@ -24,6 +24,8 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
+        env:
+          GRAPH_PASSWORD: ''
         run: |
           npm install
           npx nx build --project iconnected-app -c production
@@ -80,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
