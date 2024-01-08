@@ -13,11 +13,12 @@ import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
+import { NotificationService } from './services/notifications/notification.service';
 
 @NgModule({
   imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
   declarations: [BlobsOverviewComponent, DeelnemerNewComponent],
-  providers: [BlobService, UserService, ProjectService, BendeService],
+  providers: [BlobService, UserService, ProjectService, BendeService, NotificationService],
   exports: [BlobsOverviewComponent, DeelnemerNewComponent],
 })
 export class FrontendFeaturesModule {}
