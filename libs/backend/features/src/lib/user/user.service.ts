@@ -2,6 +2,7 @@ import { ICreateUser, IUpdateUser, IUser } from "@ihomer/api";
 import { Injectable, Logger } from "@nestjs/common";
 import { QueryResult, RecordShape } from "neo4j-driver-core";
 import { Neo4jService } from "nest-neo4j/dist";
+import { sign } from "jsonwebtoken";
 
 @Injectable()
 export class UserService {
@@ -105,6 +106,31 @@ export class UserService {
         })[0];
         return password;
     }
+
+    async login(email: string, password: string): Promise<IUser | undefined> {
+        this.logger.log('Login');
+
+        const result = await this.neo4jService.read(
+            'MATCH(user:User{email: $email, password: $password}) RETURN(user)',
+            {email, password}
+        );
+
+        const users = this.convertFromDb(result);
+        if (!users) return undefined;
+        const authenticationHex = process.env["AUTHENTICATION_HEX"];
+
+        if (authenticationHex) {
+            const secretKey = authenticationHex;
+            const userId = users[0].id.toString();
+            const token = sign({ userId }, secretKey, {
+                expiresIn: '1h',
+            });
+            users[0].token = token;
+        } else {
+            console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
+        }
+        return users[0];
+      }
 
     private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
         const createdUsers = result.records.map((record: any) => {

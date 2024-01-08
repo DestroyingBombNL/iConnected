@@ -40,4 +40,9 @@ export class UserController {
         return await this.userService.delete(id);
     }
 
+    @Post('/login')
+    async (@Body() user: IUser): Promise<IUser | undefined> {
+        return this.userService.login(user.email, user.password);
+    }
+
 }

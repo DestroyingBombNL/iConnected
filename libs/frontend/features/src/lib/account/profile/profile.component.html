@@ -1,74 +1,72 @@
 <div class="container">
-    <div class="profile-container text-center">
-      <img src="/assets/logoiHomer.png" alt="Profile" class="profile-image img-fluid">
-      <h2 class="mt-3">Martin Biels</h2>
-    </div>
+  <div class="profile-container text-center">
+      <img [src]="user.profilePicture" alt="Profile" class="profile-image img-fluid">
+      <h2 class="mt-3">{{ user.firstName || 'No Firstname' }}</h2>
+  </div>
 
-    <hr />
+  <hr />
 
-    <div class="info-container text-center">
+  <div class="info-container text-center">
       <div class="row">
-        <div class="col-md-6 info-box mt-3">
-          <h2>Basis Informatie</h2>
+          <div class="col-md-6 info-box mt-3">
+              <h2>Basis Informatie</h2>
 
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Email</span><p>emailexample.com</p>
+              <div class="email-box mt-4 text-center">
+                  <span class="fw-bold">Email</span>
+                  <p>{{ user.email || 'No email available' }}</p>
+              </div>
+
+              <div class="email-box mt-4 text-center">
+                  <span class="fw-bold">Geboortedatum</span>
+                  <p>{{ user.birthday || 'No birthday available' }}</p>
+              </div>
+
+              <div class="email-box mt-4 text-center">
+                  <span class="fw-bold">Adres</span>
+                  <p>{{ user.street || 'No street available' }}</p>
+              </div>
+
+              <div class="email-box mt-4 text-center">
+                  <span class="fw-bold">Postcode</span>
+                  <p>{{ user.postalCode || 'No postcode available' }}</p>
+              </div>
+
+              <div class="email-box mt-4 text-center">
+                  <span class="fw-bold">Stad</span>
+                  <p>{{ user.city || 'No city available' }}</p>
+              </div>
+<!-- 
+              <div class="email-box mt-4 text-center">
+                  <span class="fw-bold">Land</span>
+                  <p>{{ user?.country || 'No country available' }}</p>
+              </div>-->
           </div>
 
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Geboortedatum</span><p>01-01-1940</p>
+          <div class="col-md-6 info-box mt-3">
+              <h2>Andere Informatie</h2>
+
+              <!--
+              <h4 class="mt-5">Blob</h4>
+              <div class="email-box text-center">
+                  <p>{{ user?.blobName || 'No blob name available' }}</p>
+              </div>
+
+              <h4 class="mt-5">Bende</h4>
+              <div class="email-box text-center">
+                  <p>{{ user?.gangName || 'No gang name available' }}</p>
+              </div> -->
+
+              <h4 class="mt-5">Tags</h4>
+              <div class="email-box text-center">
+                  <ul class="list-unstyled">
+                      <li *ngFor="let tag of user?.tags">{{ tag || 'No tag available' }}</li>
+                  </ul>
+              </div>
           </div>
-
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Gender</span><p>Man</p>
-          </div>
-
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Adres</span><p>Lovensdijkstraat 66</p>
-          </div>
-
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Postcode</span><p>6666 CN</p>
-          </div>
-
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Stad</span><p>Breda</p>
-          </div>
-
-          <div class="email-box mt-4 text-center">
-            <span class="fw-bold">Land</span><p>Nederland</p>
-          </div>
-
-        </div>
-
-        <div class="col-md-6 info-box mt-3">
-          <h2>Andere Informatie</h2>
-
-          <h4 class="mt-5">Blob</h4>
-          <div class="email-box text-center">
-            <p>Blobnaam</p>
-          </div>
-
-          <h4 class="mt-5">Bende</h4>
-          <div class="email-box text-center">
-            <p>Bendenaam</p>
-          </div>
-
-          <h4 class="mt-5">Tags</h4>
-          <div class="email-box text-center">
-            <ul class="list-unstyled">
-                <li>Tagnaam</li>
-                <li>Tagnaam</li>
-                <li>Tagnaam</li>
-            </ul>
-          </div>
-
-
-        </div>
       </div>
-    </div>
+  </div>
 
-    <div class="button-div d-flex justify-content-center">
-        <button type="button" class="btn btn-update mb-5"> Wijzig Gegevens </button>
-    </div>
+  <div class="button-div d-flex justify-content-center">
+      <button type="button" class="btn btn-update mb-5"> Wijzig Gegevens </button>
+  </div>
 </div>
