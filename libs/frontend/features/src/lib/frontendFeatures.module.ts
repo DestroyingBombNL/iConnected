@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
 import { LoginComponent } from './deelnemer/login/deelnemer-login.component';
 import { RegisterComponent } from './deelnemer/register/deelnemer-register.component';
+import { ProfileComponent } from './account/profile/profile.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
@@ -29,6 +30,7 @@ import { AuthService } from './auth/auth.service';
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
+    ProfileComponent,
   ],
   providers: [
     BlobService,
@@ -44,6 +46,7 @@ import { AuthService } from './auth/auth.service';
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
+    ProfileComponent
   ],
 })
 export class FrontendFeaturesModule {}

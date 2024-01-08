@@ -7,3 +7,4 @@ export * from './lib/services/project.service';
 export * from './lib/services/user.service';
 export * from './lib/services/bende.service';
 export * from './lib/deelnemer/login/deelnemer-login.component';
+export * from './lib/account/profile/profile.component';
