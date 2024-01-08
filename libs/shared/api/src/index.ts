@@ -5,3 +5,4 @@ export * from './entities/type.interface';
 export * from './entities/bende.interface';
 export * from './entities/project.interface';
 export * from './entities/notification.interface';
+export * from './entities/login.interface';

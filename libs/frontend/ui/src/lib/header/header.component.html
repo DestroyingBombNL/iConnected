@@ -17,6 +17,7 @@
             <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
                 <a ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault()">Mijn profiel</a>
                 <a class="text-danger" style="cursor: pointer;" ngbDropdownItem (click)="$event.preventDefault();">Uitloggen</a>
+                <li class="nav-item"><a routerLink="/login" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Login</a></li>  
             </div>
         </li>
     </ul>

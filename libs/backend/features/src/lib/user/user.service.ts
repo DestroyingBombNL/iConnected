@@ -2,6 +2,7 @@ import { ICreateUser, IUpdateUser, IUser } from "@ihomer/api";
 import { Injectable, Logger } from "@nestjs/common";
 import { QueryResult, RecordShape } from "neo4j-driver-core";
 import { Neo4jService } from "nest-neo4j/dist";
+import { sign } from "jsonwebtoken";
 
 @Injectable()
 export class UserService {
@@ -106,13 +107,51 @@ export class UserService {
         return password;
     }
 
+    async login(email: string, password: string): Promise<IUser | undefined> {
+        this.logger.log('Login');
+
+        const result = await this.neo4jService.read(
+            'MATCH(user:User{email: $email, password: $password}) RETURN(user)',
+            {email, password}
+        );
+
+        const users = this.convertFromDb(result);
+        if (!users) return undefined;
+        const authenticationHex = process.env["AUTHENTICATION_HEX"];
+
+        if (authenticationHex) {
+            const secretKey = authenticationHex;
+            const userId = users[0].id.toString();
+            const token = sign({ userId }, secretKey, {
+                expiresIn: '1h',
+            });
+            users[0].token = token;
+        } else {
+            console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
+        }
+        return users[0];
+      }
+
     private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
         const createdUsers = result.records.map((record: any) => {
-            const fields = record._fields[0];
-            const dbUser = fields.properties;
-            const {uuid, ...user} = dbUser;
+            const userData = record._fields[0];
+            const user: IUser = {
+                id: userData.properties.uuid,
+                email: userData.properties.email,
+                profilePicture: userData.properties.profilePicture,
+                firstName: userData.properties.firstName,
+                infix: userData.properties.infix,
+                lastName: userData.properties.lastName,
+                bio: userData.properties.bio,
+                birthday: userData.properties.birthday,
+                street: userData.properties.street,
+                houseNumber: userData.properties.houseNumber.low,
+                postalCode: userData.properties.postalCode,
+                city: userData.properties.city,
+                tags: userData.properties.tags,
+                password: userData.properties.password
+            }
             if (!includePassword) user.password = '';
-            user.id = uuid;
             return user;
         });
         return createdUsers as IUser[];
@@ -128,6 +167,4 @@ export class UserService {
         const distinctTags = result.records.map((record: any) => record.get('tag'));
         return distinctTags;
     }
-    
-    
 }
