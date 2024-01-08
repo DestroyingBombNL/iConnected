@@ -56,7 +56,7 @@
     "@nx/nest": "17.2.6",
     "@nx/node": "17.2.6",
     "@nx/web": "17.2.6",
-    "@nx/webpack": "16.0.0",
+    "@nx/webpack": "17.0.3",
     "@nx/workspace": "17.2.6",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
     "@schematics/angular": "17.0.7",
