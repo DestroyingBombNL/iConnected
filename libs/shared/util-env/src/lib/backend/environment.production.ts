@@ -1,7 +1,4 @@
 import { IEnvironment } from './environment.interface';
-// import * as dotenv from 'dotenv';
-
-// dotenv.config();
 
 export const backendEnvironment: IEnvironment = {
   production: true,
