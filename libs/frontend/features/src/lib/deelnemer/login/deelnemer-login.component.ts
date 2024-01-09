@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   subs: Subscription | undefined;
   submitted = false;
   backgroundImage?: string;
+  showLoginError = false;
+
 
   constructor(private readonly authService: AuthService, private readonly router: Router) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -50,19 +52,24 @@ export class LoginComponent implements OnInit, OnDestroy {
       const login: ILogin = {
         emailAddress: email,
         password: password
-      }
-      this.authService
-        .login(login.emailAddress, login.password)
-        .subscribe((user) => {
-          if (user) {
-            this.router.navigate(['/blobs']);
-          }
-          this.submitted = false;
-        });
+      };
+  
+      this.authService.login(login.emailAddress, login.password)
+        .subscribe(
+          (user) => {
+            if (user) {
+              this.router.navigate(['/blobs']);
+            } else {
+              this.showLoginError = true;
+            }
+            this.submitted = false;
+          },
+        );
     } else {
       this.submitted = false;
     }
   }
+  
 
   validEmail(control: FormControl): { [s: string]: boolean } | null {
     const email = control.value;

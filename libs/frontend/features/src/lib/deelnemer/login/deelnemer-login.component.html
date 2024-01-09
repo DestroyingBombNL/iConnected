@@ -30,12 +30,16 @@
 
           </div>
 
-        <div class="mb-4 mt-5">
-            <button *ngIf="!this.submitted" class="btn btn-inlog w-100 py-2" type="submit">Inloggen</button>    
-            <button *ngIf="this.submitted" class="btn btn-inlog w-100 py-2" type="button">
+          <div class="mb-4 mt-5">
+            <button *ngIf="!submitted" class="btn btn-inlog w-100 py-2" type="submit">Inloggen</button>
+
+            <button *ngIf="submitted" class="btn btn-inlog w-100 py-2" type="button">
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status"> Inloggen...</span>
             </button>
+            <div *ngIf="showLoginError" class="text-danger mb-2">
+                Emailadres of wachtwoord is incorrect.
+            </div>
         </div>
     
         </form>
