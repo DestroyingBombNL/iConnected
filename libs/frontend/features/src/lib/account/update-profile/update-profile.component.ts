@@ -22,57 +22,51 @@ export class UpdateProfileComponent implements OnInit {
     private router: Router 
     ) {}
 
+
     ngOnInit(): void {
-      this.route.paramMap.subscribe((params) => {
-        this.userId = params.get('id');
-  
-        // Bestaande user
-        this.userService.readOne(this.userId).subscribe((observable) => {
-          this.user = observable;
+      this.authService.getUserFromLocalStorage().subscribe((user: IUser | null) => {
+        if (user !== null) {
+          this.userId = user.id;
+
     
-          // Initialize selectedTags with the user's tags
+          // Fetch other user details based on userId
+          this.userService.readOne(this.userId).subscribe((observable) => {
+            this.user = observable;
+
+           // Initialize selectedTags with the user's tags
           this.selectedTags = this.user?.tags || [];
-        });
+          });
+        } else {
+          console.log('User is not logged in');
+        }
       });
-  
-      // Retrieve user ID from AuthService
-      this.authService.currentUser$.subscribe({
-        next: (user: IUser | null) => {
-          if (user) {
-            this.userId = user.id;
-          }
-        },
-        error: (error) => {
-          console.error('Error getting user information:', error);
-        },
-      });
-  
+    
       this.fetchDistinctTags();
+    }
+    
+
+    updateUser() {
+      console.log('Updating user:', this.user);
+    
+      if (this.userId) {
+        this.userService.update(this.user, this.userId).subscribe({
+          next: (updatedUser) => {
+            console.log('User updated successfully:', updatedUser);
+            this.router.navigate(['/profile']); 
+          },
+          error: (error) => {
+            console.error('Error updating user:', error);
+          }
+        });
+      } else {
+        console.error('User ID is null. Cannot update user.');
+      }
     }
 
     onTagSelectionChanged(tags: any) {
       this.selectedTags = tags;
     }
     
-    updateUser() {
-      if (this.userId !== this.user?.id) {
-        console.error('Current user is not the creator of the user. Updating is not allowed.');
-        return;
-      }
-    
-      console.log('Updating user:', this.user);
-      
-      this.userService.update(this.user, this.userId).subscribe({
-        next: (updatedUser) => {
-          console.log('User updated successfully:', updatedUser);
-          this.router.navigate(['/profile']); 
-        },
-        error: (error) => {
-          console.error('Error updating user:', error);
-        }
-      });
-    }
-
     private fetchDistinctTags(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
         (response: any) => {
