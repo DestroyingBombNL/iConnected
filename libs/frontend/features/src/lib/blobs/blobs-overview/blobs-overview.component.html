@@ -15,8 +15,8 @@
                     <div class="d-flex flex-wrap justify-content-center flex-grow-1">
                         <div *ngFor="let user of blob.users" class="user">
                             <button class="userImg d-flex justify-content-center">
-                                <img (click)="deelnemerDetail.open(userContent, user)" [src]="user.profilePicture" class="userImg"
-                                    alt="user avatar">
+                                <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
+                                    class="userImg" alt="user avatar">
                             </button>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                 </p>
                 <span><strong>Deelnemers:</strong>
                     <ul>
-                        <li *ngFor="let user of specificBlob?.users" (click)="deelnemerDetail.open(userContent, user)">
+                        <li *ngFor="let user of specificBlob?.users" (click)="openUser(userContent, user.id)">
                             <img [src]="user.profilePicture" alt="Profiel" width="10%" style="border-radius: 25px;">
                             {{ user.firstName }}
                         </li>
@@ -61,5 +61,25 @@
 </ng-template>
 
 <ng-template #userContent let-modal>
-    <ihomer-deelnemer-detail></ihomer-deelnemer-detail>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-user-title">{{ specificUser.firstName }} {{specificUser.infix}}{{ specificUser.lastName }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body text-center">
+        <div class="mb-3">
+            <p><img [src]="specificUser.profilePicture" alt="blob image" width="35%" style="border-radius: 50%;"></p>
+            <p class="mt-4"><strong>Geboortedatum:</strong> {{ specificUser.birthday | date:"dd-MM-yyyy" }}</p>
+            <p class="mt-4"><strong>Bio:</strong> {{ specificUser.bio }}</p>
+            <p class="mt-4"><strong>Tags:</strong>
+                <span *ngIf="specificUser.tags && specificUser.tags.length > 0">
+                    <ul class="list-unstyled mt-2">
+                        <li *ngFor="let tag of specificUser.tags">
+                            {{ tag }}
+                        </li>
+                    </ul>
+                </span>
+                <span *ngIf="!(specificUser.tags && specificUser.tags.length > 0)"><br>Geen tags gekozen</span>
+            </p>
+        </div>
+    </div>
 </ng-template>

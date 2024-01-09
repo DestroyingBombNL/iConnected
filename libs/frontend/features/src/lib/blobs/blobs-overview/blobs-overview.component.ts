@@ -6,10 +6,10 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
-import { IBlob } from '@ihomer/shared/api';
+import { UserService } from '../../services/user.service'; // Import the user service
+import { IBlob, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeelnemerDetailComponent } from '../../deelnemer/deelnemer-detail/deelnemer-detail.component';
 
 @Component({
   selector: 'ihomer-blobs-overview',
@@ -19,7 +19,9 @@ import { DeelnemerDetailComponent } from '../../deelnemer/deelnemer-detail/deeln
 export class BlobsOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
   blobs: IBlob[] = [];
+  users: IUser[] = []; // Initialize users array
   specificBlob = {} as IBlob;
+  specificUser = {} as IUser;
   subscription: Subscription | null = null;
   darkroof?: string;
   lightdoor?: string;
@@ -28,7 +30,7 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private blobService: BlobService, public deelnemerDetail: DeelnemerDetailComponent) {
+  constructor(private blobService: BlobService, private userService: UserService) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -42,6 +44,13 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
         this.blobs = results.sort((a, b) => {
           return a.name.localeCompare(b.name);
         });
+      }
+    });
+
+    // Fetch user data when the component initializes
+    this.userService.readAll().subscribe((users) => {
+      if (users !== null) {
+        this.users = users;
       }
     });
   }
@@ -67,6 +76,26 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
           console.log('dismissed');
         }
       );
+  }
+
+  openUser(content: TemplateRef<any>, userId: string) {
+    // Ensure that users array is populated
+    if (this.users.length > 0) {
+      this.specificUser = this.users.find((u) => u.id === userId) as IUser;
+
+      this.modalService
+        .open(content, { ariaLabelledBy: 'modal-user-title' })
+        .result.then(
+          (result) => {
+            this.closeResult = `Closed with: ${result}`;
+            console.log('closed');
+          },
+          (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            console.log('dismissed');
+          }
+        );
+    }
   }
 
   private getDismissReason(reason: any): string {
