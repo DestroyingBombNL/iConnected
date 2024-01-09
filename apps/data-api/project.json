@@ -15,6 +15,7 @@
         "main": "apps/data-api/src/main.ts",
         "tsConfig": "apps/data-api/tsconfig.app.json",
         "assets": ["apps/data-api/src/assets"],
+        "webpackConfig": "apps/data-api/webpack.config.js",
         "generatePackageJson": true
       },
       "configurations": {
