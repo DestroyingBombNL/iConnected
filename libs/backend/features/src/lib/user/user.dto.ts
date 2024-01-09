@@ -4,8 +4,8 @@ import { ICreateUser } from "@ihomer/api";import {
     IsOptional,
     IsEmail,
     IsArray,
-    IsPostalCode,
-    IsDateString
+    IsDateString,
+    Matches
 } from 'class-validator';
 
 export class CreateUserDTO implements ICreateUser {
@@ -47,7 +47,9 @@ export class CreateUserDTO implements ICreateUser {
     password?: string | undefined;
 
     @IsString()
-    @IsPostalCode("NL")
+    @Matches(/^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/, {
+        message: 'PostalCode must be a valid NL or BE postal code.'
+    })
     @IsNotEmpty()
     postalCode?: string | undefined;
 
@@ -60,7 +62,7 @@ export class CreateUserDTO implements ICreateUser {
     street?: string | undefined;
 
     @IsArray()
-    @IsNotEmpty()
+    @IsOptional()
     tags?: string[] | undefined;
 }
 export type UpdateUserDTO = CreateUserDTO;

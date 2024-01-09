@@ -136,7 +136,7 @@ export class UserService {
         this.logger.log('Profile');
         
         const result = await this.neo4jService.read(
-            'MATCH (user:User {uuid: $id}) OPTIONAL MATCH (user)-[]-(connectedNode) RETURN user, connectedNode',
+            'MATCH (user:User{uuid: $id})-[]-(connectedNode) RETURN user, connectedNode',
             { id }
         );
     
@@ -151,8 +151,7 @@ export class UserService {
 
         result.records.forEach((record: any) => {
             let connectedNode = record.get('connectedNode');
-            if(connectedNode){
-                switch (connectedNode.labels[0]) {
+            switch (connectedNode.labels[0]) {
                 case 'Blob':
                     blobs.push(connectedNode.properties);
                     break;
@@ -163,8 +162,6 @@ export class UserService {
                     projects.push(connectedNode.properties);
                     break;
             }
-            }
-            
         });
         return { user: users[0], blobs, bendes, projects };
     }
@@ -189,7 +186,6 @@ export class UserService {
                 tags: userData.properties.tags,
                 password: userData.properties.password
             }
-            this.logger.log(userData.properties)
             if (!includePassword) user.password = '';
             return user;
         });
