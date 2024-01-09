@@ -15,6 +15,7 @@ import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
 import { AuthService } from './auth/auth.service';
+import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { AuthService } from './auth/auth.service';
     LoginComponent,
     ProfileComponent,
     UpdateProfileComponent,
+    LogoutComponent,
   ],
   providers: [
     BlobService,
@@ -49,7 +51,8 @@ import { AuthService } from './auth/auth.service';
     RegisterComponent, 
     LoginComponent,
     ProfileComponent,
-    UpdateProfileComponent
+    UpdateProfileComponent,
+    LogoutComponent,
   ],
 })
 export class FrontendFeaturesModule {}

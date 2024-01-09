@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         .login(login.emailAddress, login.password)
         .subscribe((user) => {
           if (user) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/blobs']);
           }
           this.submitted = false;
         });

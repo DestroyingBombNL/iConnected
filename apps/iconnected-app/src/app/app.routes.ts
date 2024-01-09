@@ -8,6 +8,7 @@ import {
     ProfileComponent, 
     UpdateProfileComponent 
 } from '@ihomer/frontend/features';
+import { LogoutComponent } from 'libs/frontend/features/src/lib/deelnemer/logout/deelnemer-logout.component';
 
 const appName = 'iConnected | '
 
@@ -15,7 +16,7 @@ export const appRoutes: Route[] = [
     {
         path: '',
         pathMatch: 'full',
-        component: BlobsOverviewComponent
+        component: LoginComponent
     },
     {
         path: 'blobs',
@@ -40,6 +41,12 @@ export const appRoutes: Route[] = [
         pathMatch: 'full',
         component: LoginComponent,
         title: `${appName}Inloggen`
+    },
+    {
+        path: 'logout',
+        pathMatch: 'full',
+        component: LogoutComponent,
+        title: `${appName}Uitloggen`
     },
     {
         path: 'deelnemers',
