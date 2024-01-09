@@ -7,6 +7,8 @@ import { BlobModule } from './blob/blob.module';
 import { BendeModule } from './bende/bende.module';
 import { ProjectModule } from './project/project.module';
 
+console.log(backendEnvironment);
+
 @Module({
   imports: [
     UserModule,
