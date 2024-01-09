@@ -1,4 +1,4 @@
-import { ICreateUser, IUpdateUser, IUser } from "@ihomer/api";
+import { IBende, IBlob, ICreateUser, IProject, IUpdateUser, IUser } from "@ihomer/api";
 import { Injectable, Logger } from "@nestjs/common";
 import { QueryResult, RecordShape } from "neo4j-driver-core";
 import { Neo4jService } from "nest-neo4j/dist";
@@ -132,7 +132,42 @@ export class UserService {
         return users[0];
       }
 
-    private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
+      async profile(id: string): Promise<{ user: IUser | undefined, blobs: Array<IBlob>, bendes: Array<IBende>, projects: Array<IProject> }> {
+        this.logger.log('Profile');
+        
+        const result = await this.neo4jService.read(
+            'MATCH (user:User{uuid: $id})-[]-(connectedNode) RETURN user, connectedNode',
+            { id }
+        );
+    
+        let blobs: Array<IBlob> = [];
+        let bendes: Array<IBende> = [];
+        let projects: Array<IProject> = [];
+        let users = this.convertFromDb(result);
+
+        if (!users || users.length === 0) {
+            return { user: undefined, blobs, bendes, projects };
+        }
+
+        result.records.forEach((record: any) => {
+            let connectedNode = record.get('connectedNode');
+            switch (connectedNode.labels[0]) {
+                case 'Blob':
+                    blobs.push(connectedNode.properties);
+                    break;
+                case 'Bende':
+                    bendes.push(connectedNode.properties);
+                    break;
+                case 'Project':
+                    projects.push(connectedNode.properties);
+                    break;
+            }
+        });
+        return { user: users[0], blobs, bendes, projects };
+    }
+    
+
+      private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
         const createdUsers = result.records.map((record: any) => {
             const userData = record._fields[0];
             const user: IUser = {

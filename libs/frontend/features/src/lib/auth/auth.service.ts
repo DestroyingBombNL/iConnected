@@ -108,17 +108,12 @@ export class AuthService {
   logout(): void {
     this.router
       .navigate(['./login'])
-      .then((success) => {
-        if (success) {
+      .then(() => {
           console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
           localStorage.removeItem(this.AUTH_TOKEN);
           this.currentUser$.next(null);
-        } else {
-          console.log('navigate result:', success);
-        }
       })
-      .catch((error) => console.log('not logged out!'));
   }
 
   getUserFromLocalStorage(): Observable<IUser | null> {
