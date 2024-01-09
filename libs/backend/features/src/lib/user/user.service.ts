@@ -132,13 +132,26 @@ export class UserService {
         return users[0];
       }
 
-    private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
+      private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
         const createdUsers = result.records.map((record: any) => {
-            const fields = record._fields[0];
-            const dbUser = fields.properties;
-            const {uuid, ...user} = dbUser;
+            const userData = record._fields[0];
+            const user: IUser = {
+                id: userData.properties.uuid,
+                email: userData.properties.email,
+                profilePicture: userData.properties.profilePicture,
+                firstName: userData.properties.firstName,
+                infix: userData.properties.infix,
+                lastName: userData.properties.lastName,
+                bio: userData.properties.bio,
+                birthday: userData.properties.birthday,
+                street: userData.properties.street,
+                houseNumber: userData.properties.houseNumber.low,
+                postalCode: userData.properties.postalCode,
+                city: userData.properties.city,
+                tags: userData.properties.tags,
+                password: userData.properties.password
+            }
             if (!includePassword) user.password = '';
-            user.id = uuid;
             return user;
         });
         return createdUsers as IUser[];
