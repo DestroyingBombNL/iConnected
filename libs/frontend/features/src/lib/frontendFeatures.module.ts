@@ -9,6 +9,7 @@ import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.co
 import { LoginComponent } from './deelnemer/login/deelnemer-login.component';
 import { RegisterComponent } from './deelnemer/register/deelnemer-register.component';
 import { ProfileComponent } from './account/profile/profile.component';
+import { UpdateProfileComponent } from './account/update-profile/update-profile.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
@@ -31,6 +32,7 @@ import { AuthService } from './auth/auth.service';
     RegisterComponent, 
     LoginComponent,
     ProfileComponent,
+    UpdateProfileComponent,
   ],
   providers: [
     BlobService,
@@ -46,7 +48,8 @@ import { AuthService } from './auth/auth.service';
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    UpdateProfileComponent
   ],
 })
 export class FrontendFeaturesModule {}

@@ -1,0 +1,22 @@
+.container-full {
+    background-color: rgb(241, 238, 238);
+    overflow: hidden;
+    height: 90vh;
+}
+
+.profile-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.btn-update {
+    background-color: #216e8e;
+    color: white;
+}
