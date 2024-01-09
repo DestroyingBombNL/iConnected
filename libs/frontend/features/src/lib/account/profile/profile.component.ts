@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
-import { IUser } from '@ihomer/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/api';
 
 @Component({
   selector: 'ihomer-profile',
@@ -12,6 +12,9 @@ import { IUser } from '@ihomer/api';
 export class ProfileComponent implements OnInit {
   userId: string | null = null;
   user!: IUser;
+  blobs: Array<IBlob> = []
+  bendes: Array<IBende> = []
+  projects: Array<IProject> = []
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -24,8 +27,11 @@ export class ProfileComponent implements OnInit {
         if (user !== null) {
           this.userId = user.id;
           if (this.userId) {
-            this.userService.readOne(this.userId).subscribe((user) => {
-              if (user) this.user = user;
+            this.userService.getProfile(this.userId).subscribe((profile) => {
+              if (profile.user) this.user = user;
+              if (profile.blobs) this.blobs = profile.blobs;
+              if (profile.bendes) this.bendes = profile.bendes;
+              if (profile.projects) this.projects = profile.projects;
             })
           } else {
             this.authService.currentUser$.subscribe((user) => {

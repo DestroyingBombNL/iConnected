@@ -46,16 +46,29 @@
           <div class="col-md-6 info-box mt-3">
               <h2>Andere Informatie</h2>
 
-              <!--
-              <h4 class="mt-5">Blob</h4>
-              <div class="email-box text-center">
-                  <p>{{ user?.blobName || 'No blob name available' }}</p>
+              <h4 class="mt-5">Blobs</h4>
+              <div *ngIf="blobs && blobs.length > 0" class="email-box text-center">
+                  <p *ngFor="let blob of blobs">{{ blob.name }}</p>
               </div>
-
-              <h4 class="mt-5">Bende</h4>
-              <div class="email-box text-center">
-                  <p>{{ user?.gangName || 'No gang name available' }}</p>
-              </div> -->
+              <div *ngIf="!blobs || blobs.length === 0" class="email-box text-center">
+                  <p>No blobs available</p>
+              </div>
+      
+              <h4 class="mt-5">Bendes</h4>
+              <div *ngIf="bendes && bendes.length > 0" class="email-box text-center">
+                  <p *ngFor="let bende of bendes">{{ bende.name }}</p>
+              </div>
+              <div *ngIf="!bendes || bendes.length === 0" class="email-box text-center">
+                  <p>No bendes available</p>
+              </div>
+              
+              <h4 class="mt-5">Projects</h4>
+              <div *ngIf="projects && projects.length > 0" class="email-box text-center">
+                  <p *ngFor="let project of projects">{{ project.name }}</p>
+              </div>
+              <div *ngIf="!projects || projects.length === 0" class="email-box text-center">
+                  <p>No projects available</p>
+              </div>
 
               <h4 class="mt-5">Tags</h4>
               <div class="email-box text-center">

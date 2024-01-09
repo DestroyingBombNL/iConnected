@@ -1,4 +1,4 @@
-import { IUser } from '@ihomer/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/api';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO, UpdateUserDTO } from './user.dto';
@@ -45,4 +45,9 @@ export class UserController {
         return this.userService.login(user.email, user.password);
     }
 
+    @Get('/profile/:id')
+    async profile(@Param('id') id: string): Promise<{ user: IUser | undefined, blobs: Array<IBlob>, bendes: Array<IBende>, projects: Array<IProject> }> {
+        const profile = await this.userService.profile(id);
+        return profile;
+    }
 }
