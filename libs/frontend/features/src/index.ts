@@ -6,3 +6,5 @@ export * from './lib/services/models/project.model';
 export * from './lib/services/project.service';
 export * from './lib/services/user.service';
 export * from './lib/services/bende.service';
+export * from './lib/bendes/bendes-overview/bendes-overview.component';
+export * from './lib/projects/projects-overview/projects-overview.component';

@@ -4,6 +4,8 @@ import { Route, RouterModule } from '@angular/router';
 import {
   BlobsOverviewComponent,
   DeelnemerNewComponent,
+  BendesOverviewComponent,
+  ProjectsOverviewComponent,
 } from '@ihomer/frontend/features';
 const appName = 'iConnected | ';
 
@@ -22,13 +24,13 @@ export const appRoutes: Route[] = [
   {
     path: 'bendes',
     pathMatch: 'full',
-    redirectTo: 'blobs',
+    component: BendesOverviewComponent,
     title: `${appName}Bendes`,
   },
   {
     path: 'projects',
     pathMatch: 'full',
-    redirectTo: 'blobs',
+    component: ProjectsOverviewComponent,
     title: `${appName}Projecten`,
   },
   {
