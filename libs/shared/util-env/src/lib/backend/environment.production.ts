@@ -4,10 +4,10 @@ export const backendEnvironment: IEnvironment = {
   production: true,
   neo4j: {
     username: 'neo4j',
-    password: process.env.GRAPH_PASSWORD,
+    password: 'MANkOd3pIEo8J3q6LchHkWRhFFbTTKYix4hx8JzBQ7E',
     scheme: 'neo4j+s',
     host: '07b40077.databases.neo4j.io',
-    database: 'iHomer',
+    database: 'neo4j',
     port: 7687
   }
 };
