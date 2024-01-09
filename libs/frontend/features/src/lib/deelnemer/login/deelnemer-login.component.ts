@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   submitted = false;
   backgroundImage?: string;
   showLoginError = false;
-
+  showPassword: boolean = false;
 
   constructor(private readonly authService: AuthService, private readonly router: Router) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -82,5 +82,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     const password = control.value;
     const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
     return regexp.test(password) ? null : { invalidPassword: true };
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

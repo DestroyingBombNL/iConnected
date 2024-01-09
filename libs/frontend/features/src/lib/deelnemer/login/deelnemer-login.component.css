@@ -1,8 +1,13 @@
 .form-signin {
-    max-width: 330px;
+    max-width: 50%;
 }
 
 .btn-inlog {
+    background-color: #216e8e;
+    color: white;
+}
+
+.btn-show {
     background-color: #216e8e;
     color: white;
 }
