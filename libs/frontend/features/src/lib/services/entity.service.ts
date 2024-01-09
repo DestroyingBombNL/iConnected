@@ -32,7 +32,7 @@ export abstract class EntityService<T extends Entity> {
             .pipe(
                 map((response: any) => response.results as T[]),
                 tap(console.log),
-                catchError(this.handleError)
+                catchError((err) => this.handleError(err))
             );
     }
 
@@ -46,7 +46,7 @@ export abstract class EntityService<T extends Entity> {
             .pipe(
                 tap(console.log),
                 map((response: any) => response.results as T),
-                catchError(this.handleError)
+                catchError((err) => this.handleError(err))
             );
     }
 
@@ -64,7 +64,7 @@ export abstract class EntityService<T extends Entity> {
           .pipe(
             tap(console.log),
             map((response: any) => response.results as T),
-            catchError(this.handleError)
+            catchError((err) => this.handleError(err))
           );
     }
 
@@ -82,7 +82,7 @@ export abstract class EntityService<T extends Entity> {
             .pipe(
                 tap((response: ApiResponse<T>) => console.log('update', response)),
                 map((response: ApiResponse<T>) => response.results as T),
-                catchError(this.handleError)
+                catchError((err) => this.handleError(err))
             );
     }
 
@@ -100,7 +100,7 @@ export abstract class EntityService<T extends Entity> {
             .pipe(
                 tap((response: any) => console.log('delete', response)),
                 map((response: any) => !!response),
-                catchError(this.handleError)
+                catchError((err) => this.handleError(err))
             );
     }
 
