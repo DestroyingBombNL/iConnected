@@ -28,7 +28,7 @@
 
 .background-image {
   width: 100%;
-  height: 123vh;
+  height: 123%;
   object-fit: cover;
   position: absolute;
   top: 0;
