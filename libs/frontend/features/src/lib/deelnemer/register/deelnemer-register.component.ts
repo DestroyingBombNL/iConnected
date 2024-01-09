@@ -87,7 +87,7 @@ export class RegisterComponent implements OnInit {
 
     validEmail(control: FormControl): { [s: string]: boolean } | null {
       const email = control.value;
-      const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
+      const regexp = /^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
       return regexp.test(email) ? null : { invalidEmail: true };
     }
     
