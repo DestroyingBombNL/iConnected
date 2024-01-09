@@ -37,8 +37,7 @@ export class RegisterComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]],
-        tags: [[]]
+        password: ['', [Validators.required, this.validPassword]]
       });
 
       this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -56,10 +55,6 @@ export class RegisterComponent implements OnInit {
       );
     }
 
-    onTagSelectionChanged(tags: any) {
-      this.selectedTags = tags;
-    }
-
     createUser(): void {
       console.log("create User aangeroepen");
     
@@ -72,7 +67,6 @@ export class RegisterComponent implements OnInit {
     
         console.log(this.selectedTags);
     
-        formData.tags = this.selectedTags;
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
             console.log('User created successfully:', createdUser);
@@ -130,7 +124,7 @@ export class RegisterComponent implements OnInit {
     postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
       const postalCode = control.value;
   
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}[a-zA-Z]{2})|(\d{4}))$/;
+      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
   
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
     }

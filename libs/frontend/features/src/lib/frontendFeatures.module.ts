@@ -44,7 +44,7 @@ import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
     BlobsOverviewComponent, 
     RegisterComponent, 
     LoginComponent,
-    AuthService
+    AuthService,
   ],
   exports: [
     BlobsOverviewComponent, 

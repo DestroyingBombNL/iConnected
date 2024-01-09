@@ -9,3 +9,5 @@ export * from './lib/services/bende.service';
 export * from './lib/deelnemer/login/deelnemer-login.component';
 export * from './lib/account/profile/profile.component';
 export * from './lib/account/update-profile/update-profile.component';
+export * from './lib/deelnemer/logout/deelnemer-logout.component';
+export * from './lib/services/notifications/notification.service';

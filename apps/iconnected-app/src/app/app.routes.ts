@@ -8,7 +8,7 @@ import {
     ProfileComponent, 
     UpdateProfileComponent 
 } from '@ihomer/frontend/features';
-import { LogoutComponent } from 'libs/frontend/features/src/lib/deelnemer/logout/deelnemer-logout.component';
+import { LogoutComponent } from '@ihomer/frontend/features';
 
 const appName = 'iConnected | '
 
