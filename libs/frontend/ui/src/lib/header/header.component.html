@@ -1,24 +1,31 @@
-<header class="bg-white d-flex flex-wrap justify-content-center p-3">
-    <a routerLink="" class="link-body-emphasis text-decoration-none">
-        <img src="/assets/logoiHomer.png" class="img-fluid rounded-2" style="height: 40px;"/>
-    </a>
+<nav class="navbar navbar-expand-md navbar-light bg-body-tertiary mb-3">
+	<div class="container-fluid">
+		<a class="navbar-brand" routerLink="">
+            <img src="/assets/logoiHomer.png" class="img-fluid rounded-2" style="height: 40px;"/>
+        </a>
 
-    <ul class="nav nav-pills mx-auto">
-        <li class="nav-item"><a routerLink="/blobs" routerLinkActive="active" class="nav-link">Blobs</a></li>
-        <li class="nav-item"><a routerLink="/bendes" routerLinkActive="active" class="nav-link">Bendes</a></li>
-        <li class="nav-item"><a routerLink="/projects" routerLinkActive="active" class="nav-link">Projecten</a></li>    
-    </ul>
-    <form class="d-flex" role="search">
-        <input class="form-control me-2 my-auto" type="search" placeholder="Zoeken">
-    </form>
-    <ul class="nav nav-pills my-auto">
-        <li class="nav-item my-auto" ngbDropdown display="dynamic" placement="bottom-end">
-            <img class="img-fluid" style="border-radius: 50%; height: 50px; cursor: pointer;" ngbDropdownToggle src="https://placehold.co/200x200/png"/>
-            <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
-                <a ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault()">Mijn profiel</a>
-                <a routerLink="/logout" routerLinkActive="active" class="text-danger" style="cursor: pointer;" ngbDropdownItem (click)="$event.preventDefault();">Uitloggen</a>
-                <li class="nav-item"><a routerLink="/login" routerLinkActive="active" class="nav-link px-2">Login</a></li>  
+		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
+        
+        <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse w-100">
+            <ul class="navbar-nav nav-pills mx-auto">
+                <li class="nav-item"><a routerLink="/blobs" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Blobs</a></li>
+                <li class="nav-item"><a routerLink="/bendes" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Bendes</a></li>
+                <li class="nav-item"><a routerLink="/projects" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Projecten</a></li>    
+                <li class="nav-item"><a routerLink="/login" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Login</a></li>  
+            </ul>    
+        
+            <div class="d-flex">
+                <form role="search" class="my-auto me-md-2">
+                    <input class="form-control flex-grow-1" type="search" placeholder="Zoeken">
+                </form>
+                <div ngbDropdown display="dynamic" placement="bottom-end" class="ms-auto">
+                    <img class="img-fluid" style="border-radius: 50%; height: 50px; cursor: pointer;" ngbDropdownToggle src="https://placehold.co/200x200/png"/>
+                    <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
+                        <a ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault()">Mijn profiel</a>
+                        <a ngbDropdownItem routerLink="/logout" routerLinkActive="active" class="text-danger" style="cursor: pointer;" (click)="$event.preventDefault();">Uitloggen</a>
+                    </div>
+                </div>
             </div>
-        </li>
-    </ul>
-</header>
+        </div>
+	</div>
+</nav>
