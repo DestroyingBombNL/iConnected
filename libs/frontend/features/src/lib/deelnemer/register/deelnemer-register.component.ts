@@ -65,13 +65,7 @@ export class RegisterComponent implements OnInit {
     
       if (this.newDeelnemer.valid) {
         const formData = this.newDeelnemer.value;
-    
-        // Add empty bio and profilePicture to formData
-        formData.bio = 'Vul hier je bio';
-        formData.profilePicture = 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg';
-    
-        console.log(this.selectedTags);
-    
+        
         formData.tags = this.selectedTags;
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
@@ -86,7 +80,7 @@ export class RegisterComponent implements OnInit {
         this.newDeelnemer.reset();
       }
     }
-    
+
     goBack(): void {
       this.router.navigate(['/']);
     }
