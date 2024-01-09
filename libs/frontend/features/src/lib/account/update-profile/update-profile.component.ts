@@ -27,13 +27,9 @@ export class UpdateProfileComponent implements OnInit {
       this.authService.getUserFromLocalStorage().subscribe((user: IUser | null) => {
         if (user !== null) {
           this.userId = user.id;
-
-    
-          // Fetch other user details based on userId
           this.userService.readOne(this.userId).subscribe((observable) => {
             this.user = observable;
-
-           // Initialize selectedTags with the user's tags
+            console.log(this.user.birthday)
           this.selectedTags = this.user?.tags || [];
           });
         } else {
@@ -43,11 +39,9 @@ export class UpdateProfileComponent implements OnInit {
     
       this.fetchDistinctTags();
     }
-    
 
     updateUser() {
       console.log('Updating user:', this.user);
-    
       if (this.userId) {
         this.userService.update(this.user, this.userId).subscribe({
           next: (updatedUser) => {
