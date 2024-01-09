@@ -4,12 +4,12 @@ import {
   OnDestroy,
   inject,
   TemplateRef,
-  Injector,
 } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
 import { IBlob } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeelnemerDetailComponent } from '../../deelnemer/deelnemer-detail/deelnemer-detail.component';
 
 @Component({
   selector: 'ihomer-blobs-overview',
@@ -28,7 +28,7 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private blobService: BlobService) {
+  constructor(private blobService: BlobService, public deelnemerDetail: DeelnemerDetailComponent) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -54,9 +54,9 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
 
   open(content: TemplateRef<any>, blobId: string) {
     this.specificBlob = this.blobs.find((b) => b.id === blobId) as IBlob;
-    
+
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .open(content, { ariaLabelledBy: 'modal-blob-title' })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;

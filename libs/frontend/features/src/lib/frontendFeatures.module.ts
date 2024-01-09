@@ -6,7 +6,6 @@ import { RouterModule, RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
 import { BlobDetailComponent } from './blobs/blob-detail/blob-detail.component';
 import { DeelnemerNewComponent } from './deelnemer/deelnemer-new.component';
@@ -14,11 +13,12 @@ import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
+import { DeelnemerDetailComponent } from './deelnemer/deelnemer-detail/deelnemer-detail.component';
 
 @NgModule({
   imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
-  declarations: [BlobsOverviewComponent, DeelnemerNewComponent, BlobDetailComponent],
-  providers: [BlobService, UserService, ProjectService, BendeService],
+  declarations: [BlobsOverviewComponent, DeelnemerNewComponent, BlobDetailComponent, DeelnemerDetailComponent],
+  providers: [BlobService, UserService, ProjectService, BendeService, DeelnemerDetailComponent],
   exports: [BlobsOverviewComponent, DeelnemerNewComponent],
 })
 export class FrontendFeaturesModule {}
