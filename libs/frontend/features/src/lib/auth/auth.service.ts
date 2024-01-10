@@ -5,7 +5,7 @@ import { frontendEnvironment } from '@ihomer/shared/util-env';
 import { tap, map, catchError, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IUser } from '@ihomer/shared/api';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   'AuthService'
