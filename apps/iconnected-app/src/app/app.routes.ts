@@ -6,7 +6,8 @@ import {
     RegisterComponent, 
     LoginComponent, 
     ProfileComponent, 
-    UpdateProfileComponent 
+    UpdateProfileComponent,
+    BlobCreateComponent 
 } from '@ihomer/frontend/features';
 import { LogoutComponent } from '@ihomer/frontend/features';
 
@@ -25,10 +26,22 @@ export const appRoutes: Route[] = [
         title: `${appName}Blobs`
     },
     {
+        path: 'blobs/create',
+        pathMatch: 'full',
+        component: BlobCreateComponent,
+        title: `${appName}BlobCreate`
+    },
+    {
         path: 'bendes',
         pathMatch: 'full',
         redirectTo: 'blobs',
         title: `${appName}Bendes`
+    },
+    {
+        path: 'create',
+        pathMatch: 'full',
+        component: BlobCreateComponent,
+        title: `${appName}UpdateProfiel`
     },
     {
         path: 'projects',
@@ -66,6 +79,7 @@ export const appRoutes: Route[] = [
         component: UpdateProfileComponent,
         title: `${appName}UpdateProfiel`
     },
+    
 ];
 
 
