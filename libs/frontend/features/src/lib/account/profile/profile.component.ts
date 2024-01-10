@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
               if (profile.projects) this.projects = profile.projects;
             });
           } else {
-            this.authService.currentUser$.subscribe((user) => {
+            this.authService.getUserFromLocalStorage().subscribe((user) => {
               if (user) this.user = user;
             });
           }

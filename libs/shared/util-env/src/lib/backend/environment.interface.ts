@@ -8,4 +8,5 @@ export interface IEnvironment {
     port: number;
     database: string;
   };
+  jwtKey: string;
 }
