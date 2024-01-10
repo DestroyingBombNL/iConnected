@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 import { IUser } from '@ihomer/shared/api';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -7,12 +7,12 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 
 @Component({
-  selector: 'ihomer-new-deelnemer',
-  templateUrl: './deelnemer-new.component.html',
-  styleUrls: ['./deelnemer-new.component.css'],
+  selector: 'ihomer-register-deelnemer',
+  templateUrl: './deelnemer-register.component.html',
+  styleUrls: ['./deelnemer-register.component.css'],
 })
 
-export class DeelnemerNewComponent implements OnInit {
+export class RegisterComponent implements OnInit {
     user = {} as IUser;
     users: IUser[] = [];
     subscription: Subscription | null = null;
