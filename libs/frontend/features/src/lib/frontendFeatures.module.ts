@@ -8,15 +8,42 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
 import { LoginComponent } from './deelnemer/login/deelnemer-login.component';
 import { RegisterComponent } from './deelnemer/register/deelnemer-register.component';
+import { ProfileComponent } from './account/profile/profile.component';
+import { UpdateProfileComponent } from './account/update-profile/update-profile.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
 import { AuthService } from './auth/auth.service';
+import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
+import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
+import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
+import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
 import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
 
 @NgModule({
+  imports: [
+    CommonModule,
+    RouterModule,
+    RouterLink,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    NgSelectModule,
+  ],
+  declarations: [
+    BlobsOverviewComponent, 
+    RegisterComponent, 
+    LoginComponent,
+    ProfileComponent,
+    UpdateProfileComponent,
+    ProjectsOverviewComponent,
+    BendesOverviewComponent,
+    LogoutComponent,
+    BlobCreateComponent,
+  ],
   providers: [
     BlobService,
     UserService,
@@ -29,7 +56,7 @@ import { ProjectsOverviewComponent } from './projects/projects-overview/projects
     BendesOverviewComponent,
     ProjectsOverviewComponent,
     LoginComponent,
-    RegisterComponent,
+    AuthService
   ],
   imports: [
     CommonModule,
@@ -46,7 +73,10 @@ import { ProjectsOverviewComponent } from './projects/projects-overview/projects
     BendesOverviewComponent,
     ProjectsOverviewComponent,
     LoginComponent,
-    RegisterComponent,
+    ProfileComponent,
+    UpdateProfileComponent,
+    LogoutComponent,
+    BlobCreateComponent,
   ],
 })
 export class FrontendFeaturesModule {}

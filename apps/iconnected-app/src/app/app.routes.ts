@@ -7,14 +7,23 @@ import {
   LoginComponent,
   BendesOverviewComponent,
   ProjectsOverviewComponent,
+    BlobCreateComponent,
+    UpdateProfileComponent,
+    ProfileComponent, 
 } from '@ihomer/frontend/features';
-const appName = 'iConnected | ';
+import { LogoutComponent } from '@ihomer/frontend/features';
 
+const appName = 'iConnected | '
 export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
     component: BlobsOverviewComponent,
+  },
+  {
+    path: 'login',
+    pathMatch: 'full',
+    component: LoginComponent
   },
   {
     path: 'blobs',
@@ -44,6 +53,31 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     component: RegisterComponent,
   },
+    {
+        path: 'logout',
+        pathMatch: 'full',
+        title: `${appName}Uitloggen`,
+        component: LogoutComponent,
+    },
+    {
+        path: 'blobs/create',
+        pathMatch: 'full',
+        component: BlobCreateComponent,
+        title: `${appName}BlobCreate`
+    },
+    {
+        path: 'profile',
+        pathMatch: 'full',
+        component: ProfileComponent,
+        title: `${appName}Profiel`
+    },
+    {
+        path: 'profile/:id',
+        pathMatch: 'full',
+        component: UpdateProfileComponent,
+        title: `${appName}UpdateProfiel`
+    },
+    
 ];
 
 @NgModule({

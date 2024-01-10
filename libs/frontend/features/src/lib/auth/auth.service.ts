@@ -17,6 +17,7 @@ export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
 export class AuthService {
   public currentUser$ = new BehaviorSubject<IUser | null>(null);
   private readonly CURRENT_USER = 'currentuser';
+  private readonly AUTH_TOKEN = 'auth_token';
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*'
@@ -106,17 +107,13 @@ export class AuthService {
 
   logout(): void {
     this.router
-      .navigate(['/'])
-      .then((success) => {
-        if (success) {
+      .navigate(['./login'])
+      .then(() => {
           console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
+          localStorage.removeItem(this.AUTH_TOKEN);
           this.currentUser$.next(null);
-        } else {
-          console.log('navigate result:', success);
-        }
       })
-      .catch((error) => console.log('not logged out!'));
   }
 
   getUserFromLocalStorage(): Observable<IUser | null> {
