@@ -1,215 +1,217 @@
 <div class="container mx-auto w-75">
 
-  <div class="image-box">
-    <img *ngIf="backgroundImage" [src]="backgroundImage" alt="iHomer" class="background-image">
-  </div>
-
-  <div class="border-box">
+    <div class="image-box">
+      <img *ngIf="backgroundImage" [src]="backgroundImage" alt="iHomer" class="background-image">
+    </div>
 
     <h1 class="d-flex justify-content-center mt-5">Registreren</h1>
 
-    <form class="m-5" [formGroup]="newDeelnemer" (ngSubmit)="createUser()">
+    <div class="border-box w-100">
 
-            <!-- PROFILEPICTURE -->
-              <div class="row">
-              
-              <div class="col-md-12">
-                <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('profilePicture')?.hasError('required') && newDeelnemer.get('profilePicture')?.touched}">
-                    <label for="InputProfilePicture" [class]="{'text-danger': newDeelnemer.get('profilePicture')?.hasError('required') && newDeelnemer.get('profilePicture')?.touched}" class="fw-bold">Profielfoto URL</label>
-                    <input type="text" class="form-control" id="InputProfilePicture" formControlName="profilePicture">
+      <form class="m-5" [formGroup]="newDeelnemer" (ngSubmit)="createUser()">
+
+              <!-- PROFILEPICTURE -->
+                <div class="row">
                 
-                  <div *ngIf="newDeelnemer.get('profilePicture')?.hasError('required') && newDeelnemer.get('profilePicture')?.touched" class="text-danger"></div>
+                <div class="col-md-12">
+                  <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('profilePicture')?.hasError('required') && newDeelnemer.get('profilePicture')?.touched}">
+                      <label for="InputProfilePicture" [class]="{'text-danger': newDeelnemer.get('profilePicture')?.hasError('required') && newDeelnemer.get('profilePicture')?.touched}" class="fw-bold">Profielfoto URL *</label>
+                      <input type="text" class="form-control" id="InputProfilePicture" formControlName="profilePicture">
+                  
+                    <div *ngIf="newDeelnemer.get('profilePicture')?.hasError('required') && newDeelnemer.get('profilePicture')?.touched" class="text-danger"></div>
+                  </div>
+                </div>
+                      
+              </div>
+
+              <!-- BIO -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('bio')?.hasError('required') && newDeelnemer.get('bio')?.touched}">
+                    <label for="InputBio" [class]="{'text-danger': newDeelnemer.get('bio')?.hasError('required') && newDeelnemer.get('bio')?.touched}" class="fw-bold">Bio *</label>
+                    <textarea rows="5" class="form-control" id="InputBio" formControlName="bio" placeholder="Vertel iets over jezelf..."></textarea>
+
+                    <div *ngIf="newDeelnemer.get('bio')?.hasError('required') && newDeelnemer.get('bio')?.touched" class="text-danger"></div>
+                  </div>
                 </div>
               </div>
+
+
+              <!-- NAME -->
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('firstName')?.hasError('required') && newDeelnemer.get('firstName')?.touched}">
+                      <label for="InputFirstName" [class]="{'text-danger': newDeelnemer.get('firstName')?.hasError('required') && newDeelnemer.get('firstName')?.touched}" class="fw-bold">Voornaam *</label>
+                      <input type="text" class="form-control" id="InputFirstName" formControlName="firstName">
+              
+                      <div *ngIf="newDeelnemer.get('firstName')?.hasError('required') && newDeelnemer.get('firstName')?.touched" class="text-danger"></div>
+                  </div>
+                </div>
+              
+                <div class="col-md-3">
+                  <div class="form-group mb-4">
+                    <label for="InputInfix" class="fw-bold">Tussenvoegsel</label>
+                    <input type="text" class="form-control" id="InputInfix" formControlName="infix">
+                  </div>
+                </div>
+
+                <div class="col-md-5">
+                  <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('lastName')?.hasError('required') && newDeelnemer.get('lastName')?.touched}">
+                    <label for="InputLastName" [class]="{'text-danger': newDeelnemer.get('lastName')?.hasError('required') && newDeelnemer.get('lastName')?.touched}" class="fw-bold">Achternaam *</label>
+                    <input type="text" class="form-control" id="InputLastName" formControlName="lastName">
+                
+                    <div *ngIf="newDeelnemer.get('lastName')?.hasError('required') && newDeelnemer.get('lastName')?.touched" class="text-danger">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- EMAIL AND BIRTHDATE -->
+              <div class="row">
+
+                <div class="col-md-6">
+                  <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('email')?.invalid && newDeelnemer.get('email')?.touched}">
+                    <label for="InputEmail" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('email')?.invalid && newDeelnemer.get('email')?.touched}">Emailadres *</label>
+                    <input type="email" class="form-control" id="InputEmail" formControlName="email">
                     
-            </div>
-
-            <!-- BIO -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('bio')?.hasError('required') && newDeelnemer.get('bio')?.touched}">
-                  <label for="InputBio" [class]="{'text-danger': newDeelnemer.get('bio')?.hasError('required') && newDeelnemer.get('bio')?.touched}" class="fw-bold">Bio</label>
-                  <textarea rows="5" class="form-control" id="InputBio" formControlName="bio" placeholder="Vertel iets over jezelf..."></textarea>
-
-                  <div *ngIf="newDeelnemer.get('bio')?.hasError('required') && newDeelnemer.get('bio')?.touched" class="text-danger"></div>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- NAME -->
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('firstName')?.hasError('required') && newDeelnemer.get('firstName')?.touched}">
-                    <label for="InputFirstName" [class]="{'text-danger': newDeelnemer.get('firstName')?.hasError('required') && newDeelnemer.get('firstName')?.touched}" class="fw-bold">Voornaam</label>
-                    <input type="text" class="form-control" id="InputFirstName" formControlName="firstName">
-            
-                    <div *ngIf="newDeelnemer.get('firstName')?.hasError('required') && newDeelnemer.get('firstName')?.touched" class="text-danger"></div>
-                </div>
-              </div>
-             
-              <div class="col-md-3">
-                <div class="form-group mb-4">
-                  <label for="InputInfix" class="fw-bold">Tussenvoegsel</label>
-                  <input type="text" class="form-control" id="InputInfix" formControlName="infix">
-                </div>
-              </div>
-
-              <div class="col-md-5">
-                <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('lastName')?.hasError('required') && newDeelnemer.get('lastName')?.touched}">
-                  <label for="InputLastName" [class]="{'text-danger': newDeelnemer.get('lastName')?.hasError('required') && newDeelnemer.get('lastName')?.touched}" class="fw-bold">Achternaam</label>
-                  <input type="text" class="form-control" id="InputLastName" formControlName="lastName">
-              
-                  <div *ngIf="newDeelnemer.get('lastName')?.hasError('required') && newDeelnemer.get('lastName')?.touched" class="text-danger">
+                    <div *ngIf="newDeelnemer.get('email')?.hasError('required') && newDeelnemer.get('email')?.touched" class="text-danger">
+                    </div>
+        
+                    <div *ngIf="newDeelnemer.get('email')?.hasError('invalidEmail') && !newDeelnemer.get('email')?.hasError('required') && newDeelnemer.get('email')?.touched" class="text-danger">
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- EMAIL AND BIRTHDATE -->
-            <div class="row">
-
-              <div class="col-md-6">
-                <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('email')?.invalid && newDeelnemer.get('email')?.touched}">
-                  <label for="InputEmail" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('email')?.invalid && newDeelnemer.get('email')?.touched}">Emailadres</label>
-                  <input type="email" class="form-control" id="InputEmail" formControlName="email">
-                  
-                  <div *ngIf="newDeelnemer.get('email')?.hasError('required') && newDeelnemer.get('email')?.touched" class="text-danger">
-                  </div>
-      
-                  <div *ngIf="newDeelnemer.get('email')?.hasError('invalidEmail') && !newDeelnemer.get('email')?.hasError('required') && newDeelnemer.get('email')?.touched" class="text-danger">
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('birthday')?.invalid && newDeelnemer.get('birthday')?.touched}">
-                  <label for="InputBirthdate" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('birthday')?.invalid && newDeelnemer.get('birthday')?.touched}">Geboortedatum</label>
-                  <input type="date" class="form-control" id="InputDate" formControlName="birthday">
+                <div class="col-md-6">
+                  <div class="form-group mb-4" [ngClass]="{'has-error': newDeelnemer.get('birthday')?.invalid && newDeelnemer.get('birthday')?.touched}">
+                    <label for="InputBirthdate" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('birthday')?.invalid && newDeelnemer.get('birthday')?.touched}">Geboortedatum *</label>
+                    <input type="date" class="form-control" id="InputDate" formControlName="birthday">
+                            
+                    <div *ngIf="newDeelnemer.get('birthday')?.hasError('required') && newDeelnemer.get('birthday')?.touched" class="text-danger"></div>
                           
-                  <div *ngIf="newDeelnemer.get('birthday')?.hasError('required') && newDeelnemer.get('birthday')?.touched" class="text-danger"></div>
-                        
-                  <div *ngIf="(newDeelnemer.get('birthday')?.hasError('dateInFuture') || newDeelnemer.get('birthday')?.hasError('dateBefore1900')) && !newDeelnemer.get('birthday')?.hasError('required') && newDeelnemer.get('birthday')?.touched" class="text-danger"></div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- STREET - HOUSENUMBER - CITY -->
-            <div class="row">
-              
-              <div class="col-md-4">
-                <div [ngClass]="{'has-error': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">
-                  <div class="form-group mb-4">
-                    <label for="InputStreet" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">Straatnaam</label>
-                    <input type="text" class="form-control" id="InputStreet" formControlName="street">
-                  
-                    <div *ngIf="newDeelnemer.get('street')?.hasError('required') && newDeelnemer.get('street')?.touched" class="text-danger">
-                    </div>
+                    <div *ngIf="(newDeelnemer.get('birthday')?.hasError('dateInFuture') || newDeelnemer.get('birthday')?.hasError('dateBefore1900')) && !newDeelnemer.get('birthday')?.hasError('required') && newDeelnemer.get('birthday')?.touched" class="text-danger"></div>
                   </div>
                 </div>
-              </div>  
 
+              </div>
 
-              <div class="col-md-3">
-                <div [ngClass]="{'has-error': newDeelnemer.get('houseNumber')?.invalid && newDeelnemer.get('houseNumber')?.touched}">
-                  <div class="form-group mb-4">
-                    <label for="InputHousenumber" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('houseNumber')?.invalid && newDeelnemer.get('houseNumber')?.touched}">Huisnummer</label>
-                    <input type="text" class="form-control" id="InputHousenumber" formControlName="houseNumber">
-                  
-                    <div *ngIf="newDeelnemer.get('houseNumber')?.hasError('required') && newDeelnemer.get('houseNumber')?.touched" class="text-danger">
-                    </div>
-                  
-                    <div *ngIf="newDeelnemer.get('houseNumber')?.hasError('invalidHouseNumber') && !newDeelnemer.get('houseNumber')?.hasError('required') && newDeelnemer.get('houseNumber')?.touched" class="text-danger">
+              <!-- STREET - HOUSENUMBER - CITY -->
+              <div class="row">
+                
+                <div class="col-md-4">
+                  <div [ngClass]="{'has-error': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">
+                    <div class="form-group mb-4">
+                      <label for="InputStreet" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('street')?.invalid && newDeelnemer.get('street')?.touched}">Straatnaam *</label>
+                      <input type="text" class="form-control" id="InputStreet" formControlName="street">
+                    
+                      <div *ngIf="newDeelnemer.get('street')?.hasError('required') && newDeelnemer.get('street')?.touched" class="text-danger">
+                      </div>
                     </div>
                   </div>
                 </div>  
-              </div>  
 
 
-              <div class="col-md-5">
-                <div [ngClass]="{'has-error': newDeelnemer.get('city')?.invalid && newDeelnemer.get('city')?.touched}">
-                  <div class="form-group mb-4">
-                    <label for="Inputcity" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('city')?.invalid && newDeelnemer.get('city')?.touched}">Stad</label>
-                    <input type="text" class="form-control" id="Inputcity" formControlName="city">
-                
-                    <div *ngIf="newDeelnemer.get('city')?.hasError('required') && newDeelnemer.get('city')?.touched" class="text-danger">
-                    </div>
-                  </div>
-                </div>
-              </div>  
-
-            </div>
-
-            <!-- POSTALCODE, COUNTRY -->
-            <div class="row">
-              
-              <div class="col-md-6">
-                <div [ngClass]="{'has-error': newDeelnemer.get('postalCode')?.invalid && newDeelnemer.get('postalCode')?.touched}">
-                  <div class="form-group mb-4">
-                    <label for="InputpostalCode" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('postalCode')?.invalid && newDeelnemer.get('postalCode')?.touched}">Postcode</label>
-                    <input type="text" class="form-control" id="InputpostalCode" formControlName="postalCode">
-                
-                    <div *ngIf="newDeelnemer.get('postalCode')?.hasError('required') && newDeelnemer.get('postalCode')?.touched" class="text-danger">
-                    </div>
-              
-                    <div *ngIf="newDeelnemer.get('postalCode')?.hasError('invalidPostalCode') && !newDeelnemer.get('postalCode')?.hasError('required') && newDeelnemer.get('postalCode')?.touched" class="text-danger">
-                      NL of BE postcode.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <!-- <div class="col-md-6">
-                <div [ngClass]="{'has-error': newDeelnemer.get('country')?.invalid && newDeelnemer.get('country')?.touched}">
-                  <div class="form-group mb-4">
-                    <label for="InputCountry" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('country')?.invalid && newDeelnemer.get('country')?.touched}">Land</label>
-                    <input type="text" class="form-control" id="InputHousenumber" formControlName="country">
-                  
-                    <div *ngIf="newDeelnemer.get('country')?.hasError('required') && newDeelnemer.get('country')?.touched" class="text-danger">
-                    </div>
-
-                  </div>
-                </div>
-              </div>   -->
-
-            </div>
-
-            <!-- TAGS -->
-            <div class="row">
-              
-              <div class="col-md-8">
-                <div class="form-group mb-4">
-                  <label for="tags" class="fw-bold">Tags</label>
-                  <ng-select [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
-                </div>
-              </div>
-              
-              <div class="col-md-4">
-                  <div class="form-group" [ngClass]="{'has-error': newDeelnemer.get('password')?.hasError('invalidPassword') && newDeelnemer.get('password')?.touched}">
-                    <label for="Inputpassword" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('password')?.hasError('invalidPassword') && newDeelnemer.get('password')?.touched}">Wachtwoord</label>
-                    <input type="password" class="form-control" id="Inputpassword" formControlName="password">
+                <div class="col-md-3">
+                  <div [ngClass]="{'has-error': newDeelnemer.get('houseNumber')?.invalid && newDeelnemer.get('houseNumber')?.touched}">
+                    <div class="form-group mb-4">
+                      <label for="InputHousenumber" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('houseNumber')?.invalid && newDeelnemer.get('houseNumber')?.touched}">Huisnummer *</label>
+                      <input type="text" class="form-control" id="InputHousenumber" formControlName="houseNumber">
                     
-                    <div *ngIf="newDeelnemer.get('password')?.hasError('required') && newDeelnemer.get('password')?.touched" class="text-danger"></div>
-                  
-                    <div *ngIf="newDeelnemer.get('password')?.hasError('invalidPassword') && !newDeelnemer.get('password')?.hasError('required') && newDeelnemer.get('password')?.touched" class="text-danger">
-                      Ongeldig wachtwoord. Minimaal 8 tekens lang met ten minste 1 kleine letter, 1 hoofdletter en 1 cijfer.
+                      <div *ngIf="newDeelnemer.get('houseNumber')?.hasError('required') && newDeelnemer.get('houseNumber')?.touched" class="text-danger">
+                      </div>
+                    
+                      <div *ngIf="newDeelnemer.get('houseNumber')?.hasError('invalidHouseNumber') && !newDeelnemer.get('houseNumber')?.hasError('required') && newDeelnemer.get('houseNumber')?.touched" class="text-danger">
+                      </div>
                     </div>
+                  </div>  
+                </div>  
+
+
+                <div class="col-md-5">
+                  <div [ngClass]="{'has-error': newDeelnemer.get('city')?.invalid && newDeelnemer.get('city')?.touched}">
+                    <div class="form-group mb-4">
+                      <label for="Inputcity" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('city')?.invalid && newDeelnemer.get('city')?.touched}">Stad *</label>
+                      <input type="text" class="form-control" id="Inputcity" formControlName="city">
+                  
+                      <div *ngIf="newDeelnemer.get('city')?.hasError('required') && newDeelnemer.get('city')?.touched" class="text-danger">
+                      </div>
+                    </div>
+                  </div>
+                </div>  
+
               </div>
-            </div>
-             
-        
-            <div class="text-center mt-4">
-              <button type="button" class="btn btn-register" (click)="createUser()" [disabled]="!newDeelnemer.valid">
-                Deelnemer aanmaken
-              </button>
-              <button type="button" class="btn btn-dark ms-4" (click)="goBack()">
-                Annuleren
-              </button>
 
-            </div>  
+              <!-- POSTALCODE, COUNTRY -->
+              <div class="row">
+                
+                <div class="col-md-6">
+                  <div [ngClass]="{'has-error': newDeelnemer.get('postalCode')?.invalid && newDeelnemer.get('postalCode')?.touched}">
+                    <div class="form-group mb-4">
+                      <label for="InputpostalCode" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('postalCode')?.invalid && newDeelnemer.get('postalCode')?.touched}">Postcode *</label>
+                      <input type="text" class="form-control" id="InputpostalCode" formControlName="postalCode">
+                  
+                      <div *ngIf="newDeelnemer.get('postalCode')?.hasError('required') && newDeelnemer.get('postalCode')?.touched" class="text-danger">
+                      </div>
+                
+                      <div *ngIf="newDeelnemer.get('postalCode')?.hasError('invalidPostalCode') && !newDeelnemer.get('postalCode')?.hasError('required') && newDeelnemer.get('postalCode')?.touched" class="text-danger">
+                        NL of BE postcode.
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-        </div>
-    </form>
+
+                <!-- <div class="col-md-6">
+                  <div [ngClass]="{'has-error': newDeelnemer.get('country')?.invalid && newDeelnemer.get('country')?.touched}">
+                    <div class="form-group mb-4">
+                      <label for="InputCountry" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('country')?.invalid && newDeelnemer.get('country')?.touched}">Land *</label>
+                      <input type="text" class="form-control" id="InputHousenumber" formControlName="country">
+                    
+                      <div *ngIf="newDeelnemer.get('country')?.hasError('required') && newDeelnemer.get('country')?.touched" class="text-danger">
+                      </div>
+
+                    </div>
+                  </div>
+                </div>   -->
+
+              </div>
+
+              <!-- TAGS -->
+              <div class="row">
+                
+                <div class="col-md-8">
+                  <div class="form-group mb-4">
+                    <label for="tags" class="fw-bold">Tags *</label>
+                    <ng-select [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group" [ngClass]="{'has-error': newDeelnemer.get('password')?.hasError('invalidPassword') && newDeelnemer.get('password')?.touched}">
+                      <label for="Inputpassword" class="fw-bold" [ngClass]="{'text-danger': newDeelnemer.get('password')?.hasError('invalidPassword') && newDeelnemer.get('password')?.touched}">Wachtwoord *</label>
+                      <input type="password" class="form-control" id="Inputpassword" formControlName="password">
+                      
+                      <div *ngIf="newDeelnemer.get('password')?.hasError('required') && newDeelnemer.get('password')?.touched" class="text-danger"></div>
+                    
+                      <div *ngIf="newDeelnemer.get('password')?.hasError('invalidPassword') && !newDeelnemer.get('password')?.hasError('required') && newDeelnemer.get('password')?.touched" class="text-danger">
+                        Ongeldig wachtwoord. Minimaal 8 tekens lang met ten minste 1 kleine letter, 1 hoofdletter en 1 cijfer.
+                      </div>
+                </div>
+              </div>
+              
+          
+              <div class="text-center mt-4">
+                <button type="button" class="btn btn-register" (click)="createUser()" [disabled]="!newDeelnemer.valid">
+                  Deelnemer aanmaken
+                </button>
+                <button type="button" class="btn btn-dark ms-4" (click)="goBack()">
+                  Annuleren
+                </button>
+
+              </div>  
+
+          </div>
+      </form>
+  </div>
+
 </div>

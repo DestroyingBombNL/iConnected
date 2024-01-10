@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-body-tertiary mb-3">
+<nav class="navbar navbar-expand-md navbar-light bg-body-tertiary">
 	<div class="container-fluid">
 		<a class="navbar-brand" routerLink="">
             <img src="/assets/logoiHomer.png" class="img-fluid rounded-2" style="height: 40px;"/>
@@ -8,10 +8,10 @@
         
         <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse w-100">
             <ul class="navbar-nav nav-pills mx-auto">
-                <li class="nav-item"><a routerLink="/blobs" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Blobs</a></li>
-                <li class="nav-item"><a routerLink="/bendes" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Bendes</a></li>
-                <li class="nav-item"><a routerLink="/projects" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Projecten</a></li>    
-                <li class="nav-item"><a routerLink="/login" (click)="isMenuCollapsed = true" routerLinkActive="active" class="nav-link px-2">Login</a></li>  
+                <li class="nav-item"><a routerLink="/blobs" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Blobs</a></li>
+                <li class="nav-item"><a routerLink="/bendes" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Bendes</a></li>
+                <li class="nav-item"><a routerLink="/projects" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Projecten</a></li>    
+                <li class="nav-item"><a routerLink="/login" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Login</a></li>  
             </ul>    
         
             <div class="d-flex">

@@ -13,33 +13,33 @@
 
               <div class="email-box mt-4 text-center">
                   <span class="fw-bold">Email</span>
-                  <p>{{ user.email || 'No email available' }}</p>
+                  <p>{{ user.email || 'Geen email beschikbaar' }}</p>
               </div>
 
               <div class="email-box mt-4 text-center">
                   <span class="fw-bold">Geboortedatum</span>
-                  <p>{{ user.birthday | date : 'dd-MM-yyyy' || 'No birthday available' }}</p>
+                  <p>{{ user.birthday | date : 'dd-MM-yyyy' || 'Geen verjaardag beschikbaar' }}</p>
               </div>
 
               <div class="email-box mt-4 text-center">
                   <span class="fw-bold">Adres</span>
-                  <p>{{ user.street || 'No street available' }}</p>
+                  <p>{{ user.street || 'Geen straat beschikbaar' }}</p>
               </div>
 
               <div class="email-box mt-4 text-center">
                   <span class="fw-bold">Postcode</span>
-                  <p>{{ user.postalCode || 'No postcode available' }}</p>
+                  <p>{{ user.postalCode || 'Geen postcode beschikbaar' }}</p>
               </div>
 
               <div class="email-box mt-4 text-center">
                   <span class="fw-bold">Stad</span>
-                  <p>{{ user.city || 'No city available' }}</p>
+                  <p>{{ user.city || 'Geen stad beschikbaar' }}</p>
               </div>
               
               <!-- 
               <div class="email-box mt-4 text-center">
                   <span class="fw-bold">Land</span>
-                  <p>{{ user?.country || 'No country available' }}</p>
+                  <p>{{ user?.country || 'Geen country beschikbaar' }}</p>
               </div>-->
           </div>
 
@@ -51,7 +51,7 @@
                   <p *ngFor="let blob of blobs">{{ blob.name }}</p>
               </div>
               <div *ngIf="!blobs || blobs.length === 0" class="email-box text-center">
-                  <p>No blobs available</p>
+                  <p>Geen blobs beschikbaar</p>
               </div>
       
               <h4 class="mt-5">Bendes</h4>
@@ -59,7 +59,7 @@
                   <p *ngFor="let bende of bendes">{{ bende.name }}</p>
               </div>
               <div *ngIf="!bendes || bendes.length === 0" class="email-box text-center">
-                  <p>No bendes available</p>
+                  <p>Geen bendes beschikbaar</p>
               </div>
               
               <h4 class="mt-5">Projects</h4>
@@ -67,13 +67,13 @@
                   <p *ngFor="let project of projects">{{ project.name }}</p>
               </div>
               <div *ngIf="!projects || projects.length === 0" class="email-box text-center">
-                  <p>No projects available</p>
+                  <p>Geen projecten beschikbaar</p>
               </div>
 
               <h4 class="mt-5">Tags</h4>
               <div class="email-box text-center">
                   <ul class="list-unstyled">
-                      <li *ngFor="let tag of user?.tags">{{ tag || 'No tag available' }}</li>
+                      <li *ngFor="let tag of user?.tags">{{ tag || 'Geen tags beschikbaar' }}</li>
                   </ul>
               </div>
           </div>

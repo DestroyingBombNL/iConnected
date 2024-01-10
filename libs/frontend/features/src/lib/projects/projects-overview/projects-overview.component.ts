@@ -5,22 +5,22 @@ import {
   inject,
   TemplateRef,
 } from '@angular/core';
-import { BlobService } from '../../services/blob.service';
+import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service'; // Import the user service
-import { IBlob, IUser } from '@ihomer/shared/api';
+import { IProject, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'ihomer-blobs-overview',
-  templateUrl: './blobs-overview.component.html',
-  styleUrls: ['./blobs-overview.component.css'],
+  selector: 'ihomer-projects-overview',
+  templateUrl: './projects-overview.component.html',
+  styleUrls: ['./projects-overview.component.css'],
 })
-export class BlobsOverviewComponent implements OnInit, OnDestroy {
+export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
-  blobs: IBlob[] = [];
+  projects: IProject[] = [];
   users: IUser[] = []; // Initialize users array
-  specificBlob = {} as IBlob;
+  specificProject = {} as IProject;
   specificUser = {} as IUser;
   subscription: Subscription | null = null;
   darkroof?: string;
@@ -30,7 +30,7 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private blobService: BlobService, private userService: UserService) {
+  constructor(private projectService: ProjectService, private userService: UserService) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -39,9 +39,9 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.blobService.readAll().subscribe((results) => {
+    this.subscription = this.projectService.readAll().subscribe((results) => {
       if (results !== null) {
-        this.blobs = results.sort((a, b) => {
+        this.projects = results.sort((a, b) => {
           return a.name.localeCompare(b.name);
         });
       }
@@ -61,11 +61,11 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  open(content: TemplateRef<any>, blobId: string) {
-    this.specificBlob = this.blobs.find((b) => b.id === blobId) as IBlob;
+  open(content: TemplateRef<any>, projectId: string) {
+    this.specificProject = this.projects.find((b) => b.id === projectId) as IProject;
 
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-blob-title' })
+      .open(content, { ariaLabelledBy: 'modal-project-title' })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
@@ -109,12 +109,12 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  getBlobsInRows(): any[][] {
-    const blobsInRows = [];
-    for (let i = 0; i < this.blobs.length; i += 3) {
-      blobsInRows.push(this.blobs.slice(i, i + 3));
+  getProjectsInRows(): any[][] {
+    const projectsInRows = [];
+    for (let i = 0; i < this.projects.length; i += 3) {
+      projectsInRows.push(this.projects.slice(i, i + 3));
     }
-    return blobsInRows;
+    return projectsInRows;
   }
 
   calculateColumnClass(totalRooms: number): string {

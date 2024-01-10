@@ -7,65 +7,59 @@ import {
     LoginComponent, 
     ProfileComponent, 
     UpdateProfileComponent,
-    BlobCreateComponent 
+    BendesOverviewComponent,
+    ProjectsOverviewComponent,
+    BlobCreateComponent,
+    
 } from '@ihomer/frontend/features';
 import { LogoutComponent } from '@ihomer/frontend/features';
 
 const appName = 'iConnected | '
-
 export const appRoutes: Route[] = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'blobs',
+  },
+  {
+    path: 'login',
+    pathMatch: 'full',
+    component: LoginComponent
+  },
+  {
+    path: 'blobs',
+    pathMatch: 'full',
+    component: BlobsOverviewComponent,
+    title: `${appName}Blobs`,
+  },
+  {
+    path: 'bendes',
+    pathMatch: 'full',
+    component: BendesOverviewComponent,
+    title: `${appName}Bendes`,
+  },
+  {
+    path: 'projects',
+    pathMatch: 'full',
+    component: ProjectsOverviewComponent,
+    title: `${appName}Projecten`,
+  },
+  {
+    path: 'deelnemers',
+    pathMatch: 'full',
+    component: RegisterComponent,
+  },
     {
-        path: '',
+        path: 'logout',
         pathMatch: 'full',
-        component: LoginComponent
-    },
-    {
-        path: 'blobs',
-        pathMatch: 'full',
-        component: BlobsOverviewComponent,
-        title: `${appName}Blobs`
+        title: `${appName}Uitloggen`,
+        component: LogoutComponent,
     },
     {
         path: 'blobs/create',
         pathMatch: 'full',
         component: BlobCreateComponent,
         title: `${appName}BlobCreate`
-    },
-    {
-        path: 'bendes',
-        pathMatch: 'full',
-        redirectTo: 'blobs',
-        title: `${appName}Bendes`
-    },
-    {
-        path: 'create',
-        pathMatch: 'full',
-        component: BlobCreateComponent,
-        title: `${appName}UpdateProfiel`
-    },
-    {
-        path: 'projects',
-        pathMatch: 'full',
-        redirectTo: 'blobs',
-        title: `${appName}Projecten`
-    },
-    {
-        path: 'login',
-        pathMatch: 'full',
-        component: LoginComponent,
-        title: `${appName}Inloggen`
-    },
-    {
-        path: 'logout',
-        pathMatch: 'full',
-        component: LogoutComponent,
-        title: `${appName}Uitloggen`
-    },
-    {
-        path: 'deelnemers',
-        pathMatch: 'full',
-        component: RegisterComponent,
-        title: `${appName}Deelnemer Registreren`
     },
     {
         path: 'profile',
@@ -82,10 +76,8 @@ export const appRoutes: Route[] = [
     
 ];
 
-
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule],
 })
-
 export class AppRoutingModule {}

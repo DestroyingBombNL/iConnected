@@ -16,6 +16,8 @@ import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
 import { AuthService } from './auth/auth.service';
 import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
+import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
+import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
 
 @NgModule({
@@ -35,6 +37,8 @@ import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
     LoginComponent,
     ProfileComponent,
     UpdateProfileComponent,
+    ProjectsOverviewComponent,
+    BendesOverviewComponent,
     LogoutComponent,
     BlobCreateComponent,
   ],
