@@ -91,3 +91,12 @@
     width: 3rem;
     margin: 0.3rem;
 }
+
+.row .col-md-4 {
+    border-right: 1px solid #ccc;
+    padding-right: 15px;
+}
+
+.row .col-md-4:last-child {
+    border-right: none;
+}

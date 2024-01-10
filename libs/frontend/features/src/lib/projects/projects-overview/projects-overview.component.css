@@ -1,4 +1,3 @@
-
 .darkroof {
     width: auto;
     height: 21.7rem;
@@ -42,7 +41,7 @@
 .room {
     border: 2px solid black;
     background-color: lightgrey;
-} 
+}
 
 .imgDoor {
     width: 3rem;
@@ -91,4 +90,13 @@
     border-radius: 50%;
     width: 3rem;
     margin: 0.3rem;
+}
+
+.row .col-md-4 {
+    border-right: 1px solid #ccc;
+    padding-right: 15px;
+}
+
+.row .col-md-4:last-child {
+    border-right: none;
 }

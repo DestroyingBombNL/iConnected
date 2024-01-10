@@ -7,9 +7,10 @@ import {
 } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
 import { UserService } from '../../services/user.service'; // Import the user service
-import { IBlob, IUser } from '@ihomer/shared/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { blob } from 'stream/consumers';
 
 @Component({
   selector: 'ihomer-blobs-overview',
@@ -18,10 +19,13 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class BlobsOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
-  blobs: IBlob[] = [];
   users: IUser[] = []; // Initialize users array
   specificBlob = {} as IBlob;
   specificUser = {} as IUser;
+  blobs: IBlob[] = [];
+  popUpBlobs: IBlob[] = [];
+  bendes: IBende[] = [];
+  projects: IProject[] = [];
   subscription: Subscription | null = null;
   darkroof?: string;
   lightdoor?: string;
@@ -30,7 +34,10 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private blobService: BlobService, private userService: UserService) {
+  constructor(
+    private blobService: BlobService,
+    private userService: UserService
+  ) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -79,9 +86,20 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   openUser(content: TemplateRef<any>, userId: string) {
-    // Ensure that users array is populated
     if (this.users.length > 0) {
       this.specificUser = this.users.find((u) => u.id === userId) as IUser;
+
+      this.userService.getProfile(userId).subscribe((profile) => {
+        if (profile.blobs) {
+          this.popUpBlobs = profile.blobs;
+        }
+        if (profile.bendes) {
+          this.bendes = profile.bendes;
+        }
+        if (profile.projects) {
+          this.projects = profile.projects;
+        }
+      });
 
       this.modalService
         .open(content, { ariaLabelledBy: 'modal-user-title' })

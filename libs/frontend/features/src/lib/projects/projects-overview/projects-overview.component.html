@@ -69,7 +69,7 @@
     </div>
     <div class="modal-body text-center">
         <div class="mb-3">
-            <p><img class="userImgSmall" [src]="specificUser.profilePicture" alt="project image" width="35%" style="border-radius: 50%;">
+            <p><img class="userImgSmall" [src]="specificUser.profilePicture" alt="blob image" width="35%">
             </p>
             <p class="mt-4"><strong>Geboortedatum:</strong> {{ specificUser.birthday | date:"dd-MM-yyyy" }}</p>
             <p class="mt-4"><strong>Bio:</strong> {{ specificUser.bio }}</p>
@@ -81,6 +81,44 @@
                 <ng-template #noTags>
                     <span><br>Geen tags gekozen</span>
                 </ng-template>
+            </p>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <strong>Blob(s)</strong>
+                    <ng-container *ngIf="blobs && blobs.length > 0; else noBlobs">
+                        <div *ngFor="let blob of blobs; let last = last">
+                            {{ blob.name }}{{ !last ? ',' : '' }}
+                        </div>
+                    </ng-container>
+                    <ng-template #noBlobs>
+                        <span><br>Geen blob</span>
+                    </ng-template>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Bende(s)</strong>
+                    <ng-container *ngIf="bendes && bendes.length > 0; else noBendes">
+                        <div *ngFor="let bende of bendes; let last = last">
+                            {{ bende.name }}{{ !last ? ',' : '' }}
+                        </div>
+                    </ng-container>
+                    <ng-template #noBendes>
+                        <span><br>Geen bende</span>
+                    </ng-template>
+                </div>
+                <div class="col-md-4">
+                    <strong>Project(en)</strong>
+                    <ng-container *ngIf="projects && projects.length > 0; else noProjects">
+                        <div *ngFor="let project of popUpProjects; let last = last">
+                            {{ project.name }}{{ !last ? ',' : '' }}
+                        </div>
+                    </ng-container>
+                    <ng-template #noProjects>
+                        <span><br>Geen project</span>
+                    </ng-template>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>
