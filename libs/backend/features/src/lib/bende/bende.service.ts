@@ -144,7 +144,7 @@ export class BendeService {
             const bende: IBende = {
                 id: bendeData.properties.uuid,
                 name: bendeData.properties.name,
-                creationDate: new Date(bendeData.properties.creationDate.year.low, bendeData.properties.creationDate.month.low - 1, bendeData.properties.creationDate.day.low + 1),
+                creationDate: new Date(bendeData.properties.creationDate),
                 slack: bendeData.properties.slack,
                 image: bendeData.properties.image,
                 users: []
@@ -161,7 +161,7 @@ export class BendeService {
                     bio: users[i].properties.bio,
                     birthday: users[i].properties.birthDay,
                     street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber.low,
+                    houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
