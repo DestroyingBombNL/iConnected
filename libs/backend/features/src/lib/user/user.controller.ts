@@ -1,11 +1,12 @@
-import { IBende, IBlob, IProject, IUser } from '@ihomer/api';
+import { IBende, IBlob, ILogin, IProject, IUser } from '@ihomer/api';
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO, UpdateUserDTO } from './user.dto';
+import { AuthService } from '../auth/auth.service';
 
 @Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
     @Get()
     async getAll(): Promise<IUser[]> {
@@ -41,8 +42,9 @@ export class UserController {
     }
 
     @Post('/login')
-    async (@Body() user: IUser): Promise<IUser | undefined> {
-        return this.userService.login(user.email, user.password);
+    async (@Body() login: ILogin): Promise<IUser | undefined> {
+        console.log(login);
+        return this.authService.login(login);
     }
 
     @Get('/profile/:id')

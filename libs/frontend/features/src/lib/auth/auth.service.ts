@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { frontendEnvironment } from '@ihomer/shared/util-env';
 import { tap, map, catchError, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IUser } from '@ihomer/shared/api';
+import { ILogin, IUser } from '@ihomer/shared/api';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
@@ -42,12 +42,12 @@ export class AuthService {
       .subscribe(() => console.log('Startup auth done'));
   }
 
-  login(email: string, password: string): Observable<IUser | null> {
+  login(login: ILogin): Observable<IUser | null> {
     console.log(`login at ${frontendEnvironment.backendUrl}users/login`);
     return this.http
-      .post<{ results: IUser } | null>(
+      .post<{ results: IUser } | undefined>(
         `${frontendEnvironment.backendUrl}users/login`,
-        { email: email, password: password },
+        login,
         { headers: this.headers }
       )
       .pipe(

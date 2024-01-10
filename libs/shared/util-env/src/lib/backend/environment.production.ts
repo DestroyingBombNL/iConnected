@@ -9,5 +9,6 @@ export const backendEnvironment: IEnvironment = {
     host: '07b40077.databases.neo4j.io',
     database: 'neo4j',
     port: 7687
-  }
+  },
+  jwtKey: process.env.AUTHENTICATION_HEX,
 };

@@ -12,7 +12,7 @@
 
         <div class="form-group mb-4 mt-5" [ngClass]="{'has-error': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
             <label for="login-email" class="fw-bold" [ngClass]="{'text-danger': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">Emailadres</label>
-            <input type="email" class="form-control" id="login-email" formControlName="email">
+            <input type="email" class="form-control" id="login-email" formControlName="emailAddress">
             
             <div *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched" class="text-danger">
             </div>

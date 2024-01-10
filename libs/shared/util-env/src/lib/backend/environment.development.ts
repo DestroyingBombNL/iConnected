@@ -10,4 +10,5 @@ export const backendEnvironment: IEnvironment = {
     database: 'iHomer',
     port: 7687,
   },
+  jwtKey: process.env.AUTHENTICATION_HEX,
 };

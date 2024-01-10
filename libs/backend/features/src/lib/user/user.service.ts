@@ -2,7 +2,6 @@ import { IBende, IBlob, ICreateUser, IProject, IUpdateUser, IUser } from "@ihome
 import { Injectable, Logger } from "@nestjs/common";
 import { QueryResult, RecordShape } from "neo4j-driver-core";
 import { Neo4jService } from "nest-neo4j/dist";
-import { sign } from "jsonwebtoken";
 
 @Injectable()
 export class UserService {
@@ -93,44 +92,53 @@ export class UserService {
         return users[0];
     }
 
-    async getPassword(email: string): Promise<string | undefined> {
-        Logger.log('getPassword');
-
+    async find(emailAddress: string): Promise<IUser | undefined> {
         const result = await this.neo4jService.read(
-            'MATCH(user:User{email:$email}) RETURN user.password AS password, user.email as email',
-            {email}
-        );
-        const password = result.records.map((record: any) => {
-            const password = record._fields[0];
-            return password;
-        })[0];
-        return password;
+            'MATCH(user:User{email:$emailAddress}) RETURN user',
+            {emailAddress});
+        const users = this.convertFromDb(result, true);
+        if (!users || !users[0]) return undefined;
+        return users[0];
     }
 
-    async login(email: string, password: string): Promise<IUser | undefined> {
-        this.logger.log('Login');
+    // async getPassword(email: string): Promise<string | undefined> {
+    //     Logger.log('getPassword');
 
-        const result = await this.neo4jService.read(
-            'MATCH(user:User{email: $email, password: $password}) RETURN(user)',
-            {email, password}
-        );
+    //     const result = await this.neo4jService.read(
+    //         'MATCH(user:User{email:$email}) RETURN user.password AS password, user.email as email',
+    //         {email}
+    //     );
+    //     const password = result.records.map((record: any) => {
+    //         const password = record._fields[0];
+    //         return password;
+    //     })[0];
+    //     return password;
+    // }
 
-        const users = this.convertFromDb(result);
-        if (!users) return undefined;
-        const authenticationHex = process.env["AUTHENTICATION_HEX"];
+    // async login(email: string, password: string): Promise<IUser | undefined> {
+    //     this.logger.log('Login');
 
-        if (authenticationHex) {
-            const secretKey = authenticationHex;
-            const userId = users[0].id.toString();
-            const token = sign({ userId }, secretKey, {
-                expiresIn: '1h',
-            });
-            users[0].token = token;
-        } else {
-            console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
-        }
-        return users[0];
-      }
+    //     const result = await this.neo4jService.read(
+    //         'MATCH(user:User{email: $email, password: $password}) RETURN(user)',
+    //         {email, password}
+    //     );
+
+    //     const users = this.convertFromDb(result);
+    //     if (!users) return undefined;
+    //     const authenticationHex = backendEnvironment;
+
+    //     if (authenticationHex) {
+    //         const secretKey = authenticationHex;
+    //         const userId = users[0].id.toString();
+    //         const token = sign({ userId }, secretKey, {
+    //             expiresIn: '1h',
+    //         });
+    //         users[0].token = token;
+    //     } else {
+    //         console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
+    //     }
+    //     return users[0];
+    //   }
 
       async profile(id: string): Promise<{ user: IUser | undefined, blobs: Array<IBlob>, bendes: Array<IBende>, projects: Array<IProject> }> {
         this.logger.log('Profile');

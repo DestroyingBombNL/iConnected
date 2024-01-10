@@ -6,9 +6,11 @@ import { ConfigModule } from "@nestjs/config";
 import { BlobModule } from './blob/blob.module';
 import { BendeModule } from './bende/bende.module';
 import { ProjectModule } from './project/project.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     UserModule,
     BlobModule,
     BendeModule,
