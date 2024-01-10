@@ -71,7 +71,11 @@
               </div>
 
               <h4 class="mt-5">Tags</h4>
-              <p>{{ user.tags || 'Geen tags gekozen' }}</p>
+              <p *ngIf="user.tags && user.tags.length > 0">
+                {{ user.tags.join(', ') }}
+              </p>
+              <p *ngIf="!user.tags || user.tags.length === 0">Geen tags gekozen</p>
+              
           </div>
       </div>
   </div>
