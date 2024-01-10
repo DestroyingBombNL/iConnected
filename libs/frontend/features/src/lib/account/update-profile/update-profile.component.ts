@@ -73,6 +73,7 @@ export class UpdateProfileComponent implements OnInit {
       console.log('Updating user:', this.user);
     
       if (this.userId) {
+        this.user.tags = this.selectedTags;
         this.userService.update(this.user, this.userId).subscribe({
           next: (updatedUser) => {
             console.log('User updated successfully:', updatedUser);
@@ -88,6 +89,8 @@ export class UpdateProfileComponent implements OnInit {
     }
     
     onTagSelectionChanged(tags: any) {
+      console.log(this.selectedTags)
+
       this.selectedTags = tags;
     }
     
