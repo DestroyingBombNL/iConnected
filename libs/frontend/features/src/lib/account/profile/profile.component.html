@@ -1,4 +1,8 @@
-<div class="container">
+<div *ngIf="!this.user">
+    Kan gebruiker niet vinden.
+</div>
+
+<div *ngIf="this.user" class="container">
   <div class="profile-container text-center">
       <img [src]="user.profilePicture" alt="Profile" class="profile-image img-fluid">
       <h2 class="mt-3">{{ user.firstName || 'No Firstname' }}</h2>
