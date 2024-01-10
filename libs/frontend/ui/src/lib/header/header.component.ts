@@ -8,5 +8,5 @@ import { AuthService } from '@ihomer/frontend/features';
 })
 export class HeaderComponent {
   isMenuCollapsed = true;
-  constructor(private readonly authService: AuthService) {}
+  constructor(readonly authService: AuthService) {}
 }

@@ -1,11 +1,10 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { frontendEnvironment } from '@ihomer/shared/util-env';
-import { tap, map, switchMap, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ILogin, IUser } from '@ihomer/shared/api';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   'AuthService'
@@ -15,7 +14,6 @@ export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   providedIn: 'root',
 })
 export class AuthService {
-  public currentUser$ = new BehaviorSubject<IUser | null>(null);
   private readonly CURRENT_USER = 'currentuser';
   private readonly AUTH_TOKEN = 'auth_token';
   private readonly headers = new HttpHeaders({
@@ -81,7 +79,6 @@ export class AuthService {
           console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
           localStorage.removeItem(this.AUTH_TOKEN);
-          this.currentUser$.next(null);
       })
   }
 
@@ -107,11 +104,5 @@ export class AuthService {
 
   private saveUserTokenToLocalStorage(token: string): void {
     localStorage.setItem(this.AUTH_TOKEN, token);
-  }
-
-  userMayEdit(itemUserId: string): Observable<boolean> {
-    return this.currentUser$.pipe(
-      map((user: IUser | null) => (user ? user.id === itemUserId : false))
-    );
   }
 }

@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
               if (profile.projects) this.projects = profile.projects;
             });
           } else {
-            this.authService.currentUser$.subscribe((user) => {
+            this.authService.getUserFromLocalStorage().subscribe((user) => {
               if (user) this.user = user;
             });
           }
