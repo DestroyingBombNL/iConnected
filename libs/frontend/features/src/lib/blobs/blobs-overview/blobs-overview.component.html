@@ -99,7 +99,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <strong>Bende(s)</strong>
+                    <strong>Bende</strong>
                     <ng-container *ngIf="bendes && bendes.length > 0; else noBendes">
                         <div *ngFor="let bende of bendes; let last = last">
                             {{ bende.name }}{{ !last ? ',' : '' }}
