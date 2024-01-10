@@ -101,44 +101,28 @@ export class UserService {
         return users[0];
     }
 
-    // async getPassword(email: string): Promise<string | undefined> {
-    //     Logger.log('getPassword');
-
-    //     const result = await this.neo4jService.read(
-    //         'MATCH(user:User{email:$email}) RETURN user.password AS password, user.email as email',
-    //         {email}
-    //     );
-    //     const password = result.records.map((record: any) => {
-    //         const password = record._fields[0];
-    //         return password;
-    //     })[0];
-    //     return password;
-    // }
-
-    // async login(email: string, password: string): Promise<IUser | undefined> {
-    //     this.logger.log('Login');
-
-    //     const result = await this.neo4jService.read(
-    //         'MATCH(user:User{email: $email, password: $password}) RETURN(user)',
-    //         {email, password}
-    //     );
-
-    //     const users = this.convertFromDb(result);
-    //     if (!users) return undefined;
-    //     const authenticationHex = backendEnvironment;
-
-    //     if (authenticationHex) {
-    //         const secretKey = authenticationHex;
-    //         const userId = users[0].id.toString();
-    //         const token = sign({ userId }, secretKey, {
-    //             expiresIn: '1h',
-    //         });
-    //         users[0].token = token;
-    //     } else {
-    //         console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
-    //     }
-    //     return users[0];
-    //   }
+    async isAdmin(user: IUser): Promise<boolean> {
+        const result = await this.neo4jService.read(
+            'MATCH(user:User{uuid: $id})-[]->(blob:Blob{type: "BestuursBlob"}) return user,blob',
+            {id: user.id});
+        console.log('%j', result.records);
+        const blob = result.records.map((record: any) => {
+            const blobData = record.get('blob');
+            const blob: IBlob = {
+                id: blobData.properties.uuid,
+                name: blobData.properties.name,
+                creationDate: new Date(blobData.properties.creationDate.year.low, blobData.properties.creationDate.month.low - 1, blobData.properties.creationDate.day.low + 1),
+                slack: blobData.properties.slack,
+                mandate: blobData.properties.mandate,
+                image: blobData.properties.image,
+                type: blobData.properties.type,
+                users: []
+            };
+            return blob;
+        })[0];
+        if (blob) return true;
+        return false;
+    }
 
       async profile(id: string): Promise<{ user: IUser | undefined, blobs: Array<IBlob>, bendes: Array<IBende>, projects: Array<IProject> }> {
         this.logger.log('Profile');
@@ -197,7 +181,6 @@ export class UserService {
                 tags: userData.properties.tags,
                 password: userData.properties.password
             }
-            this.logger.log(userData.properties)
             if (!includePassword) user.password = '';
             return user;
         });

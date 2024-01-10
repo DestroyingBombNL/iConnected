@@ -2,7 +2,7 @@ import { Injectable, InjectionToken } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { frontendEnvironment } from '@ihomer/shared/util-env';
-import { tap, map, catchError, switchMap } from 'rxjs/operators';
+import { tap, map, switchMap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ILogin, IUser } from '@ihomer/shared/api';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -22,85 +22,54 @@ export class AuthService {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*'
   });
-  private readonly jwtHelper = new JwtHelperService();
-  private readonly tokenKey = 'auth_token';
 
   constructor(private http: HttpClient, private router: Router) {
-    this.getUserFromLocalStorage()
-      .pipe(
-        switchMap((user: IUser | null) => {
-          if (user) {
-            console.log('User found in local storage');
-            this.currentUser$.next(user);
-            return of(user);
-          } else {
-            console.log(`No current user found`);
-            return of(null);
-          }
-        })
-      )
-      .subscribe(() => console.log('Startup auth done'));
+    const localUser = this.getUserFromLocalStorage();
+    const localToken = this.getTokenFromLocalStorage();
+
+    if (!localUser || !localToken) {
+      console.log('No user or token found.');
+      this.logout();
+    }
+
+    if (localToken) {
+      this.validateToken(localToken).subscribe((isValid) => {
+        if (!isValid) {
+          console.log('token invalid');
+          this.logout();
+        }
+      });
+    }
   }
 
-  login(login: ILogin): Observable<IUser | null> {
-    console.log(`login at ${frontendEnvironment.backendUrl}users/login`);
-    return this.http
-      .post<{ results: IUser } | undefined>(
-        `${frontendEnvironment.backendUrl}users/login`,
-        login,
-        { headers: this.headers }
-      )
+  login(login: ILogin): Observable<IUser | undefined> {
+    return this.http.post<any | undefined>(`${frontendEnvironment.backendUrl}users/login`, login, {headers: this.headers})
       .pipe(
         map((response) => {
-          console.log('Raw Backend Response:', response);
-
-          if (
-            response &&
-            response.results &&
-            response.results.token &&
-            response.results.id
-          ) {
-            console.log('Token:', response.results.token);
-            console.log('User:', response.results.id);
-
-            localStorage.setItem(this.tokenKey, response.results.token);
-            this.saveUserToLocalStorage(response.results);
-            this.currentUser$.next(response.results);
-            return response.results;
-          } else {
-            console.log('Else statement response structure:', response);
-            return null;
-          }
-        }),
-        catchError((error: any) => {
-          console.log('error:', error);
-          console.log('error.message:', error.message);
-          console.log('error.error.message:', error.error.message);
-          return of(null);
+          console.log(response);
+          const {token, ...user} = response.results;
+          this.saveUserToLocalStorage(user);
+          this.saveUserTokenToLocalStorage(token);
+          return response;
         })
       );
   }
 
-  validateToken(userData: IUser): Observable<IUser | null> {
-    const url = `${frontendEnvironment.backendUrl}/auth/profile`;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + userData.token,
-      }),
-    };
-
-    console.log(`validateToken at ${url}`);
-    return this.http.get<any>(url, httpOptions).pipe(
+  validateToken(token: string): Observable<boolean> {
+    console.log('validate token: ', token);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.get(`${frontendEnvironment.backendUrl}auth/validatetoken`, { headers: headers
+    }).pipe(
       map((response) => {
-        console.log('token is valid');
-        return response as IUser;
+        console.log(response);
+        if (response) return true;
+        return false;
       }),
-      catchError((error: any) => {
-        console.log('Validate token Failed');
-        //this.logout();
-        this.currentUser$.next(null);
-        return of(null);
+      catchError((err) => {
+        return of(false);
       })
     );
   }
@@ -126,22 +95,23 @@ export class AuthService {
     }
   }
 
+  getTokenFromLocalStorage(): string | undefined {
+    const tokenFromStorage = localStorage.getItem(this.AUTH_TOKEN);
+    if (!tokenFromStorage) return undefined;
+    return tokenFromStorage;
+  }
+
   private saveUserToLocalStorage(user: IUser): void {
     localStorage.setItem(this.CURRENT_USER, JSON.stringify(user));
+  }
+
+  private saveUserTokenToLocalStorage(token: string): void {
+    localStorage.setItem(this.AUTH_TOKEN, token);
   }
 
   userMayEdit(itemUserId: string): Observable<boolean> {
     return this.currentUser$.pipe(
       map((user: IUser | null) => (user ? user.id === itemUserId : false))
     );
-  }
-
-  public isAuthenticated(): boolean {
-    const token = this.getAuthToken();
-    return token ? !this.jwtHelper.isTokenExpired(token) : false;
-  }
-
-  private getAuthToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
   }
 }

@@ -1,3 +1,4 @@
+import { backendEnvironment } from '@ihomer/shared/util-env';
 import {
     CanActivate,
     ExecutionContext,
@@ -12,7 +13,7 @@ import { Request } from 'express';
 export class AuthGuard implements CanActivate {
     private readonly logger = new Logger(AuthGuard.name);
 
-    constructor(private jwtService: JwtService) {}
+    constructor(protected jwtService: JwtService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
@@ -23,16 +24,17 @@ export class AuthGuard implements CanActivate {
         }
         try {
             const payload = await this.jwtService.verifyAsync(token, {
-                secret: 'sngkSDFmnlSDSDGlkFBDFL'
+                secret: backendEnvironment.jwtKey
             });
             request['user'] = payload;
         } catch {
+            console.log('Unauthorized');
             throw new UnauthorizedException();
         }
         return true;
     }
 
-    private extractTokenFromHeader(request: Request): string | undefined {
+    extractTokenFromHeader(request: Request): string | undefined {
         const [type, token] = request.headers.authorization?.split(' ') ?? [];
         return type === 'Bearer' ? token : undefined;
     }
@@ -40,14 +42,55 @@ export class AuthGuard implements CanActivate {
 
 @Injectable()
 export class AdminGuard implements CanActivate {
-    canActivate(context: ExecutionContext): boolean {
-        const request = context.switchToHttp().getRequest();
-        if (!request.user) throw new UnauthorizedException();
-        const user = request.user.user;
+    constructor(private readonly jwtService: JwtService) {}
 
-        if (!user) throw new UnauthorizedException();
-        if (user.role !== Role.Admin) throw new UnauthorizedException();
-        
-        return true;
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+        const request = context.switchToHttp().getRequest();
+        const token = this.extractTokenFromHeader(request);
+        if (!token) throw new UnauthorizedException();
+        try {
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: backendEnvironment.jwtKey
+            });
+            return payload.isAdmin;
+        } catch {
+            console.log('Unauthorized');
+            throw new UnauthorizedException();
+        }
+    }
+
+    extractTokenFromHeader(request: Request): string | undefined {
+        const [type, token] = request.headers.authorization?.split(' ') ?? [];
+        return type === 'Bearer' ? token : undefined;
+    }
+}
+
+@Injectable()
+export class IsSelfGuard implements CanActivate {
+    constructor(private readonly jwtService: JwtService) {}
+
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+        const request = context.switchToHttp().getRequest();
+        const token = this.extractTokenFromHeader(request);
+        const params = request.params;
+        const id = params.id;
+      
+        if (!token) throw new UnauthorizedException();
+        try {
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: backendEnvironment.jwtKey
+            });
+            console.log(payload.id);
+            console.log(id);
+            return payload.id === id;
+        } catch {
+            console.log('Unauthorized');
+            throw new UnauthorizedException();
+        }
+    }
+
+    extractTokenFromHeader(request: Request): string | undefined {
+        const [type, token] = request.headers.authorization?.split(' ') ?? [];
+        return type === 'Bearer' ? token : undefined;
     }
 }

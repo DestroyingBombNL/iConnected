@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '@ihomer/frontend/features';
 
 @Component({
   selector: 'ihomer-header',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   isMenuCollapsed = true;
-  constructor() {}
+  constructor(private readonly authService: AuthService) {}
 }

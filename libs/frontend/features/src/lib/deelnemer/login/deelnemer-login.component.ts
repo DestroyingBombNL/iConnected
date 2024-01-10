@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      emailAddress: new FormControl("", [ Validators.required, this.validEmail.bind(this) ]),
-      password: new FormControl("", [ Validators.required, this.validPassword.bind(this) ]),
+      emailAddress: new FormControl("test@gmail.com", [ Validators.required, this.validEmail.bind(this) ]),
+      password: new FormControl("Welkom01!", [ Validators.required, this.validPassword.bind(this) ]),
     });
     console.log(this.authService.getUserFromLocalStorage());
     /*

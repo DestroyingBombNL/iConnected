@@ -3,6 +3,7 @@ import { ApiResponse } from "@ihomer/api"
 import { BehaviorSubject, Observable, catchError, map, tap, throwError } from "rxjs";
 import { NotificationService } from './notifications/notification.service';
 import { Entity } from "./models/entity.model";
+import { AuthService } from "../auth/auth.service";
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -19,11 +20,20 @@ export abstract class EntityService<T extends Entity> {
         readonly http: HttpClient,
         readonly url: string,
         readonly endpoint: string,
-        private readonly notificationService: NotificationService
+        private readonly notificationService: NotificationService,
+        protected readonly authService: AuthService
     ) {}
 
     public readAll(options?: any): Observable<T[] | null> {
         console.log(`read all ${this.url}${this.endpoint}`);
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authService.getTokenFromLocalStorage()}`    
+            }),
+        };
+
         return this.http
             .get<ApiResponse<T[]>>(`${this.url}${this.endpoint}`, {
                 ...options,
@@ -38,6 +48,14 @@ export abstract class EntityService<T extends Entity> {
 
     public readOne(id: string | null, options?: any): Observable<T> {
         console.log(`read ${this.url}${this.endpoint}/${id}`);
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authService.getTokenFromLocalStorage()}`    
+            }),
+        };
+        
         return this.http
             .get<ApiResponse<T>>(`${this.url}${this.endpoint}/${id}`, {
                 ...options,
@@ -56,6 +74,7 @@ export abstract class EntityService<T extends Entity> {
         const httpOptions = {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.authService.getTokenFromLocalStorage()}`
           }),
         };
     
@@ -74,6 +93,7 @@ export abstract class EntityService<T extends Entity> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authService.getTokenFromLocalStorage()}`    
             }),
         };
 
@@ -92,6 +112,7 @@ export abstract class EntityService<T extends Entity> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authService.getTokenFromLocalStorage()}`    
             }),
         };
 
