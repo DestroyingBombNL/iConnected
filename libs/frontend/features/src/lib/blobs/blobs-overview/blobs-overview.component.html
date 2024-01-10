@@ -50,9 +50,9 @@
                         {{specificBlob.slack}}</a>
                 </p>
                 <span><strong>Deelnemers:</strong>
-                    <ul>
+                    <ul class="user-list">
                         <li *ngFor="let user of specificBlob?.users" (click)="openUser(userContent, user.id)">
-                            <img [src]="user.profilePicture" alt="Profiel" width="10%" style="border-radius: 25px;">
+                            <img class="userImgPopUp" [src]="user.profilePicture" alt="Profiel" width="20%" >
                             {{ user.firstName }}
                         </li>
                     </ul>
@@ -71,20 +71,18 @@
     </div>
     <div class="modal-body text-center">
         <div class="mb-3">
-            <p><img [src]="specificUser.profilePicture" alt="blob image" width="35%" style="border-radius: 50%;">
+            <p><img class="userImgSmall" [src]="specificUser.profilePicture" alt="blob image" width="35%">
             </p>
             <p class="mt-4"><strong>Geboortedatum:</strong> {{ specificUser.birthday | date:"dd-MM-yyyy" }}</p>
             <p class="mt-4"><strong>Bio:</strong> {{ specificUser.bio }}</p>
             <p class="mt-4"><strong>Tags:</strong>
-                <span *ngIf="specificUser.tags && specificUser.tags.length > 0">
-                    <ul class="list-unstyled mt-2">
-                        <li *ngFor="let tag of specificUser.tags">
-                            {{ tag }}
-                        </li>
-                    </ul>
-                </span>
-                <span *ngIf="!(specificUser.tags && specificUser.tags.length > 0)"><br>Geen tags gekozen</span>
-            </p>
+                <ng-container *ngIf="specificUser.tags && specificUser.tags.length > 0; else noTags">
+                    <br>
+                    {{ specificUser.tags.join(', ') }}
+                </ng-container>
+                <ng-template #noTags>
+                    <span><br>Geen tags gekozen</span>
+                </ng-template>
         </div>
     </div>
 </ng-template>

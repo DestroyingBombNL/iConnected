@@ -45,7 +45,6 @@
             <div class="mb-3">
                 <p><img [src]="specificProject.image" alt="project image" width="100%"></p>
                 <p><strong>Aanmaakdatum:</strong> {{ specificProject.creationDate | date:"dd-MM-yyyy"}}</p>
-                <!-- <p><strong>Type:</strong> {{ specificProject.type }}</p> -->
                 <p><strong>Slack:</strong> <a href={{specificProject.slack}} target="_blank">
                         {{specificProject.slack}}</a>
                 </p>
@@ -57,7 +56,6 @@
                         </li>
                     </ul>
                 </span>
-                <!-- <p><strong>Mandaat:</strong> {{ specificProject.mandate }}</p> -->
             </div>
         </form>
     </div>
