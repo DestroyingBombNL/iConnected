@@ -1,6 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { BendesOverviewComponent, BlobsOverviewComponent, LoginComponent, ProfileComponent, ProjectsOverviewComponent, RegisterComponent, UpdateProfileComponent } from '@ihomer/frontend/features';
+
+import { 
+    BlobsOverviewComponent, 
+    RegisterComponent, 
+    LoginComponent, 
+    ProfileComponent, 
+    UpdateProfileComponent,
+    BendesOverviewComponent,
+    ProjectsOverviewComponent,
+    BlobCreateComponent,
+    
+} from '@ihomer/frontend/features';
+import { LogoutComponent } from '@ihomer/frontend/features';
 
 const appName = 'iConnected | '
 export const appRoutes: Route[] = [
@@ -38,6 +50,18 @@ export const appRoutes: Route[] = [
     component: RegisterComponent,
   },
     {
+        path: 'logout',
+        pathMatch: 'full',
+        title: `${appName}Uitloggen`,
+        component: LogoutComponent,
+    },
+    {
+        path: 'blobs/create',
+        pathMatch: 'full',
+        component: BlobCreateComponent,
+        title: `${appName}BlobCreate`
+    },
+    {
         path: 'profile',
         pathMatch: 'full',
         component: ProfileComponent,
@@ -49,6 +73,7 @@ export const appRoutes: Route[] = [
         component: UpdateProfileComponent,
         title: `${appName}UpdateProfiel`
     },
+    
 ];
 
 @NgModule({
