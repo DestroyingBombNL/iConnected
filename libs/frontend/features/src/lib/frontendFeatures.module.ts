@@ -17,9 +17,36 @@ import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overvie
 import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
 
 @NgModule({
-    RegisterComponent, 
+  providers: [
+    BlobService,
+    UserService,
+    ProjectService,
+    BendeService,
+    AuthService,
+  ],
+  declarations: [
+    BlobsOverviewComponent,
+    BendesOverviewComponent,
+    ProjectsOverviewComponent,
     LoginComponent,
-    RegisterComponent, 
+    RegisterComponent,
+  ],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgSelectModule,
+    NgbModule,
+    RouterLink,
+  ],
+  exports: [
+    BlobsOverviewComponent,
+    BendesOverviewComponent,
+    ProjectsOverviewComponent,
     LoginComponent,
+    RegisterComponent,
+  ],
 })
 export class FrontendFeaturesModule {}
