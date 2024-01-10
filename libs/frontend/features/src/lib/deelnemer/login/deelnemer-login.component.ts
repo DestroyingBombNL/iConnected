@@ -15,8 +15,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   subs: Subscription | undefined;
   submitted = false;
   backgroundImage?: string;
-  showLoginError = false;
-  showPassword: boolean = false;
 
   constructor(private readonly authService: AuthService, private readonly router: Router) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -52,28 +50,23 @@ export class LoginComponent implements OnInit, OnDestroy {
       const login: ILogin = {
         emailAddress: email,
         password: password
-      };
-  
-      this.authService.login(login.emailAddress, login.password)
-        .subscribe(
-          (user) => {
-            if (user) {
-              this.router.navigate(['/blobs']);
-            } else {
-              this.showLoginError = true;
-            }
-            this.submitted = false;
-          },
-        );
+      }
+      this.authService
+        .login(login.emailAddress, login.password)
+        .subscribe((user) => {
+          if (user) {
+            this.router.navigate(['/blobs']);
+          }
+          this.submitted = false;
+        });
     } else {
       this.submitted = false;
     }
   }
-  
 
   validEmail(control: FormControl): { [s: string]: boolean } | null {
     const email = control.value;
-    const regexp = /^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+    const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
     return regexp.test(email) ? null : { invalidEmail: true };
   }
   
@@ -82,9 +75,5 @@ export class LoginComponent implements OnInit, OnDestroy {
     const password = control.value;
     const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
     return regexp.test(password) ? null : { invalidPassword: true };
-  }
-
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
   }
 }

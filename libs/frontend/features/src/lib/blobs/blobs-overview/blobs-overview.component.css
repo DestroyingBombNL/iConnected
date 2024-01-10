@@ -11,7 +11,7 @@
 
 .house-background {
     position: relative;
-    background: linear-gradient(to bottom, #2c75b7, lightblue);
+    background-image: url('/assets/bluesky.png');
     width: 100%;
     min-height: calc(100vh - 26rem);
     z-index: 0;
@@ -54,8 +54,6 @@
     height: auto;
     margin: 0.2rem;
     border-radius: 50%;
-    border: none;
-    background-color: transparent;
 }
 
 .door {

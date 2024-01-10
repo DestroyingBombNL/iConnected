@@ -1,15 +1,7 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  inject,
-  TemplateRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
-import { UserService } from '../../services/user.service'; // Import the user service
-import { IBlob, IUser } from '@ihomer/shared/api';
+import { IBlob } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ihomer-blobs-overview',
@@ -17,20 +9,15 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./blobs-overview.component.css'],
 })
 export class BlobsOverviewComponent implements OnInit, OnDestroy {
-  private modalService = inject(NgbModal);
   blobs: IBlob[] = [];
-  users: IUser[] = []; // Initialize users array
-  specificBlob = {} as IBlob;
-  specificUser = {} as IUser;
   subscription: Subscription | null = null;
   darkroof?: string;
   lightdoor?: string;
   cloudImage?: string;
   blueskyImage?: string;
   grassImage?: string;
-  closeResult = '';
 
-  constructor(private blobService: BlobService, private userService: UserService) {
+  constructor(private blobService: BlobService) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -42,15 +29,8 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     this.subscription = this.blobService.readAll().subscribe((results) => {
       if (results !== null) {
         this.blobs = results.sort((a, b) => {
-          return a.name.localeCompare(b.name);
+            return a.name.localeCompare(b.name);
         });
-      }
-    });
-
-    // Fetch user data when the component initializes
-    this.userService.readAll().subscribe((users) => {
-      if (users !== null) {
-        this.users = users;
       }
     });
   }
@@ -58,54 +38,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
-  }
-
-  open(content: TemplateRef<any>, blobId: string) {
-    this.specificBlob = this.blobs.find((b) => b.id === blobId) as IBlob;
-
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-blob-title' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-          console.log('closed');
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-          console.log('dismissed');
-        }
-      );
-  }
-
-  openUser(content: TemplateRef<any>, userId: string) {
-    // Ensure that users array is populated
-    if (this.users.length > 0) {
-      this.specificUser = this.users.find((u) => u.id === userId) as IUser;
-
-      this.modalService
-        .open(content, { ariaLabelledBy: 'modal-user-title' })
-        .result.then(
-          (result) => {
-            this.closeResult = `Closed with: ${result}`;
-            console.log('closed');
-          },
-          (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-            console.log('dismissed');
-          }
-        );
-    }
-  }
-
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
     }
   }
 

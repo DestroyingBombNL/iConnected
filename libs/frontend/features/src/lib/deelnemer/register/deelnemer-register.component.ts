@@ -37,8 +37,7 @@ export class RegisterComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]],
-        tags: [[]]
+        password: ['', [Validators.required, this.validPassword]]
       });
 
       this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -56,17 +55,18 @@ export class RegisterComponent implements OnInit {
       );
     }
 
-    onTagSelectionChanged(tags: any) {
-      this.selectedTags = tags;
-    }
-
     createUser(): void {
       console.log("create User aangeroepen");
     
       if (this.newDeelnemer.valid) {
         const formData = this.newDeelnemer.value;
-        
-        formData.tags = this.selectedTags;
+    
+        // Add empty bio and profilePicture to formData
+        formData.bio = 'Vul hier je bio';
+        formData.profilePicture = 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg';
+    
+        console.log(this.selectedTags);
+    
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
             console.log('User created successfully:', createdUser);
@@ -80,14 +80,14 @@ export class RegisterComponent implements OnInit {
         this.newDeelnemer.reset();
       }
     }
-
+    
     goBack(): void {
       this.router.navigate(['/']);
     }
 
     validEmail(control: FormControl): { [s: string]: boolean } | null {
       const email = control.value;
-      const regexp = /^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+      const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
       return regexp.test(email) ? null : { invalidEmail: true };
     }
     
@@ -124,7 +124,7 @@ export class RegisterComponent implements OnInit {
     postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
       const postalCode = control.value;
   
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}[a-zA-Z]{2})|(\d{4}))$/;
+      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
   
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
     }
