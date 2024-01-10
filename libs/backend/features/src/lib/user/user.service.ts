@@ -111,7 +111,7 @@ export class UserService {
             const blob: IBlob = {
                 id: blobData.properties.uuid,
                 name: blobData.properties.name,
-                creationDate: new Date(blobData.properties.creationDate.year.low, blobData.properties.creationDate.month.low - 1, blobData.properties.creationDate.day.low + 1),
+                creationDate: new Date(blobData.properties.creationDate),
                 slack: blobData.properties.slack,
                 mandate: blobData.properties.mandate,
                 image: blobData.properties.image,
@@ -186,21 +186,7 @@ export class UserService {
         });
         return createdUsers as IUser[];
     }
-
-    private parseDateString(dateString: string): Date {
-        if (dateString) {
-            const parts = dateString.split('-');
-            if (parts.length === 3) {
-                const year = parseInt(parts[2], 10);
-                const month = parseInt(parts[1], 10) - 1;
-                const day = parseInt(parts[0], 10);
-                this.logger.log(new Date(year, month, day));
-                return new Date(year, month, day);
-            }
-        }
-        return new Date();
-    }
-
+    
     async getDistinctTagsForAllUsers(): Promise<string[]> {
         this.logger.log('Tags');
 
