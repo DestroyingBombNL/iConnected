@@ -5,22 +5,22 @@ import {
   inject,
   TemplateRef,
 } from '@angular/core';
-import { BlobService } from '../../services/blob.service';
+import { BendeService } from '../../services/bende.service';
 import { UserService } from '../../services/user.service'; // Import the user service
-import { IBlob, IUser } from '@ihomer/shared/api';
+import { IBende, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'ihomer-blobs-overview',
-  templateUrl: './blobs-overview.component.html',
-  styleUrls: ['./blobs-overview.component.css'],
+  selector: 'ihomer-bendes-overview',
+  templateUrl: './bendes-overview.component.html',
+  styleUrls: ['./bendes-overview.component.css'],
 })
-export class BlobsOverviewComponent implements OnInit, OnDestroy {
+export class BendesOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
-  blobs: IBlob[] = [];
+  bendes: IBende[] = [];
   users: IUser[] = []; // Initialize users array
-  specificBlob = {} as IBlob;
+  specificBende = {} as IBende;
   specificUser = {} as IUser;
   subscription: Subscription | null = null;
   darkroof?: string;
@@ -30,7 +30,7 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private blobService: BlobService, private userService: UserService) {
+  constructor(private bendeService: BendeService, private userService: UserService) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -39,9 +39,9 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.blobService.readAll().subscribe((results) => {
+    this.subscription = this.bendeService.readAll().subscribe((results) => {
       if (results !== null) {
-        this.blobs = results.sort((a, b) => {
+        this.bendes = results.sort((a, b) => {
           return a.name.localeCompare(b.name);
         });
       }
@@ -61,11 +61,11 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  open(content: TemplateRef<any>, blobId: string) {
-    this.specificBlob = this.blobs.find((b) => b.id === blobId) as IBlob;
+  open(content: TemplateRef<any>, bendeId: string) {
+    this.specificBende = this.bendes.find((b) => b.id === bendeId) as IBende;
 
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-blob-title' })
+      .open(content, { ariaLabelledBy: 'modal-bende-title' })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
@@ -109,12 +109,12 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  getBlobsInRows(): any[][] {
-    const blobsInRows = [];
-    for (let i = 0; i < this.blobs.length; i += 3) {
-      blobsInRows.push(this.blobs.slice(i, i + 3));
+  getBendesInRows(): any[][] {
+    const bendesInRows = [];
+    for (let i = 0; i < this.bendes.length; i += 3) {
+      bendesInRows.push(this.bendes.slice(i, i + 3));
     }
-    return blobsInRows;
+    return bendesInRows;
   }
 
   calculateColumnClass(totalRooms: number): string {
