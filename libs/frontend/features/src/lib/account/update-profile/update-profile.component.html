@@ -75,7 +75,7 @@
 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Wachtwoord</span>
-                    <input type="password" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.password" name="password">
+                    <input type="password" class="form-control w-50 mx-auto text-center" name="password">
                 </div>
 
                     <!-- 
@@ -88,7 +88,33 @@
             <div class="col-md-6 info-box mt-3">
                 <h2>Andere Informatie</h2>
 
-                <div class="form-group mb-4">
+                <p> Wil je blob, bende of project wijzigen, vraag dit dan aan een admin.</p>
+
+                <h4 class="mt-5">Blobs</h4>
+                <div *ngIf="blobs && blobs.length > 0" class="email-box text-center">
+                    <p *ngFor="let blob of blobs">{{ blob.name }}</p>
+                </div>
+                <div *ngIf="!blobs || blobs.length === 0" class="email-box text-center">
+                    <p> Maakt geen deel uit van een blob. </p>
+                </div>
+        
+                <h4 class="mt-5">Bendes</h4>
+                <div *ngIf="bendes && bendes.length > 0" class="email-box text-center">
+                    <p *ngFor="let bende of bendes">{{ bende.name }}</p>
+                </div>
+                <div *ngIf="!bendes || bendes.length === 0" class="email-box text-center">
+                    <p> Maakt geen deel uit van een bende. </p>
+                </div>
+                
+                <h4 class="mt-5">Projects</h4>
+                <div *ngIf="projects && projects.length > 0" class="email-box text-center">
+                    <p *ngFor="let project of projects">{{ project.name }}</p>
+                </div>
+                <div *ngIf="!projects || projects.length === 0" class="email-box text-center">
+                    <p> Maakt geen deel uit van een project. </p>
+                </div>
+
+                <div class="form-group mb-4 mt-5">
                     <label for="tags" class="fw-bold">Tags</label>
                     <ng-select class="mx-auto w-75" [(ngModel)]="selectedTags" [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
                 </div>
