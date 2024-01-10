@@ -6,15 +6,15 @@
     </div>
     <div class="container-fluid house-background">
         <div class="container house-contents">
-            <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
-                <div *ngFor="let blob of blobRow" [ngClass]="calculateColumnClass(blobRow.length)"
+            <div *ngFor="let bendeRow of getBendesInRows()" class="row hall">
+                <div *ngFor="let bende of bendeRow" [ngClass]="calculateColumnClass(bendeRow.length)"
                     class="room d-flex flex-column">
                     <div class="roomname d-flex justify-content-center">
-                        <h5>{{ blob.name }}</h5>
+                        <h5>{{ bende.name }}</h5>
                     </div>
                     <div class="d-flex justify-content-between flex-grow-1">
                         <div class="d-flex flex-wrap justify-content-center flex-grow-1">
-                            <div *ngFor="let user of blob.users" class="user">
+                            <div *ngFor="let user of bende.users" class="user">
                                 <button class="userImg d-flex justify-content-center">
                                     <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
                                         class="userImg" alt="user avatar">
@@ -23,8 +23,8 @@
                         </div>
                         <div class="door">
                             <button class="btnDoor">
-                                <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door"
-                                    (click)="open(content, blob.id)">
+                                <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="bende info door"
+                                    (click)="open(content, bende.id)">
                             </button>
                         </div>
                     </div>
@@ -37,27 +37,27 @@
 
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-blob-title">{{ specificBlob.name }}</h4>
+        <h4 class="modal-title" id="modal-bende-title">{{ specificBende.name }}</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
         <form>
             <div class="mb-3">
-                <p><img [src]="specificBlob.image" alt="blob image" width="100%"></p>
-                <p><strong>Aanmaakdatum:</strong> {{ specificBlob.creationDate | date:"dd-MM-yyyy"}}</p>
-                <p><strong>Type:</strong> {{ specificBlob.type }}</p>
-                <p><strong>Slack:</strong> <a href={{specificBlob.slack}} target="_blank">
-                        {{specificBlob.slack}}</a>
+                <p><img [src]="specificBende.image" alt="bende image" width="100%"></p>
+                <p><strong>Aanmaakdatum:</strong> {{ specificBende.creationDate | date:"dd-MM-yyyy"}}</p>
+                <!-- <p><strong>Type:</strong> {{ specificBende.type }}</p> -->
+                <p><strong>Slack:</strong> <a href={{specificBende.slack}} target="_blank">
+                        {{specificBende.slack}}</a>
                 </p>
                 <span><strong>Deelnemers:</strong>
                     <ul>
-                        <li *ngFor="let user of specificBlob?.users" (click)="openUser(userContent, user.id)">
+                        <li *ngFor="let user of specificBende?.users" (click)="openUser(userContent, user.id)">
                             <img [src]="user.profilePicture" alt="Profiel" width="10%" style="border-radius: 25px;">
                             {{ user.firstName }}
                         </li>
                     </ul>
                 </span>
-                <p><strong>Mandaat:</strong> {{ specificBlob.mandate }}</p>
+                <!-- <p><strong>Mandaat:</strong> {{ specificBende.mandate }}</p> -->
             </div>
         </form>
     </div>
@@ -71,7 +71,7 @@
     </div>
     <div class="modal-body text-center">
         <div class="mb-3">
-            <p><img [src]="specificUser.profilePicture" alt="blob image" width="35%" style="border-radius: 50%;">
+            <p><img [src]="specificUser.profilePicture" alt="bende image" width="35%" style="border-radius: 50%;">
             </p>
             <p class="mt-4"><strong>Geboortedatum:</strong> {{ specificUser.birthday | date:"dd-MM-yyyy" }}</p>
             <p class="mt-4"><strong>Bio:</strong> {{ specificUser.bio }}</p>
