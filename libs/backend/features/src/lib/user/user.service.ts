@@ -105,7 +105,6 @@ export class UserService {
         const result = await this.neo4jService.read(
             'MATCH(user:User{uuid: $id})-[]->(blob:Blob{type: "BestuursBlob"}) return user,blob',
             {id: user.id});
-        console.log('%j', result.records);
         const blob = result.records.map((record: any) => {
             const blobData = record.get('blob');
             const blob: IBlob = {
