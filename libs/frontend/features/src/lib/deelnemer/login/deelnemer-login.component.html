@@ -23,19 +23,30 @@
 
         <div class="form-group mt-5" [ngClass]="{'has-error': loginForm.get('password')?.hasError('invalidPassword') && loginForm.get('password')?.touched}">
             <label for="login-password" class="fw-bold" [ngClass]="{'text-danger': loginForm.get('password')?.hasError('invalidPassword') && loginForm.get('password')?.touched}">Wachtwoord</label>
-            <input type="password" class="form-control" id="login-password" formControlName="password">  
-            <label [ngClass]="{'text-danger': loginForm.get('password')?.hasError('invalidPassword') && loginForm.get('password')?.touched}"><small>Minimaal 8 tekens lang met ten minste 1 kleine letter, 1 hoofdletter en 1 cijfer.</small></label>
+            <div class="input-group">
+                <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="login-password" formControlName="password">
+                <div class="input-group-append">
+                    <button class="btn-show btn" type="button" (click)="togglePasswordVisibility()">Weergeven</button>
+                </div>
+            </div>
+            <label [ngClass]="{'text-danger': loginForm.get('password')?.hasError('invalidPassword') && loginForm.get('password')?.touched}">
+                <small>Minimaal 8 tekens lang met ten minste 1 kleine letter, 1 hoofdletter en 1 cijfer.</small>
+            </label>
             
             <div *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched" class="text-danger"></div>
+        </div>
 
-          </div>
 
-        <div class="mb-4 mt-5">
-            <button *ngIf="!this.submitted" class="btn btn-inlog w-100 py-2" type="submit">Inloggen</button>    
-            <button *ngIf="this.submitted" class="btn btn-inlog w-100 py-2" type="button">
+          <div class="mb-4 mt-5">
+            <button *ngIf="!submitted" class="btn btn-inlog w-100 py-2" type="submit">Inloggen</button>
+
+            <button *ngIf="submitted" class="btn btn-inlog w-100 py-2" type="button">
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status"> Inloggen...</span>
             </button>
+            <div *ngIf="showLoginError" class="text-danger mb-2">
+                Emailadres of wachtwoord is incorrect.
+            </div>
         </div>
     
         </form>
