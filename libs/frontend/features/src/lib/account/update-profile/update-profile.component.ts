@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { IUser } from '@ihomer/api';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ihomer-update-profile',
@@ -14,13 +15,28 @@ export class UpdateProfileComponent implements OnInit {
   userId: string | null = null;
   distinctTags: string[] = [];
   selectedTags: string[] = [];
+  updateProfile: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
     readonly authService: AuthService,
-    private router: Router 
-    ) {}
+    private router: Router,
+    private formBuilder: FormBuilder, 
+    ) {
+      this.updateProfile = this.formBuilder.group({
+        firstName: ['', [Validators.required]],
+        infix: [''],
+        lastName: ['', [Validators.required]],
+        birthday: ['', [Validators.required, this.dateValidator]],
+        email: ['', [Validators.required, this.validEmail]],
+        street: ['', [Validators.required]],
+        houseNumber: ['', [Validators.required, this.houseNumberValidator]],
+        postalCode: ['', [Validators.required, this.postalCodeValidator]],
+        city: ['', [Validators.required]],
+        password: ['', [Validators.required, this.validPassword]]
+      });
+    }
 
 
     ngOnInit(): void {
@@ -71,6 +87,50 @@ export class UpdateProfileComponent implements OnInit {
           console.error('Error fetching distinct tags:', error);
         }
       );
+    }
+
+    validEmail(control: FormControl): { [s: string]: boolean } | null {
+      const email = control.value;
+      const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
+      return regexp.test(email) ? null : { invalidEmail: true };
+    }
+    
+  
+    validPassword(control: FormControl): { [s: string]: boolean } | null {
+      const password = control.value;
+      const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
+      return regexp.test(password) ? null : { invalidPassword: true };
+    }
+
+    houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
+      const houseNumber = control.value;
+      const regexp = /^[1-9]\d{0,4}([a-zA-Z]{1,2})?$/;
+
+      return regexp.test(houseNumber) ? null : { invalidhouseNumber: true };
+    }
+
+    dateValidator(control: FormControl): { [s: string]: boolean } | null {
+      const selectedDate = new Date(control.value);
+      const currentDate = new Date();
+      const minDate = new Date('1900-01-01');
+  
+      if (selectedDate > currentDate) {
+        return { dateInFuture: true };
+      }
+  
+      if (selectedDate < minDate) {
+        return { dateBefore1900: true };
+      }
+  
+      return null;
+    }
+
+    postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
+      const postalCode = control.value;
+  
+      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
+  
+      return regex.test(postalCode) ? null : { invalidPostalCode: true };
     }
 
     

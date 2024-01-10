@@ -4,7 +4,7 @@
 
     <div class="top-container text-center">
   
-    <form (ngSubmit)="updateUser()">
+    <form [formGroup]="updateProfile" (ngSubmit)="updateUser()">
         <div class="row mt-3 mb-5 text-center d-flex justify-content-center">
             <div class="col-12 mt-3 mb-3">
               <span class="fw-bold">Profielfoto</span>
@@ -46,6 +46,17 @@
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Email</span>
                     <input type="email" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.email" name="email">
+                </div>
+
+                <div class="form-group mb-4" [ngClass]="{'has-error': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched}">
+                    <label for="InputEmail" class="fw-bold" [ngClass]="{'text-danger': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched}">Emailadres</label>
+                    <input type="email" class="form-control" id="InputEmail" formControlName="email">
+                    
+                    <div *ngIf="updateProfile.get('email')?.hasError('required') && updateProfile.get('email')?.touched" class="text-danger">
+                    </div>
+        
+                    <div *ngIf="updateProfile.get('email')?.hasError('invalidEmail') && !updateProfile.get('email')?.hasError('required') && updateProfile.get('email')?.touched" class="text-danger">
+                    </div>
                 </div>
                 
                 <div class="email-box mt-4 text-center">
