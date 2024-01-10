@@ -14,3 +14,5 @@ export * from './lib/services/notifications/notification.service';
 export * from './lib/bendes/bendes-overview/bendes-overview.component';
 export * from './lib/projects/projects-overview/projects-overview.component';
 export * from './lib/blobs/blob-create/blob-create.component';
+export * from './lib/bendes/bende-create/bende-create.component';
+export * from './lib/projects/project-create/project-create.component';

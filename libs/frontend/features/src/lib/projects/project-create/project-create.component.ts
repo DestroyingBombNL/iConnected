@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'ihomer-blob-create',
-  templateUrl: './blob-create.component.html',
-  styleUrls: ['./blob-create.component.css'],
+  selector: 'ihomer-project-create',
+  templateUrl: './project-create.component.html',
+  styleUrls: ['./project-create.component.css'],
 })
-export class BlobCreateComponent implements OnInit, OnDestroy {
+export class ProjectCreateComponent implements OnInit, OnDestroy {
   backgroundImage?: string;
 
   constructor(private router: Router) {
@@ -20,6 +20,6 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   goBack(): void {
-    this.router.navigate(['/blobs']);
+    this.router.navigate(['/projects']);
   }
 }

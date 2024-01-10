@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 
-import { 
-    BlobsOverviewComponent, 
-    RegisterComponent, 
-    LoginComponent, 
-    ProfileComponent, 
-    UpdateProfileComponent,
-    BendesOverviewComponent,
-    ProjectsOverviewComponent,
-    BlobCreateComponent,
-    
+import {
+  BlobsOverviewComponent,
+  RegisterComponent,
+  LoginComponent,
+  ProfileComponent,
+  UpdateProfileComponent,
+  BendesOverviewComponent,
+  ProjectsOverviewComponent,
+  BlobCreateComponent,
+  BendeCreateComponent,
+  ProjectCreateComponent
 } from '@ihomer/frontend/features';
 import { LogoutComponent } from '@ihomer/frontend/features';
 
-const appName = 'iConnected | '
+const appName = 'iConnected | ';
 export const appRoutes: Route[] = [
   {
     path: '',
@@ -24,7 +25,7 @@ export const appRoutes: Route[] = [
   {
     path: 'login',
     pathMatch: 'full',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'blobs',
@@ -49,31 +50,42 @@ export const appRoutes: Route[] = [
     pathMatch: 'full',
     component: RegisterComponent,
   },
-    {
-        path: 'logout',
-        pathMatch: 'full',
-        title: `${appName}Uitloggen`,
-        component: LogoutComponent,
-    },
-    {
-        path: 'blobs/create',
-        pathMatch: 'full',
-        component: BlobCreateComponent,
-        title: `${appName}BlobCreate`
-    },
-    {
-        path: 'profile',
-        pathMatch: 'full',
-        component: ProfileComponent,
-        title: `${appName}Profiel`
-    },
-    {
-        path: 'profile/:id',
-        pathMatch: 'full',
-        component: UpdateProfileComponent,
-        title: `${appName}UpdateProfiel`
-    },
-    
+  {
+    path: 'logout',
+    pathMatch: 'full',
+    title: `${appName}Uitloggen`,
+    component: LogoutComponent,
+  },
+  {
+    path: 'blobs/create',
+    pathMatch: 'full',
+    component: BlobCreateComponent,
+    title: `${appName}BlobCreate`,
+  },
+  {
+    path: 'bendes/create',
+    pathMatch: 'full',
+    component: BendeCreateComponent,
+    title: `${appName}BendeCreate`,
+  },
+  {
+    path: 'projects/create',
+    pathMatch: 'full',
+    component: ProjectCreateComponent,
+    title: `${appName}ProjectCreate`,
+  },
+  {
+    path: 'profile',
+    pathMatch: 'full',
+    component: ProfileComponent,
+    title: `${appName}Profiel`,
+  },
+  {
+    path: 'profile/:id',
+    pathMatch: 'full',
+    component: UpdateProfileComponent,
+    title: `${appName}UpdateProfiel`,
+  },
 ];
 
 @NgModule({

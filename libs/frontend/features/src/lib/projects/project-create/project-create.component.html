@@ -1,0 +1,60 @@
+<div class="image-box">
+    <img *ngIf="backgroundImage" src="/assets/backgroundiHomer.png" alt="iHomer" class="background-image">
+  </div>
+  <div class="container-full">
+    
+      <div class="border-box">
+        <h1 class="d-flex justify-content-center mt-5">Project aanmaken</h1>
+    
+        <form class="m-4" >
+          <div class="row justify-content-center">
+            <div class="col-md-10">
+              <div class="form-group mb-4">
+                <label for="InputFirstName" class="fw-bold">ImageUrl</label>
+                <input
+                  type="text"
+                  class="form-control mx-auto"
+                  id="InputFirstName"
+                  formControlName="firstName"
+                />
+              </div>
+            </div>
+    
+          <!-- NAME AND SLACKCHANNEL-->
+            <div class="col-md-5">
+              <div class="form-group mb-4">
+                <label for="InputFirstName" class="fw-bold">Naam</label>
+                <input
+                  type="text"
+                  class="form-control mx-auto"
+                  id="InputFirstName"
+                  formControlName="firstName"
+                />
+              </div>
+            </div>
+    
+            <div class="col-md-5">
+              <div class="form-group mb-4">
+                <label for="InputInfix" class="fw-bold">Slackkanaal URL</label>
+                <input
+                  type="text"
+                  class="form-control mx-auto"
+                  id="InputInfix"
+                  formControlName="infix"
+                />
+              </div>
+            </div>
+          </div>
+    
+          <!-- TAGS -->
+          <div class="row justify-content-center">
+            <div class="text-center mt-4">
+              <button type="button" class="btn btn-register" >
+                Aanmaken
+              </button>
+              <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
