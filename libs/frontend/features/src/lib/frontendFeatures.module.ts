@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
-import { BlobDetailComponent } from './blobs/blob-detail/blob-detail.component';
 import { DeelnemerNewComponent } from './deelnemer/deelnemer-new.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
@@ -18,7 +17,7 @@ import { ProjectsOverviewComponent } from './projects/projects-overview/projects
 
 @NgModule({
   imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
-  declarations: [BlobsOverviewComponent, DeelnemerNewComponent, BlobDetailComponent, BendesOverviewComponent, ProjectsOverviewComponent],
+  declarations: [BlobsOverviewComponent, DeelnemerNewComponent, BendesOverviewComponent, ProjectsOverviewComponent],
   providers: [BlobService, UserService, ProjectService, BendeService],
   exports: [BlobsOverviewComponent, BendesOverviewComponent, DeelnemerNewComponent, ProjectsOverviewComponent],
 })
