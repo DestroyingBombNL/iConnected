@@ -61,7 +61,7 @@
         <!-- TAGS -->
         <div class="row justify-content-center">
           <div class="text-center mt-4">
-            <button type="button" class="btn btn-register" (click)="createBlob()" [disabled]="!newBlob.valid">
+            <button type="button" class="btn btn-register" (click)="createBlob()" [disabled]="!newBlob.valid || !selectedTypes.length" >
               Aanmaken
             </button>            
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
