@@ -32,10 +32,10 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newBlob = this.formBuilder.group({
       name: ['', [Validators.required]],
-      creationDate: ['', [Validators.required]],
+      creationDate: [''],
       slack: ['', [Validators.required]],
-      mandate: ['', [Validators.required]],
-      type: ['', [Validators.required]],
+      mandate: [''],
+      type: [''],
       image: ['', [Validators.required]],
       users: [[]],
     });

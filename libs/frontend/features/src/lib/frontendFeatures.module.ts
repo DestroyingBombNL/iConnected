@@ -42,8 +42,6 @@ import { LoggedInAuthGuard } from './auth/auth.guards';
     BendesOverviewComponent,
     LogoutComponent,
     BlobCreateComponent,
-    BendeCreateComponent,
-    ProjectCreateComponent,
   ],
   providers: [
     BlobService,
@@ -65,8 +63,6 @@ import { LoggedInAuthGuard } from './auth/auth.guards';
     UpdateProfileComponent,
     LogoutComponent,
     BlobCreateComponent,
-    BendeCreateComponent,
-    ProjectCreateComponent,
   ],
 })
 export class FrontendFeaturesModule {}

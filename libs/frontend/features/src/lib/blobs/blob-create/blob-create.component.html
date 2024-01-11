@@ -26,10 +26,9 @@
             <div class="form-group mb-4" [ngClass]="{'has-error': newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched}">
               <label for="type"  class="form-control" class="fw-bold">Types *</label>
               <div *ngIf="newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched" class="text-danger"></div>
-              <ng-select [items]="distinctTypes" (change)="onTypeSelectionChanged($event)" name="types" [searchable]="true" [addTag]="true"></ng-select>
+              <ng-select [items]="distinctTypes" (change)="onTypeSelectionChanged($event)" name="types"></ng-select>
             </div>
           </div>
-
   
         <!-- NAME AND SLACKCHANNEL-->
           <div class="col-md-5">
@@ -62,9 +61,9 @@
         <!-- TAGS -->
         <div class="row justify-content-center">
           <div class="text-center mt-4">
-            <button type="button" class="btn btn-register" (click)="createBlob()" >
+            <button type="button" class="btn btn-register" (click)="createBlob()" [disabled]="!newBlob.valid">
               Aanmaken
-            </button>
+            </button>            
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
           </div>
         </div>

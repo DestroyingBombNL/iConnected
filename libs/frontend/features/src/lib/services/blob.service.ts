@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EntityService } from './entity.service';
 import { IBlob } from '@ihomer/shared/api';
 import { NotificationService } from './notifications/notification.service';
@@ -11,13 +11,22 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class BlobService extends EntityService<IBlob> {
-    constructor(http: HttpClient, notificationService: NotificationService, authService: AuthService
+    constructor(http: HttpClient, notificationService: NotificationService, private authServe: AuthService
     ) {
-        super(http, frontendEnvironment.backendUrl, 'blobs', notificationService, authService);
+        super(http, frontendEnvironment.backendUrl, 'blobs', notificationService, authServe);
     }
 
     getDistinctTypesForAllBlobs(): Observable<string[]> {
-        const typesUrl = `${this.url}${this.endpoint}/types`;
-        return this.http.get<string[]>(typesUrl);
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authServe.getTokenFromLocalStorage()}`    
+            }),
+            
+        };
+        return this.http
+            .get<string[]>(`${this.url}${this.endpoint}/types`, {
+                ...httpOptions,
+            })
     }
 }
