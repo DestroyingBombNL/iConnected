@@ -20,8 +20,8 @@ export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login',
-    title: `${appName}Login`
+    redirectTo: 'blobs',
+    title: `${appName}Home`
   },
   {
     path: 'login',
