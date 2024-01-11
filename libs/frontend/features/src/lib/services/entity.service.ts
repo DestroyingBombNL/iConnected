@@ -127,7 +127,7 @@ export abstract class EntityService<T extends Entity> {
 
     public handleError(error: HttpErrorResponse): Observable<any> {
         console.log(`handleError in EntityService`, error);
-        this.notificationService.error('Verbindings fout', error.error.message ?? 'Deze actie kan momenteel niet uitgevoerd worden.');
+        this.notificationService.error('Verbindingsfout', error.error.message ?? 'Deze actie kan momenteel niet uitgevoerd worden.');
 
         return throwError(() => new Error(error.message));
     }
