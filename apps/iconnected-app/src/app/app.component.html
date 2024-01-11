@@ -6,11 +6,11 @@
     <router-outlet></router-outlet>
 </div>
 
-<div class="toast-container position-absolute end-0 bottom-0 m-3">
+<div class="toast-container position-fixed end-0 bottom-0 m-3">
     <div *ngIf="this.activeNotification$" [ngClass]="this.getNotificationColor(this.activeNotification$)" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header" [ngClass]="this.getNotificationColor(this.activeNotification$)">
+        <div class="toast-header">
             <strong class="me-auto">{{ this.activeNotification$.title }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" (click)="deactivateNotification()"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
             {{ this.activeNotification$.details }}
