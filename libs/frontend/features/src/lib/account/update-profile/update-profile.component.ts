@@ -30,6 +30,7 @@ export class UpdateProfileComponent implements OnInit {
     private formBuilder: FormBuilder, 
     ) {
       this.updateProfile = this.formBuilder.group({
+        profilePicture: ['', [Validators.required]],
         firstName: ['', [Validators.required]],
         infix: [''],
         lastName: ['', [Validators.required]],
