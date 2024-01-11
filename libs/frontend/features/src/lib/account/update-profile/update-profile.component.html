@@ -193,15 +193,15 @@
         </div>
     </div>
 
-      <div class="button-div d-flex justify-content-center">
-        <button type="button" class="btn btn-update" (click)="updateUser()" [disabled]="updateProfile.invalid && updateProfile.dirty">
+    <div class="button-container d-flex justify-content-center mb-5">
+        <button type="button" class="btn btn-update mt-5" (click)="updateUser()" [disabled]="updateProfile.invalid && updateProfile.dirty">
           Wijzig jouw gegevens
         </button>
-      </div>
-
-      <div *ngIf="updateProfile.invalid && updateProfile.dirty" class="text-danger mt-3 mb-5">
-        Corrigeer de fouten in het formulier voordat je je gegevens bijwerkt.
-      </div>
       
-    </form>
+        <div *ngIf="updateProfile.invalid && updateProfile.dirty" class="text-danger ml-3">
+          Corrigeer de fouten in het formulier voordat je je gegevens bijwerkt.
+        </div>
     </div>
+            
+</form>
+</div>
