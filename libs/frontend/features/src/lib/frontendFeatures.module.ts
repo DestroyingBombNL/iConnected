@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -19,8 +19,7 @@ import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
 import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
 import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
-import { BendeCreateComponent } from './bendes/bende-create/bende-create.component';
-import { ProjectCreateComponent } from './projects/project-create/project-create.component';
+import { LoggedInAuthGuard } from './auth/auth.guards';
 
 @NgModule({
   imports: [
@@ -55,6 +54,8 @@ import { ProjectCreateComponent } from './projects/project-create/project-create
     RegisterComponent, 
     LoginComponent,
     AuthService,
+    LoggedInAuthGuard,
+    HttpClient
   ],
   exports: [
     BlobsOverviewComponent, 

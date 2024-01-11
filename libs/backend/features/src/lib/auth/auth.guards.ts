@@ -80,8 +80,7 @@ export class IsSelfGuard implements CanActivate {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: backendEnvironment.jwtKey
             });
-            console.log(payload.id);
-            console.log(id);
+            console.log("TODO: IsSelfGuard")
             return payload.id === id;
         } catch {
             console.log('Unauthorized');
