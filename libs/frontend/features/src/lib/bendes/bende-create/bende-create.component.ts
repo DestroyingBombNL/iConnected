@@ -21,6 +21,7 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
   bendes: IBende[] = [];
   subscription: Subscription | null = null;
   newBende: FormGroup;
+  spcBende: FormGroup;
 
   constructor(
     private router: Router,
@@ -35,6 +36,12 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
       image: new FormControl('', [Validators.required]),
       users: new FormControl([]),
     });
+    this.spcBende = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      creationDate: new FormControl(''),
+      slack: new FormControl('', [Validators.required]),
+      image: new FormControl('', [Validators.required]),
+    });
   }
 
   ngOnInit(): void {}
@@ -46,11 +53,11 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
   }
 
   createBende(): void {
-    console.log("create Bende aangeroepen");
-  
+    console.log('create Bende aangeroepen');
+
     if (this.newBende.valid) {
       const formData = this.newBende.value;
-      
+
       this.bendeService.create(formData).subscribe({
         next: (createdBende) => {
           console.log('Bende created successfully:', createdBende);
@@ -60,8 +67,28 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
           console.error('Error creating bende:', error);
         },
       });
-  
+
       this.newBende.reset();
+    }
+  }
+
+  changeBende(id: string): void {
+    console.log('change Bende aangeroepen');
+
+    if (this.spcBende.valid) {
+      const formData = this.spcBende.value;
+
+      this.bendeService.update(formData, id).subscribe({
+        next: (updatedBende) => {
+          console.log('Bende updated successfully:', updatedBende);
+          this.router.navigate(['/bendes']);
+        },
+        error: (error) => {
+          console.error('Error updating bende:', error);
+        },
+      });
+
+      this.spcBende.reset();
     }
   }
 

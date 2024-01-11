@@ -51,13 +51,18 @@
                 </p>
                 <span><strong>Deelnemers:</strong>
                     <ul>
-                        <li *ngFor="let user of specificBende?.users" (click)="openUser(userContent, user.id)">
+                        <li *ngFor="let user of specificBende?.users" (click)="openUser(userContent, specificUser.id)">
                             <img [src]="user.profilePicture" alt="Profiel" width="10%" style="border-radius: 25px;">
                             {{ user.firstName }}
                         </li>
                     </ul>
                 </span>
-                <!-- <p><strong>Mandaat:</strong> {{ specificBende.mandate }}</p> -->
+                <div *ngIf="isAuthenticated()">
+                    <button type="button" class="btn btn-primary" routerLink="bendes/change">Aanpassen</button>
+                    <button type="button" class="btn btn-danger"
+                        (click)="openDeleteBende(bendeContent, specificBende.id)">Verwijderen</button>
+                    
+                </div>
             </div>
         </form>
     </div>
@@ -85,6 +90,21 @@
                 </span>
                 <span *ngIf="!(specificUser.tags && specificUser.tags.length > 0)"><br>Geen tags gekozen</span>
             </p>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #bendeContent let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-user-title">Verwijder {{specificBende.name}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body text-center">
+        <div class="mb-3">
+            <p>Ben je zeker dat je deze bende wilt verwijderen?</p>
+            <button type="button" class="btn btn-danger" (click)="deleteBende(specificBende.id)">Verwijderen</button>
+            <button type="button" class="btn-close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">Annuleer</button>
         </div>
     </div>
 </ng-template>

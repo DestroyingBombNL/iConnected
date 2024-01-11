@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service'; // Import the user se
 import { IBende, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'ihomer-bendes-overview',
@@ -30,7 +31,11 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private bendeService: BendeService, private userService: UserService) {
+  constructor(
+    private bendeService: BendeService,
+    private userService: UserService,
+    private authService: AuthService
+  ) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.jpg';
@@ -128,5 +133,31 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
       default:
         return 'col'; // default to equal width columns for other cases
     }
+  }
+
+  openDeleteBende(content: TemplateRef<any>, bendeId: string) {
+    this.specificBende = this.bendes.find((b) => b.id === bendeId) as IBende;
+
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-bende-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          console.log('closed');
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          console.log('dismissed');
+        }
+      );
+  }
+
+  deleteBende(bendeId: string) {
+    this.bendeService.delete(bendeId);
+  }
+
+  isAuthenticated(): boolean {
+    if (this.authService.isAdmin) return true;
+    else return false;
   }
 }

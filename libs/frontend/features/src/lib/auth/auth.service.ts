@@ -14,6 +14,7 @@ export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   providedIn: 'root',
 })
 export class AuthService {
+  public readonly isAdmin = false;
   private readonly CURRENT_USER = 'currentuser';
   private readonly AUTH_TOKEN = 'auth_token';
   private readonly headers = new HttpHeaders({
@@ -105,4 +106,6 @@ export class AuthService {
   private saveUserTokenToLocalStorage(token: string): void {
     localStorage.setItem(this.AUTH_TOKEN, token);
   }
+
+
 }
