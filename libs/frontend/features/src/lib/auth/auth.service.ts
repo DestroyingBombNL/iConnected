@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { frontendEnvironment } from '@ihomer/shared/util-env';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ILogin, IUser } from '@ihomer/shared/api';
+import { ILogin, ILoginResponse, IUser } from '@ihomer/shared/api';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   'AuthService'
@@ -44,11 +44,12 @@ export class AuthService {
     return this.http.post<any | undefined>(`${frontendEnvironment.backendUrl}users/login`, login, {headers: this.headers})
       .pipe(
         map((response) => {
-          if (!response.results) return undefined;
-          const {token, ...user} = response.results;
-          this.saveUserToLocalStorage(user);
-          this.saveUserTokenToLocalStorage(token);
-          return response;
+          console.log(response)
+          if (!response) return undefined;
+          response = response.results as ILoginResponse;
+          this.saveUserToLocalStorage(response.user);
+          this.saveUserTokenToLocalStorage(response.token);
+          return response.user;
         })
       );
   }
@@ -99,10 +100,12 @@ export class AuthService {
   }
 
   private saveUserToLocalStorage(user: IUser): void {
+    if (!user) return;
     localStorage.setItem(this.CURRENT_USER, JSON.stringify(user));
   }
 
   private saveUserTokenToLocalStorage(token: string): void {
+    if (!token) return;
     localStorage.setItem(this.AUTH_TOKEN, token);
   }
 }

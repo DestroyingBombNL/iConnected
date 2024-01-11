@@ -12,13 +12,8 @@ export class AuthService {
     async login(login: ILogin): Promise<ILoginResponse | undefined> {
         this.logger.log(`Login for user: ${login.emailAddress}`)
         const user = await this.userService.find(login.emailAddress);
-        console.log('user');
         if (!user) return undefined;
-        console.log('user 1');
-        console.log(user.password);
-        console.log(login.password);
         if (user.password !== login.password) return undefined;
-        console.log('user 2');
         const authenticationHex = backendEnvironment.jwtKey;
         if (authenticationHex) {
             const secretKey = authenticationHex;

@@ -111,7 +111,6 @@ export class UserService {
       { emailAddress }
     );
     const users = this.convertFromDb(result, true);
-    console.log(users[0]);
     if (!users || !users[0]) return undefined;
     return users[0];
   }
