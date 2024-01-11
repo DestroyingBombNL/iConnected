@@ -6,50 +6,53 @@
       <div class="border-box">
         <h1 class="d-flex justify-content-center mt-5">Project aanmaken</h1>
     
-        <form class="m-4" >
+        <form class="m-4" [formGroup]="newProject" (ngSubmit)="createProject()" >
           <div class="row justify-content-center">
             <div class="col-md-10">
-              <div class="form-group mb-4">
-                <label for="InputFirstName" class="fw-bold">ImageUrl</label>
+              <div class="form-group mb-4" [ngClass]="{'has-error': newProject.get('image')?.hasError('required') && newProject.get('image')?.touched}">
+                <label for="InputImage" [class]="{'text-danger': newProject.get('image')?.hasError('required') && newProject.get('image')?.touched}" class="fw-bold">ImageUrl</label>
                 <input
                   type="text"
                   class="form-control mx-auto"
-                  id="InputFirstName"
-                  formControlName="firstName"
+                  id="InputImage"
+                  formControlName="image"
                 />
-              </div>
+               <div *ngIf="newProject.get('image')?.hasError('required') && newProject.get('image')?.touched" class="text-danger"></div>
+             </div>
             </div>
     
           <!-- NAME AND SLACKCHANNEL-->
             <div class="col-md-5">
-              <div class="form-group mb-4">
-                <label for="InputFirstName" class="fw-bold">Naam</label>
+              <div class="form-group mb-4" [ngClass]="{'has-error': newProject.get('name')?.hasError('required') && newProject.get('name')?.touched}">
+                <label for="InputName" [class]="{'text-danger': newProject.get('name')?.hasError('required') && newProject.get('name')?.touched}" class="fw-bold">Naam</label>
                 <input
                   type="text"
                   class="form-control mx-auto"
-                  id="InputFirstName"
-                  formControlName="firstName"
+                  id="InputName"
+                  formControlName="name"
                 />
-              </div>
+               <div *ngIf="newProject.get('name')?.hasError('required') && newProject.get('name')?.touched" class="text-danger"></div>
+             </div>
             </div>
     
             <div class="col-md-5">
-              <div class="form-group mb-4">
-                <label for="InputInfix" class="fw-bold">Slackkanaal URL</label>
+              <div class="form-group mb-4" [ngClass]="{'has-error': newProject.get('slack')?.hasError('required') && newProject.get('slack')?.touched}">
+                <label for="InputSlack" [class]="{'text-danger': newProject.get('slack')?.hasError('required') && newProject.get('slack')?.touched}" class="fw-bold">Slackkanaal URL</label>
                 <input
                   type="text"
                   class="form-control mx-auto"
-                  id="InputInfix"
-                  formControlName="infix"
+                  id="InputSlack"
+                  formControlName="slack"
                 />
-              </div>
+               <div *ngIf="newProject.get('slack')?.hasError('required') && newProject.get('slack')?.touched" class="text-danger"></div>
+             </div>
             </div>
           </div>
     
           <!-- TAGS -->
           <div class="row justify-content-center">
             <div class="text-center mt-4">
-              <button type="button" class="btn btn-register" >
+              <button type="button" class="btn btn-register" (click)="createProject()" [disabled]="!newProject.valid">
                 Aanmaken
               </button>
               <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>

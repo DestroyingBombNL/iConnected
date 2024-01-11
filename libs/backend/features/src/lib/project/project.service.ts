@@ -40,13 +40,14 @@ export class ProjectService {
     
     async createProject(project: IProject): Promise<IProject | undefined> {
         this.logger.log('createProject');
-        
+        const currentDate = this.formatDate(new Date());
+
         const writeQuery = `CREATE(project:Project {uuid: randomUUID(), name: $name, slack: $slack, creationDate: $creationDate, image: $image})`;
 
         const params = {
             name: project.name,
+            creationDate: currentDate,
             slack: project.slack,
-            creationDate: project.creationDate,
             image: project.image
         };
     
@@ -172,5 +173,13 @@ export class ProjectService {
             return project;
         });
         return createdProjects;
+    }
+
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
+        const day = ('0' + date.getDate()).slice(-2);
+    
+        return `${year}-${month}-${day}`;
     }
 }

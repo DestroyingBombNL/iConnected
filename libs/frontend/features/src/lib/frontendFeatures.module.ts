@@ -20,6 +20,9 @@ import { ProjectsOverviewComponent } from './projects/projects-overview/projects
 import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
 import { LoggedInAuthGuard } from './auth/auth.guards';
+import { BendeCreateComponent } from './bendes/bende-create/bende-create.component';
+import { Project } from './services/models/project.model';
+import { ProjectCreateComponent } from './projects/project-create/project-create.component';
 
 @NgModule({
   imports: [
@@ -42,6 +45,8 @@ import { LoggedInAuthGuard } from './auth/auth.guards';
     BendesOverviewComponent,
     LogoutComponent,
     BlobCreateComponent,
+    BendeCreateComponent,
+    ProjectCreateComponent,
   ],
   providers: [
     BlobService,
@@ -53,7 +58,7 @@ import { LoggedInAuthGuard } from './auth/auth.guards';
     LoginComponent,
     AuthService,
     LoggedInAuthGuard,
-    HttpClient
+    HttpClient,
   ],
   exports: [
     BlobsOverviewComponent, 
@@ -63,6 +68,8 @@ import { LoggedInAuthGuard } from './auth/auth.guards';
     UpdateProfileComponent,
     LogoutComponent,
     BlobCreateComponent,
+    BendeCreateComponent,
+    ProjectCreateComponent,
   ],
 })
 export class FrontendFeaturesModule {}

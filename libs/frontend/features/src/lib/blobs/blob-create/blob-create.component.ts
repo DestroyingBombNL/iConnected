@@ -41,7 +41,7 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() : void {
+  ngOnInit(): void {
     this.blobService.getDistinctTypesForAllBlobs().subscribe(
       (response: any) => {
         this.distinctTypes = response.results;
@@ -52,7 +52,7 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -65,26 +65,25 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
   }
 
   createBlob(): void {
-    console.log("create User aangeroepen");
-  
+    console.log('create Blob aangeroepen');
+
     if (this.newBlob.valid) {
       const formData = this.newBlob.value;
-      
+
       formData.types = this.selectedTypes;
       this.blobService.create(formData).subscribe({
         next: (createdBlob) => {
-          console.log('User created successfully:', createdBlob);
+          console.log('Blobr created successfully:', createdBlob);
           this.router.navigate(['/blobs']);
         },
         error: (error) => {
-          console.error('Error creating user:', error);
+          console.error('Error creating bende:', error);
         },
       });
-  
+
       this.newBlob.reset();
     }
   }
-
 
   goBack(): void {
     this.router.navigate(['/blobs']);

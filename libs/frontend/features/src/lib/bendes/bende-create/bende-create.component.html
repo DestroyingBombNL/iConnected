@@ -6,41 +6,41 @@
       <div class="border-box">
         <h1 class="d-flex justify-content-center mt-5">Bende aanmaken</h1>
     
-        <form class="m-4" >
+        <form class="m-4" [formGroup]="newBende" (ngSubmit)="createBende()" >
           <div class="row justify-content-center">
             <div class="col-md-10">
-              <div class="form-group mb-4">
-                <label for="InputFirstName" class="fw-bold">ImageUrl</label>
+              <div class="form-group mb-4" [ngClass]="{'has-error': newBende.get('image')?.hasError('required') && newBende.get('image')?.touched}">
+                <label for="InputImage" [class]="{'text-danger': newBende.get('image')?.hasError('required') && newBende.get('image')?.touched}" class="fw-bold">ImageUrl</label>
                 <input
                   type="text"
                   class="form-control mx-auto"
-                  id="InputFirstName"
-                  formControlName="firstName"
+                  id="InputImage"
+                  formControlName="image"
                 />
               </div>
             </div>
     
           <!-- NAME AND SLACKCHANNEL-->
             <div class="col-md-5">
-              <div class="form-group mb-4">
-                <label for="InputFirstName" class="fw-bold">Naam</label>
+              <div class="form-group mb-4" [ngClass]="{'has-error': newBende.get('name')?.hasError('required') && newBende.get('name')?.touched}">
+                <label for="InputName" [class]="{'text-danger': newBende.get('name')?.hasError('required') && newBende.get('name')?.touched}" class="fw-bold">Naam</label>
                 <input
                   type="text"
                   class="form-control mx-auto"
-                  id="InputFirstName"
-                  formControlName="firstName"
+                  id="InputName"
+                  formControlName="name"
                 />
               </div>
             </div>
     
             <div class="col-md-5">
-              <div class="form-group mb-4">
-                <label for="InputInfix" class="fw-bold">Slackkanaal URL</label>
+              <div class="form-group mb-4" [ngClass]="{'has-error': newBende.get('slack')?.hasError('required') && newBende.get('slack')?.touched}">
+                <label for="InputSlack" [class]="{'text-danger': newBende.get('slack')?.hasError('required') && newBende.get('slack')?.touched}" class="fw-bold">Slackkanaal URL</label>
                 <input
                   type="text"
                   class="form-control mx-auto"
-                  id="InputInfix"
-                  formControlName="infix"
+                  id="InputSlack"
+                  formControlName="slack"
                 />
               </div>
             </div>
@@ -49,7 +49,7 @@
           <!-- TAGS -->
           <div class="row justify-content-center">
             <div class="text-center mt-4">
-              <button type="button" class="btn btn-register" >
+              <button type="button" class="btn btn-register" (click)="createBende()" [disabled]="!newBende.valid">
                 Aanmaken
               </button>
               <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>

@@ -11,6 +11,8 @@ import {
     ProjectsOverviewComponent,
     BlobCreateComponent,
     LoggedInAuthGuard,
+    BendeCreateComponent,
+    ProjectCreateComponent,
     
 } from '@ihomer/frontend/features';
 import { LogoutComponent } from '@ihomer/frontend/features';
@@ -69,6 +71,20 @@ export const appRoutes: Route[] = [
         component: BlobCreateComponent,
         title: `${appName}BlobCreate`,
         canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'bendes/create',
+      pathMatch: 'full',
+      component: BendeCreateComponent,
+      title: `${appName}BendeCreate`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'projects/create',
+      pathMatch: 'full',
+      component: ProjectCreateComponent,
+      title: `${appName}ProjectCreate`,
+      canActivate: [LoggedInAuthGuard]
     },
     {
         path: 'profile',

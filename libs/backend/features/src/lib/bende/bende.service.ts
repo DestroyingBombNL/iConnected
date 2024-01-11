@@ -40,12 +40,13 @@ export class BendeService {
     
     async createBende(bende: IBende): Promise<IBende | undefined> {
         this.logger.log('createBende');
+        const currentDate = this.formatDate(new Date());
         
         const writeQuery = `CREATE(bende:Bende {uuid: randomUUID(), name: $name,  creationDate: $creationDate, slack: $slack, image: $image})`;
 
         const params = {
             name: bende.name,
-            creationDate: bende.creationDate,
+            creationDate: currentDate,
             slack: bende.slack,
             image: bende.image
         };
@@ -172,5 +173,12 @@ export class BendeService {
             return bende;
         });
         return createdBendes;
+    }
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
+        const day = ('0' + date.getDate()).slice(-2);
+    
+        return `${year}-${month}-${day}`;
     }
 }

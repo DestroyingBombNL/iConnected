@@ -40,12 +40,13 @@ export class BlobService {
     
     async createBlob(blob: IBlob): Promise<IBlob | undefined> {
         this.logger.log('createBlob');
+        const currentDate = this.formatDate(new Date());
         
         const writeQuery = `CREATE(blob:Blob {uuid: randomUUID(), name: $name,  creationDate: $creationDate, slack: $slack, mandate: $mandate, type: $type, image: $image})`;
     
         const params = {
             name: blob.name,
-            creationDate: Date.now(),
+            creationDate: currentDate,
             slack: blob.slack,
             mandate: blob.mandate,
             image: blob.image,
@@ -191,5 +192,13 @@ export class BlobService {
             return record.get('type');
         });
         return types;
+    }
+
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
+        const day = ('0' + date.getDate()).slice(-2);
+    
+        return `${year}-${month}-${day}`;
     }
 }
