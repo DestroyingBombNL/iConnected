@@ -33,6 +33,7 @@ export class UpdateProfileComponent implements OnInit {
         profilePicture: ['', [Validators.required]],
         firstName: ['', [Validators.required]],
         infix: [''],
+        bio: ['', [Validators.required]], 
         lastName: ['', [Validators.required]],
         birthday: ['', [Validators.required, this.dateValidator]],
         email: ['', [Validators.required, this.validEmail]],
@@ -40,7 +41,8 @@ export class UpdateProfileComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]]
+        password: ['', [this.validPassword]],
+        tags: ['']
       });
     }
 
@@ -51,6 +53,22 @@ export class UpdateProfileComponent implements OnInit {
     
           this.userService.readOne(this.userId).subscribe((observable) => {
             this.user = observable;
+
+            this.updateProfile.patchValue({
+              profilePicture: this.user.profilePicture,
+              firstName: this.user.firstName,
+              infix: this.user.infix,
+              lastName: this.user.lastName,
+              bio: this.user.bio,
+              email: this.user.email,
+              birthday: this.user.birthday,
+              street: this.user.street,
+              houseNumber: this.user.houseNumber,
+              postalCode: this.user.postalCode,
+              city: this.user.city,
+              password: this.user.password,
+              tags: this.user.tags
+            });
     
             this.selectedTags = this.user?.tags || [];
     
@@ -106,7 +124,7 @@ export class UpdateProfileComponent implements OnInit {
       );
     }
 
-    validEmail(control: FormControl): { [s: string]: boolean } | null {
+    validEmail(control: FormControl): { [key: string]: any } | null {
       const email = control.value;
       const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
       return regexp.test(email) ? null : { invalidEmail: true };
@@ -114,9 +132,14 @@ export class UpdateProfileComponent implements OnInit {
     
     validPassword(control: FormControl): { [s: string]: boolean } | null {
       const password = control.value;
+      if (!password) {
+        return null;
+      }
       const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
+    
       return regexp.test(password) ? null : { invalidPassword: true };
     }
+    
 
     houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
       const houseNumber = control.value;
@@ -143,9 +166,9 @@ export class UpdateProfileComponent implements OnInit {
 
     postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
       const postalCode = control.value;
-  
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
-  
+      const regex = /^(?:[1-9]\d{3}\s?[a-zA-Z]{2}|[1-9]\d{3}|[1-9]\d{3}\s[a-zA-Z]{2})$/;
+    
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
-    }    
+    }
+       
 }

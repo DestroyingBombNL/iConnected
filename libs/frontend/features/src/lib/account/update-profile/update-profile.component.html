@@ -1,40 +1,69 @@
-<div *ngIf="this.user" class="container">
+<div class="container">
 
     <h1 class="text-center mb-5 mt-5"> Wijzig hier je gegevens!</h1>
 
     <div class="top-container text-center">
   
-    <form (ngSubmit)="updateUser()">
+    <form (ngSubmit)="updateUser()" [formGroup]="updateProfile">
+
         <div class="row mt-3 mb-5 text-center d-flex justify-content-center">
             <div class="col-12 mt-3 mb-3">
-              <span class="fw-bold">Profielfoto</span>
-              <input type="text" class="form-control w-50 mx-auto" [(ngModel)]="user.profilePicture" name="profilePicture">
+                <span class="fw-bold">Profielfoto</span>
+                <input
+                    type="text" class="form-control w-50 mx-auto" formControlName="profilePicture"
+                    [ngClass]="{ 'is-invalid': updateProfile.get('profilePicture')?.invalid && updateProfile.get('profilePicture')?.touched }"/>
+
+                <div *ngIf="updateProfile.get('profilePicture')?.invalid && updateProfile.get('profilePicture')?.touched" class="invalid-feedback">
+                  Profielfoto is verplicht
+                </div>
             </div>
         </div>
-
+          
         <div class="row mt-3 d-flex justify-content-center">
             <div class="col-md-3">
                 <span class="fw-bold">Voornaam</span>
-                <input type="text" class="form-control text-center" [(ngModel)]="user.firstName" name="firstName">
+                <input
+                  type="text"
+                  class="form-control text-center"
+                  formControlName="firstName"
+                  [ngClass]="{ 'is-invalid': updateProfile.get('firstName')?.invalid && updateProfile.get('firstName')?.touched }"/>
+
+                <div *ngIf="updateProfile.get('firstName')?.invalid && updateProfile.get('firstName')?.touched" class="invalid-feedback">
+                  Voornaam is verplicht
+                </div>
             </div>
-    
+
             <div class="col-md-2">
                 <span class="fw-bold">Tussenvoegsel</span>
-                <input type="text" class="form-control text-center" [(ngModel)]="user.infix" name="infix">
+                <input type="text" class="form-control text-center" formControlName="infix">
             </div>
     
             <div class="col-md-3 mb-3">
                 <span class="fw-bold">Achternaam</span>
-                <input type="text" class="form-control text-center" [(ngModel)]="user.lastName" name="lastName">
+                <input type="text" class="form-control text-center" 
+                formControlName="lastName"
+                [ngClass]="{ 'is-invalid': updateProfile.get('lastName')?.invalid && updateProfile.get('lastName')?.touched }"/>
+
+                <div *ngIf="updateProfile.get('lastName')?.invalid && updateProfile.get('lastName')?.touched" class="invalid-feedback">
+                  Achternaam is verplicht
+                </div>
             </div>
+              
+              
         </div>
 
     <hr />
 
     <div class="bio-box mt-4 mb-5 text-center">
         <span class="fw-bold">Bio</span>
-        <textarea class="form-control w-50 mx-auto" [(ngModel)]="user.bio" name="bio" rows="5"></textarea>
+        <textarea class="form-control w-50 mx-auto" formControlName="bio" name="bio" rows="5"
+            [ngClass]="{ 'is-invalid': updateProfile.get('bio')?.invalid && updateProfile.get('bio')?.touched }"></textarea>
+
+        <div *ngIf="updateProfile.get('bio')?.invalid && updateProfile.get('bio')?.touched" class="invalid-feedback">
+            Bio is verplicht
+        </div>
     </div>
+
 
     <div class="info-container text-center">
         <div class="row">
@@ -43,39 +72,87 @@
 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Email</span>
-                    <input type="email" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.email" name="email">
+                    <input type="email" class="form-control w-50 mx-auto text-center" 
+                           formControlName="email"
+                           [ngClass]="{ 'is-invalid': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched }">
+
+                    <div *ngIf="updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched" class="invalid-feedback">
+                        <div *ngIf="updateProfile.get('email')?.hasError('required')">Email is verplicht</div>
+                        <div *ngIf="updateProfile.get('email')?.hasError('invalidEmail') && !updateProfile.get('email')?.hasError('required')">Ongeldig e-mailadres</div>
+                    </div>
                 </div>
                 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Geboortedatum</span>
-                    <input type="date" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.birthday" name="birthday">
+                    <input type="date" class="form-control w-50 mx-auto text-center" 
+                           formControlName="birthday"
+                           [ngClass]="{ 'is-invalid': updateProfile.get('birthday')?.invalid && updateProfile.get('birthday')?.touched }">
+
+                    <div *ngIf="updateProfile.get('birthday')?.invalid && updateProfile.get('birthday')?.touched" class="invalid-feedback">
+                        <div *ngIf="updateProfile.get('birthday')?.hasError('required')">Geboortedatum is verplicht</div>
+                        <div *ngIf="updateProfile.get('birthday')?.hasError('dateInFuture') && !updateProfile.get('birthday')?.hasError('required')">Geboortedatum kan niet in de toekomst liggen</div>
+                        <div *ngIf="updateProfile.get('birthday')?.hasError('dateBefore1900') && !updateProfile.get('birthday')?.hasError('required')">Ongeldige geboortedatum</div>
+                    </div>
                 </div>
 
                 <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Adres</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.street" name="street">
+                    <span class="fw-bold">Straat</span>
+                    <input type="text" class="form-control w-50 mx-auto text-center" 
+                    formControlName="street"
+                    [ngClass]="{ 'is-invalid': updateProfile.get('street')?.invalid && updateProfile.get('street')?.touched }"/>
+        
+                    <div *ngIf="updateProfile.get('street')?.invalid && updateProfile.get('street')?.touched" class="invalid-feedback">
+                        Straat is verplicht
+                    </div>
                 </div>
 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Huisnummer</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.houseNumber" name="houseNumber">
+                    <input type="text" class="form-control w-50 mx-auto text-center" 
+                    formControlName="houseNumber"
+                    [ngClass]="{ 'is-invalid': updateProfile.get('houseNumber')?.invalid && updateProfile.get('houseNumber')?.touched }"/>
+        
+                    <div *ngIf="updateProfile.get('houseNumber')?.invalid && updateProfile.get('houseNumber')?.touched" class="invalid-feedback">
+                        <div *ngIf="updateProfile.get('houseNumber')?.hasError('required')">Huisnummer is verplicht</div>
+                        <div *ngIf="updateProfile.get('houseNumber')?.hasError('invalidhouseNumber') && !updateProfile.get('houseNumber')?.hasError('required')">Ongeldig huisnummer</div>
+                    </div>
                 </div>
 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Postcode</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.postalCode" name="postalCode">
+                    <input type="text" class="form-control w-50 mx-auto text-center" 
+                        formControlName="postalCode"
+                        [ngClass]="{ 'is-invalid': updateProfile.get('postalCode')?.invalid && updateProfile.get('postalCode')?.touched }"/>
+                    
+                    <div *ngIf="updateProfile.get('postalCode')?.invalid && updateProfile.get('postalCode')?.touched" class="invalid-feedback">
+                        <div *ngIf="updateProfile.get('postalCode')?.hasError('required')">Postcode is verplicht</div>
+                        <div *ngIf="updateProfile.get('postalCode')?.hasError('invalidPostalCode') && !updateProfile.get('postalCode')?.hasError('required')">Ongeldig Postcode voor NL of BE</div>
+                    </div>
                 </div>
-
+                
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Stad</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.city" name="city">
+                    <input type="text" class="form-control w-50 mx-auto text-center" 
+                    formControlName="city"
+                    [ngClass]="{ 'is-invalid': updateProfile.get('city')?.invalid && updateProfile.get('city')?.touched }"/>
+        
+                    <div *ngIf="updateProfile.get('city')?.invalid && updateProfile.get('city')?.touched" class="invalid-feedback">
+                        Stad is verplicht
+                    </div>
                 </div>
 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Wachtwoord</span>
-                    <input type="password" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.password"  name="password">
+                    <input
+                      type="password"
+                      class="form-control w-50 mx-auto text-center" formControlName="password"
+                      [ngClass]="{ 'is-invalid': updateProfile.get('password')?.invalid && updateProfile.get('password')?.touched }"/>
+                  
+                    <div *ngIf="updateProfile.get('password')?.invalid && updateProfile.get('password')?.touched" class="invalid-feedback">
+
+                      Ongeldig wachtwoord. Het moet minimaal 8 tekens bevatten, inclusief een kleine letter, een hoofdletter, een cijfer en een speciaal teken.
+                    </div>
                 </div>
-                
             </div>
 
             <div class="col-md-6 info-box mt-3">
@@ -112,15 +189,19 @@
                     <ng-select class="mx-auto w-75" [(ngModel)]="selectedTags" [items]="this.distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
                 </div>
 
-                  
-
-                
             </div>
         </div>
     </div>
 
-        <div class="button-div d-flex justify-content-center">
-            <button type="button" class="btn btn-update mb-5" (click)="updateUser()"> Wijzig jouw gegevens </button>
-        </div>
+      <div class="button-div d-flex justify-content-center">
+        <button type="button" class="btn btn-update" (click)="updateUser()" [disabled]="updateProfile.invalid && updateProfile.dirty">
+          Wijzig jouw gegevens
+        </button>
+      </div>
+
+      <div *ngIf="updateProfile.invalid && updateProfile.dirty" class="text-danger mt-3 mb-5">
+        Please correct the errors in the form before updating your details.
+      </div>
+      
     </form>
     </div>
