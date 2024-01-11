@@ -45,7 +45,7 @@ export class BlobService {
     
         const params = {
             name: blob.name,
-            creationDate: blob.creationDate,
+            creationDate: Date.now(),
             slack: blob.slack,
             mandate: blob.mandate,
             image: blob.image,
@@ -177,5 +177,19 @@ export class BlobService {
             return blob;
         });
         return createdBlobs;
+    }
+
+    async getDistinctTypesForAllBlobs(): Promise<string[]> {
+        this.logger.log('getDistinctTypesForAllBlobs');
+    
+        const readQuery = `
+            MATCH (blob:Blob)
+            RETURN DISTINCT blob.type AS type`;
+        const result = await this.neo4jService.read(readQuery);
+    
+        const types = result.records.map((record: any) => {
+            return record.get('type');
+        });
+        return types;
     }
 }
