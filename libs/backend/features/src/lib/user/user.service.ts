@@ -94,7 +94,7 @@ export class UserService {
 
     async find(emailAddress: string): Promise<IUser | undefined> {
         const result = await this.neo4jService.read(
-            'MATCH(user:User{email:$emailAddress}) RETURN user',
+            'MATCH(user:User) WHERE TOLOWER(user.email) = TOLOWER($emailAddress) RETURN user',
             {emailAddress});
         const users = this.convertFromDb(result, true);
         if (!users || !users[0]) return undefined;
