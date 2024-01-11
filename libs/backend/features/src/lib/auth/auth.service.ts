@@ -10,12 +10,12 @@ export class AuthService {
     constructor(private readonly userService: UserService) {}
 
     async login(login: ILogin): Promise<IUser | undefined> {
+        this.logger.log(`Login for user: ${login.emailAddress}`)
         const user = await this.userService.find(login.emailAddress);
         if (!user) return undefined;
         if (user.password !== login.password) return undefined;
         
         const authenticationHex = backendEnvironment.jwtKey;
-
         if (authenticationHex) {
             const secretKey = authenticationHex;
             const userId = user.id.toString();
@@ -24,7 +24,6 @@ export class AuthService {
                 expiresIn: '6h',
             });
             user.token = token;
-            // user.admin = isAdmin;
             return user;
         } else {
             console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
