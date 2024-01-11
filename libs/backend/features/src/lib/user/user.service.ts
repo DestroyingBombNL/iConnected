@@ -187,9 +187,9 @@ export class UserService {
                 postalCode: userData.properties.postalCode,
                 city: userData.properties.city,
                 tags: userData.properties.tags,
-                password: userData.properties.password
+                password: userData.properties.password,
+                opacity: 1,
             }
-            this.logger.log(userData.properties)
             if (!includePassword) user.password = '';
             return user;
         });

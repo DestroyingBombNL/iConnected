@@ -10,4 +10,5 @@ export interface IBlob {
     type: type;
     image: string;
     users: IUser[];
+    gradient: string[];
 }

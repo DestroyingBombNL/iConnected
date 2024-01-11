@@ -165,7 +165,8 @@ export class ProjectService {
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
-                    password: users[i].properties.password
+                    password: users[i].properties.password,
+                    opacity: 1
                 };
                 project.users.push(user);
             }

@@ -4,10 +4,12 @@
             <img *ngIf="darkroof" [src]="darkroof" alt="darkroof" class="darkroof">
         </div>
     </div>
+    <input type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
+    <button (click)="onSearchButtonClick()">Search</button>
     <div class="container-fluid house-background">
         <div class="container house-contents">
             <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
-                <div *ngFor="let blob of blobRow" [ngClass]="calculateColumnClass(blobRow.length)"
+                <div *ngFor="let blob of blobRow" [ngClass]="calculateColumnClass(blobRow.length)" [style.background]="calculateGradient(blob)"
                     class="room d-flex flex-column">
                     <div class="roomname d-flex justify-content-center">
                         <h5>{{ blob.name }}</h5>
@@ -15,8 +17,8 @@
                     <div class="d-flex justify-content-between flex-grow-1">
                         <div class="d-flex flex-wrap justify-content-center flex-grow-1">
                             <div *ngFor="let user of blob.users" class="user">
-                                <button class="userImg d-flex justify-content-center">
-                                    <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
+                                <button class="userImg userImgFilter d-flex justify-content-center" id="{{user.id}}">
+                                    <img id="{{user.id}}" (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity"
                                         class="userImg" alt="user avatar">
                                 </button>
                             </div>

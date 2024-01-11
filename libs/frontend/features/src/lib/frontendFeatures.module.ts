@@ -19,6 +19,7 @@ import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
 import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
 import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
+import { FilterService } from './services/filter.service';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
     RegisterComponent, 
     LoginComponent,
     AuthService,
+    FilterService,
   ],
   exports: [
     BlobsOverviewComponent, 

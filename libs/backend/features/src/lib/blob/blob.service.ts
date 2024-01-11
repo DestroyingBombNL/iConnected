@@ -11,15 +11,14 @@ export class BlobService {
 
     async getAll(): Promise<IBlob[] | undefined> {
         this.logger.log('getAll');
-    
         const readQuery = `
-            MATCH (blob:Blob)-[]-(user:User)
-            WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
-            RETURN blob, users ORDER BY firstNames ASC`;
+        MATCH (blob:Blob)-[]-(user:User)
+        WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
+        RETURN blob, users ORDER BY firstNames ASC`;
         const result = await this.neo4jService.read(readQuery);
-    
         const blobs = this.convertFromDB(result);
         if (!blobs) return undefined;
+        this.logger.log('s');
         return blobs;    
     }    
 
@@ -152,7 +151,8 @@ export class BlobService {
                 mandate: blobData.properties.mandate,
                 image: blobData.properties.image,
                 type: blobData.properties.type,
-                users: []
+                users: [],
+                gradient: ["lightgrey", "lightgrey"]
             };
     
             for (let i = 0; i < users.length; i++) {
@@ -170,7 +170,8 @@ export class BlobService {
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
-                    password: users[i].properties.password
+                    password: users[i].properties.password,
+                    opacity: 1
                 };
                 blob.users.push(user);
             }
