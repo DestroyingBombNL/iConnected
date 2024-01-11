@@ -146,7 +146,7 @@ export class BlobService {
             const blob: IBlob = {
                 id: blobData.properties.uuid,
                 name: blobData.properties.name,
-                creationDate: new Date(blobData.properties.creationDate.year.low, blobData.properties.creationDate.month.low - 1, blobData.properties.creationDate.day.low + 1),
+                creationDate: new Date(blobData.properties.creationDate),
                 slack: blobData.properties.slack,
                 mandate: blobData.properties.mandate,
                 image: blobData.properties.image,
@@ -166,7 +166,7 @@ export class BlobService {
                     bio: users[i].properties.bio,
                     birthday: users[i].properties.birthDay,
                     street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber.low,
+                    houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,

@@ -1,86 +1,87 @@
 <div class="container">
-  <div class="profile-container text-center">
-      <img [src]="user.profilePicture" alt="Profile" class="profile-image img-fluid">
-      <h2 class="mt-3">{{ user.firstName || 'No Firstname' }}</h2>
+    <div class="profile-container text-center">
+        <img [src]="user.profilePicture" alt="Profile" class="profile-image img-fluid">
+        <h2 class="mt-3">{{ user.firstName }} {{ user.infix }} {{ user.lastName }}</h2>
+    </div>
+  
+    <hr />
+  
+    <div class="info-container text-center">
+        <div class="row">
+            <div class="col-md-6 info-box mt-3">
+                <h2>Basis Informatie</h2>
+  
+                <div class="email-box mt-4 text-center">
+                    <span class="fw-bold">Email</span>
+                    <p>{{ user.email || 'Geen email beschikbaar' }}</p>
+                </div>
+  
+                <div class="email-box mt-4 text-center">
+                    <span class="fw-bold">Geboortedatum</span>
+                    <p>{{ user.birthday | date : 'dd-MM-yyyy' || 'Geen geboortedatum beschikbaar' }}</p>
+                </div>
+  
+                <div class="email-box mt-4 text-center">
+                    <span class="fw-bold">Adres</span>
+                    <p>{{ user.street || 'Geen straat beschikbaar' }}</p>
+                </div>
+  
+                <div class="email-box mt-4 text-center">
+                    <span class="fw-bold">Postcode</span>
+                    <p>{{ user.postalCode || 'Geen postcode beschikbaar' }}</p>
+                </div>
+  
+                <div class="email-box mt-4 text-center">
+                    <span class="fw-bold">Stad</span>
+                    <p>{{ user.city || 'Geen stad beschikbaar' }}</p>
+                </div>
+                
+                <!-- 
+                <div class="email-box mt-4 text-center">
+                    <span class="fw-bold">Land</span>
+                    <p>{{ user?.country || 'No country available' }}</p>
+                </div>-->
+            </div>
+  
+            <div class="col-md-6 info-box mt-3">
+                <h2>Andere Informatie</h2>
+  
+                <h4 class="mt-5">Blobs</h4>
+                <div *ngIf="blobs && blobs.length > 0" class="email-box text-center">
+                    <p *ngFor="let blob of blobs">{{ blob.name }}</p>
+                </div>
+                <div *ngIf="!blobs || blobs.length === 0" class="email-box text-center">
+                    <p>Maakt geen deel uit van een blob</p>
+                </div>
+        
+                <h4 class="mt-5">Bendes</h4>
+                <div *ngIf="bendes && bendes.length > 0" class="email-box text-center">
+                    <p *ngFor="let bende of bendes">{{ bende.name }}</p>
+                </div>
+                <div *ngIf="!bendes || bendes.length === 0" class="email-box text-center">
+                    <p>Maakt geen deel uit van een bende</p>
+                </div>
+                
+                <h4 class="mt-5">Projects</h4>
+                <div *ngIf="projects && projects.length > 0" class="email-box text-center">
+                    <p *ngFor="let project of projects">{{ project.name }}</p>
+                </div>
+                <div *ngIf="!projects || projects.length === 0" class="email-box text-center">
+                    <p>Maakt geen deel uit van een project</p>
+                </div>
+  
+                <h4 class="mt-5">Tags</h4>
+                <p *ngIf="user.tags && user.tags.length > 0">
+                  {{ user.tags.join(', ') }}
+                </p>
+                <p *ngIf="!user.tags || user.tags.length === 0">Geen tags gekozen</p>
+                
+            </div>
+        </div>
+    </div>
+  
+    <div class="button-div d-flex justify-content-center">
+        <button type="button" class="btn btn-update mb-5" [routerLink]="[userId]"> Wijzig Gegevens </button>
+    </div>
   </div>
-
-  <hr />
-
-  <div class="info-container text-center">
-      <div class="row">
-          <div class="col-md-6 info-box mt-3">
-              <h2>Basis Informatie</h2>
-
-              <div class="email-box mt-4 text-center">
-                  <span class="fw-bold">Email</span>
-                  <p>{{ user.email || 'Geen email beschikbaar' }}</p>
-              </div>
-
-              <div class="email-box mt-4 text-center">
-                  <span class="fw-bold">Geboortedatum</span>
-                  <p>{{ user.birthday | date : 'dd-MM-yyyy' || 'Geen verjaardag beschikbaar' }}</p>
-              </div>
-
-              <div class="email-box mt-4 text-center">
-                  <span class="fw-bold">Adres</span>
-                  <p>{{ user.street || 'Geen straat beschikbaar' }}</p>
-              </div>
-
-              <div class="email-box mt-4 text-center">
-                  <span class="fw-bold">Postcode</span>
-                  <p>{{ user.postalCode || 'Geen postcode beschikbaar' }}</p>
-              </div>
-
-              <div class="email-box mt-4 text-center">
-                  <span class="fw-bold">Stad</span>
-                  <p>{{ user.city || 'Geen stad beschikbaar' }}</p>
-              </div>
-              
-              <!-- 
-              <div class="email-box mt-4 text-center">
-                  <span class="fw-bold">Land</span>
-                  <p>{{ user?.country || 'Geen country beschikbaar' }}</p>
-              </div>-->
-          </div>
-
-          <div class="col-md-6 info-box mt-3">
-              <h2>Andere Informatie</h2>
-
-              <h4 class="mt-5">Blobs</h4>
-              <div *ngIf="blobs && blobs.length > 0" class="email-box text-center">
-                  <p *ngFor="let blob of blobs">{{ blob.name }}</p>
-              </div>
-              <div *ngIf="!blobs || blobs.length === 0" class="email-box text-center">
-                  <p>Geen blobs beschikbaar</p>
-              </div>
-      
-              <h4 class="mt-5">Bendes</h4>
-              <div *ngIf="bendes && bendes.length > 0" class="email-box text-center">
-                  <p *ngFor="let bende of bendes">{{ bende.name }}</p>
-              </div>
-              <div *ngIf="!bendes || bendes.length === 0" class="email-box text-center">
-                  <p>Geen bendes beschikbaar</p>
-              </div>
-              
-              <h4 class="mt-5">Projects</h4>
-              <div *ngIf="projects && projects.length > 0" class="email-box text-center">
-                  <p *ngFor="let project of projects">{{ project.name }}</p>
-              </div>
-              <div *ngIf="!projects || projects.length === 0" class="email-box text-center">
-                  <p>Geen projecten beschikbaar</p>
-              </div>
-
-              <h4 class="mt-5">Tags</h4>
-              <div class="email-box text-center">
-                  <ul class="list-unstyled">
-                      <li *ngFor="let tag of user?.tags">{{ tag || 'Geen tags beschikbaar' }}</li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-  </div>
-
-  <div class="button-div d-flex justify-content-center">
-      <button type="button" class="btn btn-update mb-5" [routerLink]="[userId]"> Wijzig Gegevens </button>
-  </div>
-</div>
+  

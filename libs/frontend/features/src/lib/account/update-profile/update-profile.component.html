@@ -1,17 +1,16 @@
-<div class="container">
+<div *ngIf="this.user" class="container">
 
     <h1 class="text-center mb-5 mt-5"> Wijzig hier je gegevens!</h1>
 
     <div class="top-container text-center">
   
-    <form [formGroup]="updateProfile" (ngSubmit)="updateUser()">
+    <form (ngSubmit)="updateUser()">
         <div class="row mt-3 mb-5 text-center d-flex justify-content-center">
             <div class="col-12 mt-3 mb-3">
               <span class="fw-bold">Profielfoto</span>
               <input type="text" class="form-control w-50 mx-auto" [(ngModel)]="user.profilePicture" name="profilePicture">
             </div>
         </div>
-
 
         <div class="row mt-3 d-flex justify-content-center">
             <div class="col-md-3">
@@ -30,7 +29,6 @@
             </div>
         </div>
 
-  
     <hr />
 
     <div class="bio-box mt-4 mb-5 text-center">
@@ -46,17 +44,6 @@
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Email</span>
                     <input type="email" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.email" name="email">
-                </div>
-
-                <div class="form-group mb-4" [ngClass]="{'has-error': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched}">
-                    <label for="InputEmail" class="fw-bold" [ngClass]="{'text-danger': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched}">Emailadres</label>
-                    <input type="email" class="form-control" id="InputEmail" formControlName="email">
-                    
-                    <div *ngIf="updateProfile.get('email')?.hasError('required') && updateProfile.get('email')?.touched" class="text-danger">
-                    </div>
-        
-                    <div *ngIf="updateProfile.get('email')?.hasError('invalidEmail') && !updateProfile.get('email')?.hasError('required') && updateProfile.get('email')?.touched" class="text-danger">
-                    </div>
                 </div>
                 
                 <div class="email-box mt-4 text-center">
@@ -86,20 +73,41 @@
 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Wachtwoord</span>
-                    <input type="password" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.password" name="password">
+                    <input type="password" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.password"  name="password">
                 </div>
-
-                    <!-- 
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Land</span>
-                    <p>{{ user?.country || 'No country available' }}</p>
-                </div>-->
+                
             </div>
 
             <div class="col-md-6 info-box mt-3">
                 <h2>Andere Informatie</h2>
 
-                <div class="form-group mb-4">
+                <p> Wil je blob, bende of project wijzigen, vraag dit dan aan een admin.</p>
+
+                <h4 class="mt-5">Blobs</h4>
+                <div *ngIf="blobs && blobs.length > 0" class="email-box text-center">
+                    <p *ngFor="let blob of blobs">{{ blob.name }}</p>
+                </div>
+                <div *ngIf="!blobs || blobs.length === 0" class="email-box text-center">
+                    <p> Maakt geen deel uit van een blob. </p>
+                </div>
+        
+                <h4 class="mt-5">Bendes</h4>
+                <div *ngIf="bendes && bendes.length > 0" class="email-box text-center">
+                    <p *ngFor="let bende of bendes">{{ bende.name }}</p>
+                </div>
+                <div *ngIf="!bendes || bendes.length === 0" class="email-box text-center">
+                    <p> Maakt geen deel uit van een bende. </p>
+                </div>
+                
+                <h4 class="mt-5">Projects</h4>
+                <div *ngIf="projects && projects.length > 0" class="email-box text-center">
+                    <p *ngFor="let project of projects">{{ project.name }}</p>
+                </div>
+                <div *ngIf="!projects || projects.length === 0" class="email-box text-center">
+                    <p> Maakt geen deel uit van een project. </p>
+                </div>
+
+                <div class="form-group mb-4 mt-5">
                     <label for="tags" class="fw-bold">Tags</label>
                     <ng-select class="mx-auto w-75" [(ngModel)]="selectedTags" [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
                 </div>
