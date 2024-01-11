@@ -43,16 +43,17 @@ export class BlobService {
         const currentDate = this.formatDate(new Date());
         
         const writeQuery = `CREATE(blob:Blob {uuid: randomUUID(), name: $name,  creationDate: $creationDate, slack: $slack, mandate: $mandate, type: $type, image: $image})`;
-    
+        
         const params = {
             name: blob.name,
             creationDate: currentDate,
             slack: blob.slack,
             mandate: blob.mandate,
             image: blob.image,
-            type: blob.type
+            type: blob.type,
         };
-    
+
+        this.logger.log(params.type)
         const userWrites: string[] = [];
 
         for (let i = 0; i < blob.users.length; i++) {

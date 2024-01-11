@@ -70,7 +70,7 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
     if (this.newBlob.valid) {
       const formData = this.newBlob.value;
 
-      formData.types = this.selectedTypes;
+      formData.type = this.selectedTypes;
       this.blobService.create(formData).subscribe({
         next: (createdBlob) => {
           console.log('Blobr created successfully:', createdBlob);
