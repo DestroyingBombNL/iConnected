@@ -1,11 +1,14 @@
+<div class="filterDiv d-flex">
+    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
+    <button class= "btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+</div>
+
 <div class="full-background">
     <div class="container-fluid roof-background">
         <div class="dark-roof-div justify-content-center d-flex">
             <img *ngIf="darkroof" [src]="darkroof" alt="darkroof" class="darkroof">
         </div>
     </div>
-    <input type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
-    <button (click)="onSearchButtonClick()">Search</button>
     <div class="container-fluid house-background">
         <div class="container house-contents">
             <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
@@ -18,8 +21,8 @@
                         <div class="d-flex flex-wrap justify-content-center flex-grow-1">
                             <div *ngFor="let user of blob.users" class="user">
                                 <button class="userImg userImgFilter d-flex justify-content-center" id="{{user.id}}">
-                                    <img id="{{user.id}}" (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity"
-                                        class="userImg" alt="user avatar">
+                                    <img id="{{user.id}}" (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
+                                    style="border-style: solid;" class="userImg" alt="user avatar">
                                 </button>
                             </div>
                         </div>

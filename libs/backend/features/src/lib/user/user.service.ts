@@ -202,6 +202,7 @@ export class UserService {
         tags: userData.properties.tags,
         password: userData.properties.password,
         opacity: 1,
+        border: "0px"
       };
       if (!includePassword) user.password = '';
       return user;

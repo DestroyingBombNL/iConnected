@@ -15,6 +15,7 @@ export interface IUser {
     tags: string[];
     password: string;
     opacity: number;
+    border: string;
 }
 
 export enum UserRole {

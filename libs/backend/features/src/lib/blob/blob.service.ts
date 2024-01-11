@@ -173,7 +173,8 @@ export class BlobService {
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
                     password: users[i].properties.password,
-                    opacity: 1
+                    opacity: 1,
+                    border: "0px"
                 };
                 blob.users.push(user);
             }

@@ -8,7 +8,7 @@ import {
 import { BlobService } from '../../services/blob.service';
 import { UserService } from '../../services/user.service';
 import { IBlob, IUser } from '@ihomer/shared/api';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
 
@@ -103,18 +103,25 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
   
   searchElements(searchText: string): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  
     if (searchText === '') {
       this.clearSearchResults();
       return;
     }
-  
-    this.subscription = this.blobService.readAll().subscribe((results) => {
+    let newBlobs: IBlob[] = [];
+    this.subscription = this.blobService.readAll()
+    .pipe(debounceTime(1000))
+    .subscribe((results) => {
       if (results !== null) {
-        this.blobs = results.sort((a, b) => {
+        newBlobs = results.sort((a, b) => {
           return a.name.localeCompare(b.name);
         });
       }
     });
+
     this.userService.readAll().subscribe((users) => {
       if (users !== null) {
         this.users = users;
@@ -123,27 +130,28 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
 
     this.filterService.filter(searchText).subscribe((uuids) => {
       if (uuids !== null) {
-        this.ids = uuids;
-        this.blobs.forEach((blob) => {
-          blob.gradient = (
-            blob.users.some((user) => this.ids.includes(user.id)) &&
-            (
-              blob.type.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-              blob.slack.toLowerCase().includes(searchText.toLowerCase()) ||
-              blob.mandate.toLowerCase().includes(searchText.toLowerCase()) ||
-              blob.name.toLowerCase().includes(searchText.toLowerCase()) ||
-              blob.creationDate.toString().toLowerCase().includes(searchText.toLowerCase())
+          this.ids = uuids;
+          newBlobs.forEach((blob) => {
+            blob.gradient = (
+              blob.users.some((user) => this.ids.includes(user.id)) &&
+              (
+                blob.type.toString().toLowerCase().includes(searchText.toLowerCase()) ||
+                blob.slack.toLowerCase().includes(searchText.toLowerCase()) ||
+                blob.mandate.toLowerCase().includes(searchText.toLowerCase()) ||
+                blob.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                blob.creationDate.toString().toLowerCase().includes(searchText.toLowerCase())
+              )
             )
-          )
-            ? ["#FFF275", "#F2FEDC"]
-            : ["lightgrey", "lightgrey"];
-        
-          blob.users.forEach((user) => {
-            user.opacity = this.ids.includes(user.id) ? 1 : 0.4;
+              ? ["#FFF275", "#F2FEDC"]
+              : ["lightgrey", "lightgrey"];
+          
+            blob.users.forEach((user) => {
+              user.opacity = this.ids.includes(user.id) ? 1 : 0.4;
+              user.border = this.ids.includes(user.id) ? "2px" : "0px";
+            });
+            blob.users.sort((a, b) => b.opacity - a.opacity);
+            this.blobs = newBlobs;
           });
-          blob.users.sort((a, b) => b.opacity - a.opacity);
-        });
-        
       }
     });
   }

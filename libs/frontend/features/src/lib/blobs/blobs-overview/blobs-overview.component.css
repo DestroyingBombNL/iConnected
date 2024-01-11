@@ -61,3 +61,10 @@
 .door {
     margin-top: auto;
 }
+
+.filterDiv {
+    position: fixed;
+    z-index: 10;
+    margin-left: 15px;
+    margin-top: 15px;
+}

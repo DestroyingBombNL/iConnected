@@ -167,7 +167,8 @@ export class BendeService {
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
                     password: users[i].properties.password,
-                    opacity: 1
+                    opacity: 1,
+                    border: "0px"
                 };
                 bende.users.push(user);
             }
