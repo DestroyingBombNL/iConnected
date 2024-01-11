@@ -186,7 +186,7 @@
 
                 <div class="form-group mb-4 mt-5">
                     <label for="tags" class="fw-bold">Tags</label>
-                    <ng-select class="mx-auto w-75" [(ngModel)]="selectedTags" [items]="this.distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
+                    <ng-select class="mx-auto w-75" formControlName="tags" [items]="this.distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
                 </div>
 
             </div>
