@@ -11,9 +11,9 @@ import { Observable, catchError, map, tap } from 'rxjs';
     providedIn: 'root'
 })
 export class BlobService extends EntityService<IBlob> {
-    constructor(http: HttpClient, notificationService: NotificationService, authService: AuthService
+    constructor(http: HttpClient, notificationService: NotificationService, private authServe: AuthService
     ) {
-        super(http, frontendEnvironment.backendUrl, 'blobs', notificationService, authService);
+        super(http, frontendEnvironment.backendUrl, 'blobs', notificationService, authServe);
     }
 
     public override readAll(options?: any): Observable<IBlob[] | null> {
@@ -36,5 +36,19 @@ export class BlobService extends EntityService<IBlob> {
             tap(console.log),
             catchError((err) => this.handleError(err))
         );
+    }
+
+    getDistinctTypesForAllBlobs(): Observable<string[]> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authServe.getTokenFromLocalStorage()}`    
+            }),
+            
+        };
+        return this.http
+            .get<string[]>(`${this.url}${this.endpoint}/types`, {
+                ...httpOptions,
+            })
     }
 }

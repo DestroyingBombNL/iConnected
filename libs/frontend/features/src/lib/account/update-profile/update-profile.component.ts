@@ -30,6 +30,7 @@ export class UpdateProfileComponent implements OnInit {
     private formBuilder: FormBuilder, 
     ) {
       this.updateProfile = this.formBuilder.group({
+        profilePicture: ['', [Validators.required]],
         firstName: ['', [Validators.required]],
         infix: [''],
         lastName: ['', [Validators.required]],
@@ -95,6 +96,7 @@ export class UpdateProfileComponent implements OnInit {
     private fetchDistinctTags(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
         (response: any) => {
+          console.log(response);
           this.distinctTags = response.results;
           console.log('Distinct Tags for All Users:', this.distinctTags);
         },

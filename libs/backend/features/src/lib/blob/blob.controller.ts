@@ -13,6 +13,12 @@ export class BlobController {
         return this.blobService.getAll();
     }
 
+    @Get('/types')
+    @UseGuards(AuthGuard)
+    async getTags(): Promise<string[]> {
+        return this.blobService.getDistinctTypesForAllBlobs();
+    }
+
     @Get(':id')
     @UseGuards(AuthGuard)
     get(@Param('id') id: string): Promise<IBlob | undefined> {

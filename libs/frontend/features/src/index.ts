@@ -17,3 +17,5 @@ export * from './lib/blobs/blob-create/blob-create.component';
 export * from './lib/services/filter.service';
 export * from './lib/auth/auth.service';
 export * from './lib/auth/auth.guards';
+export * from './lib/bendes/bende-create/bende-create.component';
+export * from './lib/projects/project-create/project-create.component';
