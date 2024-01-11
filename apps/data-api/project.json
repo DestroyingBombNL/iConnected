@@ -15,11 +15,25 @@
         "main": "apps/data-api/src/main.ts",
         "tsConfig": "apps/data-api/tsconfig.app.json",
         "assets": ["apps/data-api/src/assets"],
-        "webpackConfig": "apps/data-api/webpack.config.js"
+        "webpackConfig": "apps/data-api/webpack.config.js",
+        "generatePackageJson": true
       },
       "configurations": {
-        "development": {},
-        "production": {}
+        "development": {
+          "fileReplacements": [
+            {
+              "replace": "./libs/shared/util-env/src/lib/backend/environment.ts",
+              "with": "./libs/shared/util-env/src/lib/backend/environment.development.ts"
+            }
+          ]
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "./libs/shared/util-env/src/lib/backend/environment.ts",
+              "with": "./libs/shared/util-env/src/lib/backend/environment.production.ts"
+            }
+          ]}
       }
     },
     "serve": {

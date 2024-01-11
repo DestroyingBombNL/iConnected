@@ -1,0 +1,28 @@
+.bg-danger > .toast-header {
+    background-color: rgb(190, 11, 11) !important;
+    color: white !important;
+}
+
+.bg-danger {
+    background-color: rgb(190, 11, 11) !important;
+    color: white !important;
+}
+/* 
+.bg-succes > .toast-header{
+    background-color: rgb(0, 255, 0) !important;
+    color: black !important;
+}
+
+.bg-success {
+    background-color: rgb(0, 255, 0) !important;
+}
+
+.bg-warning > .toast-header{
+    background-color: rgb(230, 152, 63) !important;
+    color: black !important;
+}
+
+.bg-warning {
+    background-color: rgb(230, 152, 63) !important;
+}
+ */
