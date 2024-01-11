@@ -117,7 +117,7 @@ export class UserService {
 
   async isAdmin(user: IUser): Promise<boolean> {
     const result = await this.neo4jService.read(
-      'MATCH(user:User{uuid: $id})-[]->(blob:Blob{type: "BestuursBlob"}) return user,blob',
+      'MATCH(user:User{uuid: $id})-[]->(blob:Blob{type: "Bestuur"}) return user,blob',
       { id: user.id }
     );
     const blob = result.records.map((record: any) => {

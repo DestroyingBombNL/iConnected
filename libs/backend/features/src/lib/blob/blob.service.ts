@@ -53,7 +53,7 @@ export class BlobService {
             type: blob.type,
         };
 
-        this.logger.log(params.type)
+        this.logger.log(params)
         const userWrites: string[] = [];
 
         for (let i = 0; i < blob.users.length; i++) {
