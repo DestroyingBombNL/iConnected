@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EntityService, httpOptions } from './entity.service';
 import { ApiResponse, IBlob } from '@ihomer/shared/api';
 import { NotificationService } from './notifications/notification.service';
@@ -18,6 +18,14 @@ export class BlobService extends EntityService<IBlob> {
 
     public override readAll(options?: any): Observable<IBlob[] | null> {
         console.log(`read all ${this.url}${this.endpoint}`);
+        
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.authService.getTokenFromLocalStorage()}`    
+            }),
+        };
+
         return this.http
         .get<ApiResponse<IBlob[]>>(`${this.url}${this.endpoint}`, {
             ...options,

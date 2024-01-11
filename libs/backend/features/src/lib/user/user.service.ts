@@ -131,6 +131,7 @@ export class UserService {
         image: blobData.properties.image,
         type: blobData.properties.type,
         users: [],
+        gradient: ["lightgrey", "lightgrey"]
       };
       return blob;
     })[0];
@@ -200,6 +201,7 @@ export class UserService {
         city: userData.properties.city,
         tags: userData.properties.tags,
         password: userData.properties.password,
+        opacity: 1,
       };
       if (!includePassword) user.password = '';
       return user;
@@ -217,5 +219,4 @@ export class UserService {
     const distinctTags = result.records.map((record: any) => record.get('tag'));
     return distinctTags;
   }
-                opacity: 1,
 }
