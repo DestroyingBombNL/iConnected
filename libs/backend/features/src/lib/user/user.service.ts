@@ -111,6 +111,7 @@ export class UserService {
       { emailAddress }
     );
     const users = this.convertFromDb(result, true);
+    console.log(users[0]);
     if (!users || !users[0]) return undefined;
     return users[0];
   }
@@ -180,10 +181,7 @@ export class UserService {
     return { user: users[0], blobs, bendes, projects };
   }
 
-  private convertFromDb(
-    result: QueryResult<RecordShape>,
-    includePassword?: boolean
-  ): IUser[] | undefined {
+  private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
     const createdUsers = result.records.map((record: any) => {
       const userData = record._fields[0];
       const user: IUser = {

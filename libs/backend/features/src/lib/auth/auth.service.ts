@@ -1,20 +1,24 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { UserService } from "../user/user.service";
-import { ILogin, IUser } from "@ihomer/api";
+import { ILogin, ILoginResponse } from "@ihomer/api";
 import { backendEnvironment } from "@ihomer/shared/util-env";
-import { sign, verify } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 
 @Injectable()
 export class AuthService {
     private readonly logger = new Logger(AuthService.name);
     constructor(private readonly userService: UserService) {}
 
-    async login(login: ILogin): Promise<IUser | undefined> {
+    async login(login: ILogin): Promise<ILoginResponse | undefined> {
         this.logger.log(`Login for user: ${login.emailAddress}`)
         const user = await this.userService.find(login.emailAddress);
+        console.log('user');
         if (!user) return undefined;
+        console.log('user 1');
+        console.log(user.password);
+        console.log(login.password);
         if (user.password !== login.password) return undefined;
-        
+        console.log('user 2');
         const authenticationHex = backendEnvironment.jwtKey;
         if (authenticationHex) {
             const secretKey = authenticationHex;
@@ -24,21 +28,10 @@ export class AuthService {
                 expiresIn: '6h',
             });
             user.token = token;
-            return user;
+            return { user, token, isAdmin };
         } else {
             console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
         }
         return undefined;
-    }
-
-    async isAdminToken(token: string): Promise<boolean> {
-        try {
-            const decodedToken = verify(token, backendEnvironment.jwtKey);
-            console.log('Decoded token: ', decodedToken);
-            return true;
-        } catch(err) {
-            this.logger.error('Failed to verify token');
-            return false;
-        }
     }
 }
