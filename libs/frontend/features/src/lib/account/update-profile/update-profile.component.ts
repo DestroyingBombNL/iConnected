@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
-import { IUser } from '@ihomer/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/api';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ihomer-update-profile',
@@ -16,6 +17,10 @@ export class UpdateProfileComponent implements OnInit {
   distinctTags: string[] = [];
   selectedTags: string[] = [];
   updateProfile: FormGroup;
+  private profileSub: Subscription | undefined;
+  blobs: IBlob[] = [];
+  bendes: IBende[] = [];
+  projects: IProject[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -38,27 +43,35 @@ export class UpdateProfileComponent implements OnInit {
       });
     }
 
-
     ngOnInit(): void {
       this.authService.getUserFromLocalStorage().subscribe((user: IUser | null) => {
         if (user !== null) {
           this.userId = user.id;
+    
           this.userService.readOne(this.userId).subscribe((observable) => {
             this.user = observable;
-            console.log(this.user.birthday)
-          this.selectedTags = this.user?.tags || [];
+    
+            this.selectedTags = this.user?.tags || [];
+    
+            this.profileSub = this.userService.getProfile(this.userId).subscribe((profile) => {
+              if (profile.user) this.user = profile.user;
+              if (profile.blobs) this.blobs = profile.blobs;
+              if (profile.bendes) this.bendes = profile.bendes;
+              if (profile.projects) this.projects = profile.projects;
+            });
           });
         } else {
           console.log('User is not logged in');
         }
+        this.fetchDistinctTags();
       });
-    
-      this.fetchDistinctTags();
     }
-
+    
     updateUser() {
       console.log('Updating user:', this.user);
+    
       if (this.userId) {
+        this.user.tags = this.selectedTags;
         this.userService.update(this.user, this.userId).subscribe({
           next: (updatedUser) => {
             console.log('User updated successfully:', updatedUser);
@@ -72,8 +85,10 @@ export class UpdateProfileComponent implements OnInit {
         console.error('User ID is null. Cannot update user.');
       }
     }
-
+    
     onTagSelectionChanged(tags: any) {
+      console.log(this.selectedTags)
+
       this.selectedTags = tags;
     }
     
@@ -95,7 +110,6 @@ export class UpdateProfileComponent implements OnInit {
       return regexp.test(email) ? null : { invalidEmail: true };
     }
     
-  
     validPassword(control: FormControl): { [s: string]: boolean } | null {
       const password = control.value;
       const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
@@ -131,7 +145,5 @@ export class UpdateProfileComponent implements OnInit {
       const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
   
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
-    }
-
-    
+    }    
 }
