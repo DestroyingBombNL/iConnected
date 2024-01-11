@@ -1,4 +1,3 @@
-import { type } from "./type.interface";
 import { IUser } from "./user.interface"
 
 export interface IBlob {
@@ -7,8 +6,14 @@ export interface IBlob {
     creationDate: Date;
     slack: string;
     mandate: string;
-    type: type;
+    type: Type
     image: string;
     users: IUser[];
     gradient: string[];
+}
+
+export enum Type {
+    Bestuur,
+    Vaste,
+    Tijdelijke
 }

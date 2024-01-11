@@ -180,10 +180,7 @@ export class UserService {
     return { user: users[0], blobs, bendes, projects };
   }
 
-  private convertFromDb(
-    result: QueryResult<RecordShape>,
-    includePassword?: boolean
-  ): IUser[] | undefined {
+  private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
     const createdUsers = result.records.map((record: any) => {
       const userData = record._fields[0];
       const user: IUser = {
