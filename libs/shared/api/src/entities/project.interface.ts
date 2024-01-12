@@ -6,5 +6,6 @@ export interface IProject {
     slack: string,
     creationDate: Date,
     image: string,
-    users: IUser[]
+    users: IUser[],
+    gradient: string[];
 }
