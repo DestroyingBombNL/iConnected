@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { UserService } from "../user/user.service";
-import { ILogin, ILoginResponse } from "@ihomer/api";
+import { ILogin, ILoginResponse, ITokenValidationResponse } from "@ihomer/api";
 import { backendEnvironment } from "@ihomer/shared/util-env";
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
 @Injectable()
 export class AuthService {
@@ -28,5 +28,16 @@ export class AuthService {
             console.error("AUTHENTICATION_HEX is not defined or empty in the environment variables.");
         }
         return undefined;
+    }
+
+    async validateToken(token: string): Promise<ITokenValidationResponse | undefined> {
+        if (!token) return undefined;
+
+        try {
+            const payload: any = verify(token, backendEnvironment.jwtKey);
+            return { isAdmin: payload.isAdmin }
+        } catch(err) {
+            return undefined;
+        }
     }
 }

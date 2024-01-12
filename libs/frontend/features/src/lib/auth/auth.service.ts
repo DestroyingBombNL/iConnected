@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { frontendEnvironment } from '@ihomer/shared/util-env';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ILogin, ILoginResponse, IUser } from '@ihomer/shared/api';
+import { ILogin, ILoginResponse, ITokenValidationResponse, IUser } from '@ihomer/shared/api';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   'AuthService'
@@ -30,9 +30,10 @@ export class AuthService {
     }
 
     if (localToken) {
-      this.validateToken(localToken).subscribe((isValid) => {
-        if (!isValid) {
+      this.validateToken(localToken).subscribe((tokenResponse) => {
+        if (!tokenResponse) {
           this.logout();
+          return;
         }
       });
     }
@@ -51,19 +52,19 @@ export class AuthService {
       );
   }
 
-  validateToken(token: string): Observable<boolean> {
+  validateToken(token: string): Observable<ITokenValidationResponse | undefined> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     })
-    return this.http.get(`${frontendEnvironment.backendUrl}auth/validatetoken`, { headers: headers
+    return this.http.get<ITokenValidationResponse>(`${frontendEnvironment.backendUrl}auth/validatetoken`, { headers: headers
     }).pipe(
       map((response) => {
-        if (response) return true;
-        return false;
+        if (!response) return undefined;
+        return response;
       }),
       catchError((err) => {
-        return of(false);
+        return of(undefined);
       })
     );
   }
