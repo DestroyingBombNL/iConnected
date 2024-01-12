@@ -10,3 +10,7 @@ input.ng-invalid {
     background-color: #216e8e;
     color: white;
 }
+
+.form-label {
+    font-weight: bold;
+}
