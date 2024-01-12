@@ -119,23 +119,20 @@ export class ProjectService {
     
         const params = { id };
     
-        const checkQuery = `
+/*         const checkQuery = `
             MATCH (project:Project {uuid: $id})-[:WORKS_ON]-(user:User)
             RETURN count(user) AS userCount`;
     
         const checkResult = await this.neo4jService.read(checkQuery, params);
         const userCount = checkResult.records[0].get('userCount').toNumber();
-    
-        if (userCount > 0) {
+     */
+        // if (userCount > 0) {
             const deleteQuery = `
                 MATCH (project:Project {uuid: $id})
                 DETACH DELETE project`;
     
             await this.neo4jService.write(deleteQuery, params);
             return true;
-        } else {
-            return false;
-        }
     }
     
     private convertFromDB(result: QueryResult<RecordShape>): IProject[] | undefined {

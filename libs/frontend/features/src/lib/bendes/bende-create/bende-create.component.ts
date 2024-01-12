@@ -49,10 +49,9 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((params) => {
       this.bendeService.readOne(params.get('id')).subscribe((bende) => {
         if (!this.bendeService) return;
-        console.log("Bende:", bende.name);
         this.bende = bende;
         this.spcBende = new FormGroup({
-          name: new FormControl(this.bende.name, [
+          name: new FormControl(this.bende.name, [ 
             Validators.required,
           ]),
           slack: new FormControl(this.bende.slack, [

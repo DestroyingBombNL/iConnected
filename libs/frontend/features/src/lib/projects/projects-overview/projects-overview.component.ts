@@ -9,7 +9,7 @@ import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service'; // Import the user service
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ihomer-projects-overview',
@@ -143,5 +143,34 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
       default:
         return 'col'; // default to equal width columns for other cases
     }
+  }
+
+  openDeleteProject(content: TemplateRef<any>, projectId: string) {
+    this.specificProject = this.projects.find((b) => b.id === projectId) as IProject;
+
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-project-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          console.log('closed');
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          console.log('dismissed');
+        }
+      );
+  }
+
+  closeProjectDetailModal(modal: NgbModalRef) {
+    modal.close();
+  }
+
+  deleteProject(projectId: string) {
+    this.projectService.delete(this.specificProject.id).subscribe((result) => {
+      if (result) {
+        this.projects = this.projects.filter((p) => p.id !== projectId);
+      }
+    });
   }
 }

@@ -59,7 +59,7 @@
                 <div *ngIf="isAuthenticated()">
                     <button type="button" class="btn btn-primary me-2" [routerLink]="specificBende.id" (click)="modal.close()">Aanpassen</button>
                     <button type="button" class="btn btn-danger"
-                        (click)="openDeleteBende(bendeContent, specificBende.id); modal.close()">Verwijderen</button>
+                        (click)="openDeleteBende(bendeDelete, specificBende.id); modal.close()">Verwijderen</button>
                     
                 </div>
             </div>
@@ -129,7 +129,7 @@
     </div>
 </ng-template>
 
-<ng-template #bendeContent let-modal>
+<ng-template #bendeDelete let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-user-title">Verwijder {{specificBende.name}}</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>

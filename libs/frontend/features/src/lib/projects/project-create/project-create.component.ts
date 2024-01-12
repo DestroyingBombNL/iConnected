@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   FormBuilder,
@@ -25,12 +25,14 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
   users: IUser[] = []; // List of available users
   selectedUsers: IUser[] = []; // List of selected users
   userNames: string[] = []; // List of user names
+  spcProject: FormGroup;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private projectService: ProjectService,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newProject = new FormGroup({
@@ -39,6 +41,12 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
       slack: new FormControl('', [Validators.required]),
       image: new FormControl('', [Validators.required]),
       users: new FormControl([]),
+    });
+    this.spcProject = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      creationDate: new FormControl(''),
+      slack: new FormControl('', [Validators.required]),
+      image: new FormControl('', [Validators.required]),
     });
   }
 
@@ -57,6 +65,23 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
         console.error('Error fetching users:', error);
       }
     );
+
+    this.route.paramMap.subscribe((params) => {
+      this.projectService.readOne(params.get('id')).subscribe((project) => {
+        if (!params.get('id')) return;
+        console.log("Project:", project.name);
+        this.project = project;
+        this.spcProject = new FormGroup({
+          name: new FormControl(this.project.name, [ 
+            Validators.required,
+          ]),
+          slack: new FormControl(this.project.slack, [
+            Validators.required
+          ]),
+          image: new FormControl(this.project.image, [Validators.required]),
+        });
+      });
+    });
   }
 
   ngOnDestroy() {
@@ -90,6 +115,26 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     this.selectedUsers = selectedUsers;
     console.log('Selected Users:', this.selectedUsers);
     console.log('Selected User ids:', this.selectedUsers.map((user) => user.id));
+  }
+
+  changeProject(id: string): void {
+    console.log('change Project aangeroepen');
+
+    if (this.spcProject.valid) {
+      const formData = this.spcProject.value;
+
+      this.projectService.update(formData, id).subscribe({
+        next: (updatedProject) => {
+          console.log('Project updated successfully:', updatedProject);
+          this.router.navigate(['/projects']);
+        },
+        error: (error) => {
+          console.error('Error updating project:', error);
+        },
+      });
+
+      this.spcProject.reset();
+    }
   }
 
   goBack(): void {
