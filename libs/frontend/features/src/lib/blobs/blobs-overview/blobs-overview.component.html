@@ -17,22 +17,19 @@
                 <div class="house-contents mb-4">
                     <div class="darkroof-container">
                         <img class="darkroof" src="assets/dark-roof.png" alt="Dark Roof">
-                <div *ngFor="let blob of blobRow" [ngClass]="calculateColumnClass(blobRow.length)" [style.background]="calculateGradient(blob)"
                     </div>
                     <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
-                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)"
+                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)" [style.background]="calculateGradient(blob)"
                         class="room d-flex flex-column">
                             <div class="roomname d-flex justify-content-center">
                                 <h5>{{ blob.name }}</h5>
-                                    <img id="{{user.id}}" (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
-                                    style="border-style: solid;" class="userImg" alt="user avatar">
                             </div>
                             <div class="d-flex justify-content-between flex-grow-1">
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <div *ngFor="let user of blob.users" class="user">
                                         <button class="userImg">
-                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
-                                                class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
+                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
+                                            style="border-style: solid;" class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
                                         </button>
                                     </div>
                                 </div>
