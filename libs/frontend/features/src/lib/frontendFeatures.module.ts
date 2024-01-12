@@ -19,6 +19,7 @@ import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
 import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
 import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
+import { FilterService } from './services/filter.service';
 import { LoggedInAuthGuard } from './auth/auth.guards';
 import { BendeCreateComponent } from './bendes/bende-create/bende-create.component';
 import { Project } from './services/models/project.model';
@@ -57,6 +58,7 @@ import { ProjectCreateComponent } from './projects/project-create/project-create
     RegisterComponent, 
     LoginComponent,
     AuthService,
+    FilterService,
     LoggedInAuthGuard,
     HttpClient,
   ],

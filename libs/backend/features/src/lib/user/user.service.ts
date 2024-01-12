@@ -79,7 +79,7 @@ export class UserService {
   async update(id: string, user: IUpdateUser): Promise<IUser | undefined> {
     this.logger.log('Update');
 
-    const params = {
+    const params: any = {
       id,
       email: user.email,
       profilePicture: user.profilePicture,
@@ -92,13 +92,14 @@ export class UserService {
       houseNumber: user.houseNumber,
       postalCode: user.postalCode,
       city: user.city,
-      tags: user.tags,
-      password: user.password,
+      tags: user.tags
     };
 
+    if (user.password) params.password = user.password;
+
+    const query = `MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags${params.password ? (', password: $password') : ''}} RETURN user`;
     const result = await this.neo4jService.write(
-      'MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password} RETURN user',
-      params
+      query, params
     );
     const users = this.convertFromDb(result);
     if (!users) return undefined;
@@ -131,6 +132,7 @@ export class UserService {
         image: blobData.properties.image,
         type: blobData.properties.type,
         users: [],
+        gradient: ["lightgrey", "lightgrey"]
       };
       return blob;
     })[0];
@@ -179,10 +181,7 @@ export class UserService {
     return { user: users[0], blobs, bendes, projects };
   }
 
-  private convertFromDb(
-    result: QueryResult<RecordShape>,
-    includePassword?: boolean
-  ): IUser[] | undefined {
+  private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
     const createdUsers = result.records.map((record: any) => {
       const userData = record._fields[0];
       const user: IUser = {
@@ -200,6 +199,8 @@ export class UserService {
         city: userData.properties.city,
         tags: userData.properties.tags,
         password: userData.properties.password,
+        opacity: 1,
+        border: "0px"
       };
       if (!includePassword) user.password = '';
       return user;

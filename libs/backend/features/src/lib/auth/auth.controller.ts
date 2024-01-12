@@ -9,6 +9,6 @@ export class AuthController {
     @Get('validatetoken')
     @UseGuards(AuthGuard)
     validateToken() {
-
+        // Can be left empty, guard will validate a token.
     }
 }

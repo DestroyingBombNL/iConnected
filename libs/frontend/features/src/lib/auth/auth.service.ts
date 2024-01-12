@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { frontendEnvironment } from '@ihomer/shared/util-env';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ILogin, IUser } from '@ihomer/shared/api';
+import { ILogin, ILoginResponse, IUser } from '@ihomer/shared/api';
 
 export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   'AuthService'
@@ -27,14 +27,12 @@ export class AuthService {
     const localToken = this.getTokenFromLocalStorage();
 
     if (!localUser || !localToken) {
-      console.log('No user or token found.');
       this.logout();
     }
 
     if (localToken) {
       this.validateToken(localToken).subscribe((isValid) => {
         if (!isValid) {
-          console.log('token invalid');
           this.logout();
         }
       });
@@ -45,17 +43,16 @@ export class AuthService {
     return this.http.post<any | undefined>(`${frontendEnvironment.backendUrl}users/login`, login, {headers: this.headers})
       .pipe(
         map((response) => {
-          if (!response.results) return undefined;
-          const {token, ...user} = response.results;
-          this.saveUserToLocalStorage(user);
-          this.saveUserTokenToLocalStorage(token);
-          return response;
+          if (!response) return undefined;
+          response = response.results as ILoginResponse;
+          this.saveUserToLocalStorage(response.user);
+          this.saveUserTokenToLocalStorage(response.token);
+          return response.user;
         })
       );
   }
 
   validateToken(token: string): Observable<boolean> {
-    console.log('validate token: ', token);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -63,7 +60,6 @@ export class AuthService {
     return this.http.get(`${frontendEnvironment.backendUrl}auth/validatetoken`, { headers: headers
     }).pipe(
       map((response) => {
-        console.log(response);
         if (response) return true;
         return false;
       }),
@@ -77,7 +73,6 @@ export class AuthService {
     this.router
       .navigate(['./login'])
       .then(() => {
-          console.log('logout - removing local user info');
           localStorage.removeItem(this.CURRENT_USER);
           localStorage.removeItem(this.AUTH_TOKEN);
       })
@@ -100,10 +95,12 @@ export class AuthService {
   }
 
   private saveUserToLocalStorage(user: IUser): void {
+    if (!user) return;
     localStorage.setItem(this.CURRENT_USER, JSON.stringify(user));
   }
 
   private saveUserTokenToLocalStorage(token: string): void {
+    if (!token) return;
     localStorage.setItem(this.AUTH_TOKEN, token);
   }
 
