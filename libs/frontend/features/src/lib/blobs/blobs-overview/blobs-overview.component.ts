@@ -6,9 +6,8 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
-import { UserService } from '../../services/user.service'; // Import the user service
+import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
-import { Subscription } from 'rxjs';
 import { Subscription, debounceTime } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
@@ -28,7 +27,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   highlightedIds: Set<string> = new Set<string>();
   specificBlob = {} as IBlob;
   specificUser = {} as IUser;
-  blobs: IBlob[] = [];
   popUpBlobs: IBlob[] = [];
   bendes: IBende[] = [];
   projects: IProject[] = [];
