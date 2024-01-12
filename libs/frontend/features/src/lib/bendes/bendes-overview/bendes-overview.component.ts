@@ -204,7 +204,7 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
           this.popUpBendes = profile.bendes;
         }
         if (profile.bendes) {
-          this.bendes = profile.bendes;
+          this.Blobs = profile.blobs;
         }
         if (profile.projects) {
           this.projects = profile.projects;
