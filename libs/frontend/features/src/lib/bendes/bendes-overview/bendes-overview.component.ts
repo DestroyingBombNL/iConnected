@@ -203,7 +203,7 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
         if (profile.bendes) {
           this.popUpBendes = profile.bendes;
         }
-        if (profile.bendes) {
+        if (profile.blobs) {
           this.Blobs = profile.blobs;
         }
         if (profile.projects) {
@@ -247,31 +247,23 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
 
   calculateColumnClass(bendeRow: any[], bendeIndex: number): string {
     let columnClass = 'col';
-
+  
     const currentBendeUserCount = bendeRow[bendeIndex].users.length;
-    const bendesWithSameSize = bendeRow.filter((bende) => {
-      if (currentBendeUserCount <= 6) {
-        return bende.users.length <= 6;
-      } else if (currentBendeUserCount <= 9) {
-        return bende.users.length > 6 && bende.users.length <= 9;
-      } else {
-        return bende.users.length > 9;
-      }
-    });
-
-    if (currentBendeUserCount <= 6) {
-      columnClass =
-        bendesWithSameSize.length === 1
-          ? 'col-12'
-          : bendesWithSameSize.length === 2
-          ? 'col-6'
-          : 'col-4';
+  
+    if (currentBendeUserCount <= 3) {
+      columnClass = 'col-4';
     } else if (currentBendeUserCount <= 9) {
-      columnClass = bendesWithSameSize.length === 1 ? 'col-12' : 'col-6';
+      columnClass = 'col-6';
     } else {
       columnClass = 'col-12';
     }
-
+  
+    // Ensure that all rows add up to at least 12
+    const totalUsersInRow = bendeRow.reduce((total, bende) => total + bende.users.length, 0);
+    if (totalUsersInRow < 12) {
+      columnClass = 'col-12';
+    }
+  
     return columnClass;
   }
 }

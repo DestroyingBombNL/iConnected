@@ -206,7 +206,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
         if (profile.bendes) {
           this.bendes = profile.bendes;
         }
-        if (profile.projects) {
+        if (profile.blobs) {
           this.blobs = profile.blobs; // userProjects is a new variable
         }
       });
