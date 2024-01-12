@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/api';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ihomer-update-profile',
@@ -16,7 +15,7 @@ export class UpdateProfileComponent implements OnInit {
   userForm!: FormGroup; 
   allTags: string[] = [];
 
-  constructor(readonly authService: AuthService, readonly userService: UserService, private route: ActivatedRoute) {}
+  constructor(readonly authService: AuthService, readonly userService: UserService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     const localUser = this.authService.getUserFromLocalStorage();
@@ -48,7 +47,14 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   save(): void {
+    console.log("Saving user");
 
+    this.userService.update(this.user, this.user.id).subscribe((updated) => {
+      if (updated) {
+        console.log(updated);
+        this.router.navigate(['/profile']);
+      }
+    });
   }
 
   getAllTags(): void {
