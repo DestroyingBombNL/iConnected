@@ -8,7 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { BendeService } from '../../services/bende.service';
-import { IBende } from '@ihomer/shared/api';
+import { IBende, IUser } from '@ihomer/shared/api';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'ihomer-bende-create',
@@ -22,15 +23,19 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
   subscription: Subscription | null = null;
   newBende: FormGroup;
   spcBende: FormGroup;
+  users: IUser[] = []; // List of available users
+  selectedUsers: IUser[] = []; // List of selected users
+  userNames: string[] = []; // List of user names
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private bendeService: BendeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
-    this.newBende = new FormGroup({
+    this.newBende = this.formBuilder.group({
       name: new FormControl('', [Validators.required]),
       creationDate: new FormControl(''),
       slack: new FormControl('', [Validators.required]),
@@ -44,9 +49,11 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
       image: new FormControl('', [Validators.required]),
     });
   }
+  
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
+      if (!params.get('id')) return;
       this.bendeService.readOne(params.get('id')).subscribe((bende) => {
         if (!this.bendeService) return;
         this.bende = bende;
@@ -62,6 +69,21 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
       console.log("Bende2: ",this.bende.name);
       });
     });
+
+    this.userService.readAll().subscribe(
+      (users) => {
+        if (users !== null) {
+          this.users = users;
+          this.userNames = users.map(
+            (user) => user.firstName + ' ' + user.lastName
+          );
+          console.log('Users:', this.users);
+        }
+      },
+      (error) => {
+        console.error('Error fetching users:', error);
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -76,6 +98,7 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     if (this.newBende.valid) {
       const formData = this.newBende.value;
 
+      formData.users = this.selectedUsers;
       this.bendeService.create(formData).subscribe({
         next: (createdBende) => {
           console.log('Bende created successfully:', createdBende);
@@ -96,6 +119,8 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     if (this.spcBende.valid) {
       const formData = this.spcBende.value;
 
+      formData.users = this.selectedUsers;
+      console.log('FormData:', formData); // Log the form data for debugging
       this.bendeService.update(formData, id).subscribe({
         next: (updatedBende) => {
           console.log('Bende updated successfully:', updatedBende);
@@ -108,6 +133,12 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
 
       this.spcBende.reset();
     }
+  }
+
+  onUserSelectionChanged(selectedUsers: IUser[]) {
+    this.selectedUsers = selectedUsers;
+    console.log('Selected Users:', this.selectedUsers);
+    console.log('Selected User ids:', this.selectedUsers.map((user) => user.id));
   }
 
   goBack(): void {
