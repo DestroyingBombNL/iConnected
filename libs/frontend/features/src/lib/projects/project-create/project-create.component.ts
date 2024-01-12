@@ -8,7 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
-import { IProject } from '@ihomer/shared/api';
+import { IProject, IUser } from '@ihomer/shared/api';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'ihomer-project-create',
@@ -21,11 +22,15 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
   projects: IProject[] = [];
   subscription: Subscription | null = null;
   newProject: FormGroup;
+  users: IUser[] = []; // List of available users
+  selectedUsers: IUser[] = []; // List of selected users
+  userNames: string[] = []; // List of user names
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private userService: UserService
   ) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newProject = new FormGroup({
@@ -37,7 +42,22 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    this.userService.readAll().subscribe(
+      (users) => {
+        if (users !== null) {
+          this.users = users;
+          this.userNames = users.map(
+            (user) => user.firstName + ' ' + user.lastName
+          );
+          console.log('Users:', this.users);
+        }
+      },
+      (error) => {
+        console.error('Error fetching users:', error);
+      }
+    );
+  }
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -51,6 +71,7 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     if (this.newProject.valid) {
       const formData = this.newProject.value;
 
+      formData.users = this.selectedUsers;
       this.projectService.create(formData).subscribe({
         next: (createdProject) => {
           console.log('Project created successfully:', createdProject);
@@ -63,6 +84,12 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
 
       this.newProject.reset();
     }
+  }
+
+  onUserSelectionChanged(selectedUsers: IUser[]) {
+    this.selectedUsers = selectedUsers;
+    console.log('Selected Users:', this.selectedUsers);
+    console.log('Selected User ids:', this.selectedUsers.map((user) => user.id));
   }
 
   goBack(): void {

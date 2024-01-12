@@ -48,7 +48,17 @@
              </div>
             </div>
           </div>
-    
+          
+          <!-- USERS -->
+        <div class="col-md-3">
+          <div class="form-group mb-4" [ngClass]="{'has-error': newProject.get('users')?.hasError('required') && newProject.get('users')?.touched}">
+              <label for="users" class="form-control" class="fw-bold">Users *</label>
+              <div *ngIf="newProject.get('users')?.hasError('required') && newProject.get('users')?.touched" class="text-danger"></div>
+                <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"
+                bindValue="id" bindLabel="firstName"></ng-select>
+          </div>
+      </div>
+      
           <!-- TAGS -->
           <div class="row justify-content-center">
             <div class="text-center mt-4">
@@ -58,6 +68,8 @@
               <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
             </div>
           </div>
+
+
         </form>
       </div>
     </div>
