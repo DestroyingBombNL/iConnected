@@ -42,7 +42,7 @@ export class AuthService {
     return this.http.post<any | undefined>(`${frontendEnvironment.backendUrl}users/login`, login, {headers: this.headers})
       .pipe(
         map((response) => {
-          if (!response) return undefined;
+          if (!response.results) return undefined;
           response = response.results as ILoginResponse;
           this.saveUserToLocalStorage(response.user);
           this.saveUserTokenToLocalStorage(response.token);
