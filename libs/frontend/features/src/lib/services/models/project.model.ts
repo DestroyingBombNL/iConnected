@@ -9,6 +9,7 @@ export class Project extends Entity implements IProject {
         public creationDate: Date,
         public image: string,
         public users: IUser[],
+        public gradient: string[]
     ) { 
         super(id)
     }

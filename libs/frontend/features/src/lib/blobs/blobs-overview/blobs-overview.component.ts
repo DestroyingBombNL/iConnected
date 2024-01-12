@@ -37,7 +37,11 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   grassImage?: string;
   closeResult = '';
 
-  constructor(private filterService: FilterService, private blobService: BlobService, private userService: UserService) {
+  constructor(
+    private filterService: FilterService,
+    private blobService: BlobService,
+    private userService: UserService
+  ) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
     this.cloudImage = 'assets/cloudImage.png';
@@ -61,7 +65,7 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
 
   onSearchInput(event: Event): void {
     this.currentInputValue = (<HTMLInputElement>event.target).value;
-  
+
     if (this.currentInputValue == '') {
       this.subscription = this.blobService.readAll().subscribe((results) => {
         if (results !== null) {
@@ -72,7 +76,7 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
       });
     }
   }
-  
+
   onSearchAction(event: Event): void {
     if ((<HTMLInputElement>event.target).value == '') {
       console.log('click');
@@ -98,26 +102,27 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
-  
+
   searchElements(searchText: string): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  
+
     if (searchText === '') {
       this.clearSearchResults();
       return;
     }
     let newBlobs: IBlob[] = [];
-    this.subscription = this.blobService.readAll()
-    .pipe(debounceTime(1000))
-    .subscribe((results) => {
-      if (results !== null) {
-        newBlobs = results.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-      }
-    });
+    this.subscription = this.blobService
+      .readAll()
+      .pipe(debounceTime(1000))
+      .subscribe((results) => {
+        if (results !== null) {
+          newBlobs = results.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+          });
+        }
+      });
 
     this.userService.readAll().subscribe((users) => {
       if (users !== null) {
@@ -127,28 +132,31 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
 
     this.filterService.filter(searchText).subscribe((uuids) => {
       if (uuids !== null) {
-          this.ids = uuids;
-          newBlobs.forEach((blob) => {
-            blob.gradient = (
-              blob.users.some((user) => this.ids.includes(user.id)) &&
-              (
-                blob.type.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                blob.slack.toLowerCase().includes(searchText.toLowerCase()) ||
-                blob.mandate.toLowerCase().includes(searchText.toLowerCase()) ||
-                blob.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                blob.creationDate.toString().toLowerCase().includes(searchText.toLowerCase())
-              )
-            )
-              ? ["#FFF275", "#F2FEDC"]
-              : ["lightgrey", "lightgrey"];
-          
-            blob.users.forEach((user) => {
-              user.opacity = this.ids.includes(user.id) ? 1 : 0.4;
-              user.border = this.ids.includes(user.id) ? "2px" : "0px";
-            });
-            blob.users.sort((a, b) => b.opacity - a.opacity);
-            this.blobs = newBlobs;
+        this.ids = uuids;
+        newBlobs.forEach((blob) => {
+          blob.gradient =
+            blob.users.some((user) => this.ids.includes(user.id)) &&
+            (blob.type
+              .toString()
+              .toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+              blob.slack.toLowerCase().includes(searchText.toLowerCase()) ||
+              blob.mandate.toLowerCase().includes(searchText.toLowerCase()) ||
+              blob.name.toLowerCase().includes(searchText.toLowerCase()) ||
+              blob.creationDate
+                .toString()
+                .toLowerCase()
+                .includes(searchText.toLowerCase()))
+              ? ['#FFF275', '#F2FEDC']
+              : ['#b9adad', '#b9adad'];
+
+          blob.users.forEach((user) => {
+            user.opacity = this.ids.includes(user.id) ? 1 : 0.4;
+            user.border = this.ids.includes(user.id) ? '0.3rem' : '0px';
           });
+          blob.users.sort((a, b) => b.opacity - a.opacity);
+          this.blobs = newBlobs;
+        });
       }
     });
   }
@@ -173,7 +181,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
       return 'linear-gradient(to right, #ffffff, #ffffff)';
     }
   }
-  
 
   open(content: TemplateRef<any>, blobId: string) {
     this.specificBlob = this.blobs.find((b) => b.id === blobId) as IBlob;
@@ -242,28 +249,33 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     return blobsInRows;
   }
 
-calculateColumnClass(blobRow: any[], blobIndex: number): string {
-  let columnClass = 'col';
+  calculateColumnClass(blobRow: any[], blobIndex: number): string {
+    let columnClass = 'col';
 
-  const currentBlobUserCount = blobRow[blobIndex].users.length;
-  const blobsWithSameSize = blobRow.filter(blob => {
+    const currentBlobUserCount = blobRow[blobIndex].users.length;
+    const blobsWithSameSize = blobRow.filter((blob) => {
+      if (currentBlobUserCount <= 6) {
+        return blob.users.length <= 6;
+      } else if (currentBlobUserCount <= 9) {
+        return blob.users.length > 6 && blob.users.length <= 9;
+      } else {
+        return blob.users.length > 9;
+      }
+    });
+
     if (currentBlobUserCount <= 6) {
-      return blob.users.length <= 6;
+      columnClass =
+        blobsWithSameSize.length === 1
+          ? 'col-12'
+          : blobsWithSameSize.length === 2
+          ? 'col-6'
+          : 'col-4';
     } else if (currentBlobUserCount <= 9) {
-      return blob.users.length > 6 && blob.users.length <= 9;
+      columnClass = blobsWithSameSize.length === 1 ? 'col-12' : 'col-6';
     } else {
-      return blob.users.length > 9;
+      columnClass = 'col-12';
     }
-  });
 
-  if (currentBlobUserCount <= 6) {
-    columnClass = blobsWithSameSize.length === 1 ? 'col-12' : blobsWithSameSize.length === 2 ? 'col-6' : 'col-4';
-  } else if (currentBlobUserCount <= 9) {
-    columnClass = blobsWithSameSize.length === 1 ? 'col-12' : 'col-6';
-  } else {
-    columnClass = 'col-12';
+    return columnClass;
   }
-
-  return columnClass;
-}
 }

@@ -27,9 +27,9 @@
                             <div class="d-flex justify-content-between flex-grow-1">
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <div *ngFor="let user of blob.users" class="user">
-                                        <button class="userImg">
+                                        <button class="userImgButton">
                                             <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
-                                            style="border-style: solid;" class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
+                                            class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
                                         </button>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
         </div>
     </div>
 </div>
-<button class="add-blob-btn" title="Toevoegen blob">+</button>
+<button class="add-blob-btn" routerLink="/blobs/create" title="Toevoegen blob">+</button>
 <div class="container-fluid grass-container">
     <div class="row">
         <div class="col-12 p-0">

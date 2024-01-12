@@ -148,7 +148,8 @@ export class BendeService {
                 creationDate: new Date(bendeData.properties.creationDate),
                 slack: bendeData.properties.slack,
                 image: bendeData.properties.image,
-                users: []
+                users: [],
+                gradient: ["#b9adad", "#b9adad"]
             };
     
             for (let i = 0; i < users.length; i++) {
@@ -165,6 +166,7 @@ export class BendeService {
                     houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
+                    country: users[i].properties.country,
                     tags: users[i].properties.tags,
                     password: users[i].properties.password,
                     opacity: 1,

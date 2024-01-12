@@ -10,3 +10,7 @@ export interface ILoginResponse {
     token: string,
     isAdmin: boolean
 }
+
+export interface ITokenValidationResponse {
+    isAdmin: boolean
+}

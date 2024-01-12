@@ -18,7 +18,6 @@ export class BlobService {
         const result = await this.neo4jService.read(readQuery);
         const blobs = this.convertFromDB(result);
         if (!blobs) return undefined;
-        this.logger.log('s');
         return blobs;    
     }    
 
@@ -154,7 +153,7 @@ export class BlobService {
                 image: blobData.properties.image,
                 type: blobData.properties.type,
                 users: [],
-                gradient: ["lightgrey", "lightgrey"]
+                gradient: ["#b9adad", "#b9adad"]
             };
     
             for (let i = 0; i < users.length; i++) {
@@ -171,6 +170,7 @@ export class BlobService {
                     houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
+                    country: users[i].properties.country,
                     tags: users[i].properties.tags,
                     password: users[i].properties.password,
                     opacity: 1,

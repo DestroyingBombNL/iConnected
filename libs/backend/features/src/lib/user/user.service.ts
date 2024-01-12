@@ -92,12 +92,13 @@ export class UserService {
       houseNumber: user.houseNumber,
       postalCode: user.postalCode,
       city: user.city,
-      tags: user.tags
+      tags: user.tags,
+      country: user.country
     };
 
     if (user.password) params.password = user.password;
 
-    const query = `MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags${params.password ? (', password: $password') : ''}} RETURN user`;
+    const query = `MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, country: $country${params.password ? (', password: $password') : ''}} RETURN user`;
     const result = await this.neo4jService.write(
       query, params
     );
@@ -132,7 +133,7 @@ export class UserService {
         image: blobData.properties.image,
         type: blobData.properties.type,
         users: [],
-        gradient: ["lightgrey", "lightgrey"]
+        gradient: ["#b9adad", "#b9adad"]
       };
       return blob;
     })[0];
@@ -197,6 +198,7 @@ export class UserService {
         houseNumber: userData.properties.houseNumber,
         postalCode: userData.properties.postalCode,
         city: userData.properties.city,
+        country: userData.properties.country,
         tags: userData.properties.tags,
         password: userData.properties.password,
         opacity: 1,
