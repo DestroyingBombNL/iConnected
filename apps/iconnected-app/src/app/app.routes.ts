@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 
-import { 
-    BlobsOverviewComponent, 
-    RegisterComponent, 
-    LoginComponent, 
+import {
+  BlobsOverviewComponent,
+  RegisterComponent,
+  LoginComponent,
+  BendesOverviewComponent,
+  ProjectsOverviewComponent,
+    BlobCreateComponent,
+    UpdateProfileComponent,
     ProfileComponent, 
     UpdateProfileComponent,
     BendesOverviewComponent,
@@ -13,7 +17,6 @@ import {
     LoggedInAuthGuard,
     BendeCreateComponent,
     ProjectCreateComponent,
-    
 } from '@ihomer/frontend/features';
 import { LogoutComponent } from '@ihomer/frontend/features';
 
@@ -41,6 +44,7 @@ export const appRoutes: Route[] = [
   {
     path: 'bendes',
     pathMatch: 'full',
+    title: `${appName}Bendes`,
     component: BendesOverviewComponent,
     title: `${appName}Bendes`,
     canActivate: [LoggedInAuthGuard]
@@ -48,9 +52,15 @@ export const appRoutes: Route[] = [
   {
     path: 'projects',
     pathMatch: 'full',
+    title: `${appName}Projecten`,
     component: ProjectsOverviewComponent,
     title: `${appName}Projecten`,
     canActivate: [LoggedInAuthGuard]
+  },
+  {
+    path: 'login',
+    pathMatch: 'full',
+    component: LoginComponent,
   },
   {
     path: 'deelnemers',

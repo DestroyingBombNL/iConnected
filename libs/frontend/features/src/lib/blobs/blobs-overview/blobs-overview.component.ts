@@ -6,8 +6,9 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
-import { UserService } from '../../services/user.service';
-import { IBlob, IUser } from '@ihomer/shared/api';
+import { UserService } from '../../services/user.service'; // Import the user service
+import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
+import { Subscription } from 'rxjs';
 import { Subscription, debounceTime } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
@@ -27,20 +28,22 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   highlightedIds: Set<string> = new Set<string>();
   specificBlob = {} as IBlob;
   specificUser = {} as IUser;
+  blobs: IBlob[] = [];
+  popUpBlobs: IBlob[] = [];
+  bendes: IBende[] = [];
+  projects: IProject[] = [];
   subscription: Subscription | null = null;
   darkroof?: string;
   lightdoor?: string;
   cloudImage?: string;
-  blueskyImage?: string;
   grassImage?: string;
   closeResult = '';
 
   constructor(private filterService: FilterService, private blobService: BlobService, private userService: UserService) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
-    this.cloudImage = 'assets/cloudImage.jpg';
-    this.blueskyImage = 'assets/bluesky.png';
-    this.grassImage = 'assets/grassImage.jpg';
+    this.cloudImage = 'assets/cloudImage.png';
+    this.grassImage = 'assets/grassImage.png';
   }
 
   ngOnInit() {
@@ -195,6 +198,18 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     if (this.users.length > 0) {
       this.specificUser = this.users.find((u) => u.id === userId) as IUser;
 
+      this.userService.getProfile(userId).subscribe((profile) => {
+        if (profile.blobs) {
+          this.popUpBlobs = profile.blobs;
+        }
+        if (profile.bendes) {
+          this.bendes = profile.bendes;
+        }
+        if (profile.projects) {
+          this.projects = profile.projects;
+        }
+      });
+
       this.modalService
         .open(content, { ariaLabelledBy: 'modal-user-title' })
         .result.then(
@@ -229,16 +244,28 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     return blobsInRows;
   }
 
-  calculateColumnClass(totalRooms: number): string {
-    switch (totalRooms) {
-      case 1:
-        return 'col-12';
-      case 2:
-        return 'col-6';
-      case 3:
-        return 'col-4';
-      default:
-        return 'col';
+calculateColumnClass(blobRow: any[], blobIndex: number): string {
+  let columnClass = 'col';
+
+  const currentBlobUserCount = blobRow[blobIndex].users.length;
+  const blobsWithSameSize = blobRow.filter(blob => {
+    if (currentBlobUserCount <= 6) {
+      return blob.users.length <= 6;
+    } else if (currentBlobUserCount <= 9) {
+      return blob.users.length > 6 && blob.users.length <= 9;
+    } else {
+      return blob.users.length > 9;
     }
+  });
+
+  if (currentBlobUserCount <= 6) {
+    columnClass = blobsWithSameSize.length === 1 ? 'col-12' : blobsWithSameSize.length === 2 ? 'col-6' : 'col-4';
+  } else if (currentBlobUserCount <= 9) {
+    columnClass = blobsWithSameSize.length === 1 ? 'col-12' : 'col-6';
+  } else {
+    columnClass = 'col-12';
   }
+
+  return columnClass;
+}
 }
