@@ -1,3 +1,7 @@
+<div class="filterDiv d-flex">
+    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
+    <button class= "btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+</div>
 <div class="background-color">
     <div class="container-fluid">
         <div class="row">
@@ -15,7 +19,7 @@
                         <img class="darkroof" src="assets/dark-roof.png" alt="Dark Roof">
                     </div>
                     <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
-                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)"
+                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)" [style.background]="calculateGradient(blob)"
                         class="room d-flex flex-column">
                             <div class="roomname d-flex justify-content-center">
                                 <h5>{{ blob.name }}</h5>
@@ -24,8 +28,8 @@
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <div *ngFor="let user of blob.users" class="user">
                                         <button class="userImg">
-                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
-                                                class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
+                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
+                                            style="border-style: solid;" class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
                                         </button>
                                     </div>
                                 </div>

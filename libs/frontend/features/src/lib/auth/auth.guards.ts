@@ -15,20 +15,21 @@ import { AuthService } from './auth.service';
  * Verifies that user is logged in before navigating to routes.
  *
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LoggedInAuthGuard implements CanActivate, CanActivateChild {
 
   constructor(private authService: AuthService, private router: Router,) {}
 
   canActivate(): Observable<boolean> {
-    console.log('canActivate LoggedIn');
-    return this.authService.currentUser$.pipe(
+    return this.authService.getUserFromLocalStorage().pipe(
       map((user: IUser | null) => {
-        if (user && user.token) {
+        if (user && this.authService.getTokenFromLocalStorage()) {
           return true;
         } else {
           console.log('not logged in, reroute to /');
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
           return false;
         }
       })
@@ -39,7 +40,6 @@ export class LoggedInAuthGuard implements CanActivate, CanActivateChild {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    console.log('canActivateChild LoggedIn');
     return this.canActivate();
   }
 }

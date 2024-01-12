@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
-import { IUser } from '@ihomer/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/api';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ihomer-update-profile',
@@ -16,6 +17,10 @@ export class UpdateProfileComponent implements OnInit {
   distinctTags: string[] = [];
   selectedTags: string[] = [];
   updateProfile: FormGroup;
+  private profileSub: Subscription | undefined;
+  blobs: IBlob[] = [];
+  bendes: IBende[] = [];
+  projects: IProject[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -25,8 +30,10 @@ export class UpdateProfileComponent implements OnInit {
     private formBuilder: FormBuilder, 
     ) {
       this.updateProfile = this.formBuilder.group({
+        profilePicture: ['', [Validators.required]],
         firstName: ['', [Validators.required]],
         infix: [''],
+        bio: ['', [Validators.required]], 
         lastName: ['', [Validators.required]],
         birthday: ['', [Validators.required, this.dateValidator]],
         email: ['', [Validators.required, this.validEmail]],
@@ -34,31 +41,56 @@ export class UpdateProfileComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]]
+        password: ['', [this.validPassword]],
+        tags: ['']
       });
     }
-
 
     ngOnInit(): void {
       this.authService.getUserFromLocalStorage().subscribe((user: IUser | null) => {
         if (user !== null) {
           this.userId = user.id;
+    
           this.userService.readOne(this.userId).subscribe((observable) => {
             this.user = observable;
-            console.log(this.user.birthday)
-          this.selectedTags = this.user?.tags || [];
+
+            this.updateProfile.patchValue({
+              profilePicture: this.user.profilePicture,
+              firstName: this.user.firstName,
+              infix: this.user.infix,
+              lastName: this.user.lastName,
+              bio: this.user.bio,
+              email: this.user.email,
+              birthday: this.user.birthday,
+              street: this.user.street,
+              houseNumber: this.user.houseNumber,
+              postalCode: this.user.postalCode,
+              city: this.user.city,
+              password: this.user.password,
+              tags: this.user.tags
+            });
+    
+            this.selectedTags = this.user?.tags || [];
+    
+            this.profileSub = this.userService.getProfile(this.userId).subscribe((profile) => {
+              if (profile.user) this.user = profile.user;
+              if (profile.blobs) this.blobs = profile.blobs;
+              if (profile.bendes) this.bendes = profile.bendes;
+              if (profile.projects) this.projects = profile.projects;
+            });
           });
         } else {
           console.log('User is not logged in');
         }
+        this.fetchDistinctTags();
       });
-    
-      this.fetchDistinctTags();
     }
-
+    
     updateUser() {
       console.log('Updating user:', this.user);
+    
       if (this.userId) {
+        this.user.tags = this.selectedTags;
         this.userService.update(this.user, this.userId).subscribe({
           next: (updatedUser) => {
             console.log('User updated successfully:', updatedUser);
@@ -72,14 +104,17 @@ export class UpdateProfileComponent implements OnInit {
         console.error('User ID is null. Cannot update user.');
       }
     }
-
+    
     onTagSelectionChanged(tags: any) {
+      console.log(this.selectedTags)
+
       this.selectedTags = tags;
     }
     
     private fetchDistinctTags(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
         (response: any) => {
+          console.log(response);
           this.distinctTags = response.results;
           console.log('Distinct Tags for All Users:', this.distinctTags);
         },
@@ -89,18 +124,22 @@ export class UpdateProfileComponent implements OnInit {
       );
     }
 
-    validEmail(control: FormControl): { [s: string]: boolean } | null {
+    validEmail(control: FormControl): { [key: string]: any } | null {
       const email = control.value;
       const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
       return regexp.test(email) ? null : { invalidEmail: true };
     }
     
-  
     validPassword(control: FormControl): { [s: string]: boolean } | null {
       const password = control.value;
+      if (!password) {
+        return null;
+      }
       const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
+    
       return regexp.test(password) ? null : { invalidPassword: true };
     }
+    
 
     houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
       const houseNumber = control.value;
@@ -127,11 +166,9 @@ export class UpdateProfileComponent implements OnInit {
 
     postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
       const postalCode = control.value;
-  
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
-  
+      const regex = /^(?:[1-9]\d{3}\s?[a-zA-Z]{2}|[1-9]\d{3}|[1-9]\d{3}\s[a-zA-Z]{2})$/;
+    
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
     }
-
-    
+       
 }

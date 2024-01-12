@@ -1,46 +1,59 @@
+<div class="image-box">
+  <img *ngIf="backgroundImage" src="/assets/backgroundiHomer.png" alt="iHomer" class="background-image">
+</div>
 <div class="container-full">
-  <div class="image-box">
-    <img *ngIf="backgroundImage" [src]="backgroundImage" alt="iHomer" class="background-image">
-  </div>
+  
     <div class="border-box">
       <h1 class="d-flex justify-content-center mt-5">Blob aanmaken</h1>
   
-      <form class="m-4" >
+      <form class="m-4"[formGroup]="newBlob" (ngSubmit)="createBlob()" >
         <div class="row justify-content-center">
-          <div class="col-md-10">
-            <div class="form-group mb-4">
-              <label for="InputFirstName" class="fw-bold">Naam</label>
+          <div class="col-md-7">
+            <div class="form-group mb-4" [ngClass]="{'has-error': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}">
+              <label for="image" [class]="{'text-danger': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}" class="fw-bold">ImageUrl</label>
               <input
                 type="text"
                 class="form-control mx-auto"
-                id="InputFirstName"
-                formControlName="firstName"
+                id="InputImageUrl"
+                formControlName="image"
               />
+              <div *ngIf="newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched" class="text-danger"></div>
+            </div>
+          </div>
+
+          <!-- TYPE -->
+          <div class="col-md-3">
+            <div class="form-group mb-4" [ngClass]="{'has-error': newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched}">
+              <label for="type"  class="form-control" class="fw-bold">Types *</label>
+              <div *ngIf="newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched" class="text-danger"></div>
+              <ng-select [items]="distinctTypes" (change)="onTypeSelectionChanged($event)" name="types"></ng-select>
             </div>
           </div>
   
         <!-- NAME AND SLACKCHANNEL-->
           <div class="col-md-5">
-            <div class="form-group mb-4">
-              <label for="InputFirstName" class="fw-bold">Naam</label>
+            <div class="form-group mb-4 " [ngClass]="{'has-error': newBlob.get('name')?.hasError('required') && newBlob.get('name')?.touched}">
+              <label for="InputName" [class]="{'text-danger': newBlob.get('name')?.hasError('required') && newBlob.get('name')?.touched}"class="fw-bold">Naam</label>
               <input
                 type="text"
                 class="form-control mx-auto"
-                id="InputFirstName"
-                formControlName="firstName"
+                id="InputName"
+                formControlName="name"
               />
+              <div *ngIf="newBlob.get('name')?.hasError('required') && newBlob.get('name')?.touched" class="text-danger"></div>
             </div>
           </div>
   
           <div class="col-md-5">
-            <div class="form-group mb-4">
-              <label for="InputInfix" class="fw-bold">Slackkanaal URL</label>
+            <div class="form-group mb-4 " [ngClass]="{'has-error': newBlob.get('slack')?.hasError('required') && newBlob.get('slack')?.touched}">
+              <label for="InputSlack"  [class]="{'text-danger': newBlob.get('slack')?.hasError('required') && newBlob.get('slack')?.touched}" class="fw-bold">Slackkanaal URL</label>
               <input
                 type="text"
                 class="form-control mx-auto"
-                id="InputInfix"
-                formControlName="infix"
+                id="InputSlack"
+                formControlName="slack"
               />
+              <div *ngIf="newBlob.get('slack')?.hasError('required') && newBlob.get('slack')?.touched" class="text-danger"></div>
             </div>
           </div>
         </div>
@@ -48,9 +61,9 @@
         <!-- TAGS -->
         <div class="row justify-content-center">
           <div class="text-center mt-4">
-            <button type="button" class="btn btn-register" >
+            <button type="button" class="btn btn-register" (click)="createBlob()" [disabled]="!newBlob.valid || !selectedTypes.length" >
               Aanmaken
-            </button>
+            </button>            
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
           </div>
         </div>

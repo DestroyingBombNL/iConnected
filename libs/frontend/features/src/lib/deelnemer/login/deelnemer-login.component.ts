@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl("", [ Validators.required, this.validEmail.bind(this) ]),
+      emailAddress: new FormControl("", [ Validators.required, this.validEmail.bind(this) ]),
       password: new FormControl("", [ Validators.required, this.validPassword.bind(this) ]),
     });
     console.log(this.authService.getUserFromLocalStorage());
@@ -47,24 +47,23 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.loginForm?.valid) {
       this.submitted = true;
-      const email = this.loginForm.value.email;
+      const email = this.loginForm.value.emailAddress;
       const password = this.loginForm.value.password;
       const login: ILogin = {
         emailAddress: email,
         password: password
       };
   
-      this.authService.login(login.emailAddress, login.password)
-        .subscribe(
-          (user) => {
-            if (user) {
-              this.router.navigate(['/blobs']);
-            } else {
-              this.showLoginError = true;
-            }
-            this.submitted = false;
-          },
-        );
+      this.authService.login(login).subscribe((user) => {
+        if (user) {
+          this.router.navigate(['/blobs']);
+        } else {
+          this.showLoginError = true;
+        }
+        this.submitted = false;
+      }, (err) => {
+        this.submitted = false;
+      });
     } else {
       this.submitted = false;
     }

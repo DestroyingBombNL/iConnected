@@ -5,79 +5,101 @@ import {
   BlobsOverviewComponent,
   RegisterComponent,
   LoginComponent,
+  ProfileComponent,
+  UpdateProfileComponent,
   BendesOverviewComponent,
   ProjectsOverviewComponent,
-    BlobCreateComponent,
-    UpdateProfileComponent,
-    ProfileComponent, 
+  BlobCreateComponent,
+  LoggedInAuthGuard,
+  BendeCreateComponent,
+  ProjectCreateComponent,
+  LogoutComponent,
 } from '@ihomer/frontend/features';
-import { LogoutComponent } from '@ihomer/frontend/features';
 
-const appName = 'iConnected | '
+const appName = 'iConnected | ';
 export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    component: BlobsOverviewComponent,
+    redirectTo: 'blobs',
+    title: `${appName}Home`,
   },
   {
     path: 'login',
     pathMatch: 'full',
-    component: LoginComponent
+    component: LoginComponent,
+    title: `${appName}Login`,
   },
   {
     path: 'blobs',
     pathMatch: 'full',
     component: BlobsOverviewComponent,
     title: `${appName}Blobs`,
+    canActivate: [LoggedInAuthGuard],
   },
   {
     path: 'bendes',
     pathMatch: 'full',
-    title: `${appName}Bendes`,
     component: BendesOverviewComponent,
+    title: `${appName}Bendes`,
+    canActivate: [LoggedInAuthGuard],
   },
   {
     path: 'projects',
     pathMatch: 'full',
-    title: `${appName}Projecten`,
     component: ProjectsOverviewComponent,
-  },
-  {
-    path: 'login',
-    pathMatch: 'full',
-    component: LoginComponent,
+    title: `${appName}Projecten`,
+    canActivate: [LoggedInAuthGuard],
   },
   {
     path: 'deelnemers',
     pathMatch: 'full',
     component: RegisterComponent,
+    title: `${appName}Gebruiker toevoegen`,
+    canActivate: [LoggedInAuthGuard],
   },
-    {
-        path: 'logout',
-        pathMatch: 'full',
-        title: `${appName}Uitloggen`,
-        component: LogoutComponent,
-    },
-    {
-        path: 'blobs/create',
-        pathMatch: 'full',
-        component: BlobCreateComponent,
-        title: `${appName}BlobCreate`
-    },
-    {
-        path: 'profile',
-        pathMatch: 'full',
-        component: ProfileComponent,
-        title: `${appName}Profiel`
-    },
-    {
-        path: 'profile/:id',
-        pathMatch: 'full',
-        component: UpdateProfileComponent,
-        title: `${appName}UpdateProfiel`
-    },
-    
+  {
+    path: 'logout',
+    pathMatch: 'full',
+    title: `${appName}Uitloggen`,
+    component: LogoutComponent,
+    canActivate: [LoggedInAuthGuard],
+  },
+  {
+    path: 'blobs/create',
+    pathMatch: 'full',
+    component: BlobCreateComponent,
+    title: `${appName}Blob aanmaken`,
+    canActivate: [LoggedInAuthGuard],
+  },
+  {
+    path: 'bendes/create',
+    pathMatch: 'full',
+    component: BendeCreateComponent,
+    title: `${appName}Bende aanmaken`,
+    canActivate: [LoggedInAuthGuard],
+  },
+  {
+    path: 'projects/create',
+    pathMatch: 'full',
+    component: ProjectCreateComponent,
+    title: `${appName}Project aanmaken`,
+    canActivate: [LoggedInAuthGuard],
+  },
+  {
+    path: 'profile',
+    pathMatch: 'full',
+    component: ProfileComponent,
+    title: `${appName}Profiel`,
+    canActivate: [LoggedInAuthGuard],
+  },
+  {
+    path: 'profile/:id',
+    pathMatch: 'full',
+    component: UpdateProfileComponent,
+    title: `${appName}Profiel wijzigen`,
+    canActivate: [LoggedInAuthGuard],
+  },
 ];
 
 @NgModule({

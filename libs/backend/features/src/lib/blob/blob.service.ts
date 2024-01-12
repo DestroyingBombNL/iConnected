@@ -11,15 +11,14 @@ export class BlobService {
 
     async getAll(): Promise<IBlob[] | undefined> {
         this.logger.log('getAll');
-    
         const readQuery = `
-            MATCH (blob:Blob)-[]-(user:User)
-            WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
-            RETURN blob, users ORDER BY firstNames ASC`;
+        MATCH (blob:Blob)-[]-(user:User)
+        WITH blob, COLLECT(user) as users, COLLECT(user.firstName) AS firstNames
+        RETURN blob, users ORDER BY firstNames ASC`;
         const result = await this.neo4jService.read(readQuery);
-    
         const blobs = this.convertFromDB(result);
         if (!blobs) return undefined;
+        this.logger.log('s');
         return blobs;    
     }    
 
@@ -40,18 +39,20 @@ export class BlobService {
     
     async createBlob(blob: IBlob): Promise<IBlob | undefined> {
         this.logger.log('createBlob');
+        const currentDate = this.formatDate(new Date());
         
         const writeQuery = `CREATE(blob:Blob {uuid: randomUUID(), name: $name,  creationDate: $creationDate, slack: $slack, mandate: $mandate, type: $type, image: $image})`;
-    
+        
         const params = {
             name: blob.name,
-            creationDate: blob.creationDate,
+            creationDate: currentDate,
             slack: blob.slack,
             mandate: blob.mandate,
             image: blob.image,
-            type: blob.type
+            type: blob.type,
         };
-    
+
+        this.logger.log(params)
         const userWrites: string[] = [];
 
         for (let i = 0; i < blob.users.length; i++) {
@@ -147,12 +148,13 @@ export class BlobService {
             const blob: IBlob = {
                 id: blobData.properties.uuid,
                 name: blobData.properties.name,
-                creationDate: new Date(blobData.properties.creationDate.year.low, blobData.properties.creationDate.month.low - 1, blobData.properties.creationDate.day.low + 1),
+                creationDate: new Date(blobData.properties.creationDate),
                 slack: blobData.properties.slack,
                 mandate: blobData.properties.mandate,
                 image: blobData.properties.image,
                 type: blobData.properties.type,
-                users: []
+                users: [],
+                gradient: ["lightgrey", "lightgrey"]
             };
     
             for (let i = 0; i < users.length; i++) {
@@ -166,16 +168,40 @@ export class BlobService {
                     bio: users[i].properties.bio,
                     birthday: users[i].properties.birthDay,
                     street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber.low,
+                    houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
                     tags: users[i].properties.tags,
-                    password: users[i].properties.password
+                    password: users[i].properties.password,
+                    opacity: 1,
+                    border: "0px"
                 };
                 blob.users.push(user);
             }
             return blob;
         });
         return createdBlobs;
+    }
+
+    async getDistinctTypesForAllBlobs(): Promise<string[]> {
+        this.logger.log('getDistinctTypesForAllBlobs');
+    
+        const readQuery = `
+            MATCH (blob:Blob)
+            RETURN DISTINCT blob.type AS type`;
+        const result = await this.neo4jService.read(readQuery);
+    
+        const types = result.records.map((record: any) => {
+            return record.get('type');
+        });
+        return types;
+    }
+
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
+        const day = ('0' + date.getDate()).slice(-2);
+    
+        return `${year}-${month}-${day}`;
     }
 }
