@@ -79,7 +79,7 @@ export class UserService {
   async update(id: string, user: IUpdateUser): Promise<IUser | undefined> {
     this.logger.log('Update');
 
-    const params = {
+    const params: any = {
       id,
       email: user.email,
       profilePicture: user.profilePicture,
@@ -92,13 +92,14 @@ export class UserService {
       houseNumber: user.houseNumber,
       postalCode: user.postalCode,
       city: user.city,
-      tags: user.tags,
-      password: user.password,
+      tags: user.tags
     };
 
+    if (user.password) params.password = user.password;
+
+    const query = `MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags${params.password ? (', password: $password') : ''}} RETURN user`;
     const result = await this.neo4jService.write(
-      'MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password} RETURN user',
-      params
+      query, params
     );
     const users = this.convertFromDb(result);
     if (!users) return undefined;
