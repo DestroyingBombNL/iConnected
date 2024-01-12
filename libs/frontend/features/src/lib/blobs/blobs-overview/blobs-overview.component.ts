@@ -44,7 +44,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("ngOnInit");
     this.subscription = this.blobService.readAll().subscribe((results) => {
       if (results !== null) {
         this.blobs = results.sort((a, b) => {
@@ -60,7 +59,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   onSearchInput(event: Event): void {
-    console.log("onSearchInput");
     this.currentInputValue = (<HTMLInputElement>event.target).value;
   
     if (this.currentInputValue == '') {
@@ -75,7 +73,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
   
   onSearchAction(event: Event): void {
-    console.log("onSearchAction");
     if ((<HTMLInputElement>event.target).value == '') {
       console.log('click');
       this.subscription = this.blobService.readAll().subscribe((results) => {
@@ -92,7 +89,6 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   onSearchButtonClick(): void {
-    console.log("onSearchButtonClick");
     this.searchElements(this.currentInputValue);
   }
 
