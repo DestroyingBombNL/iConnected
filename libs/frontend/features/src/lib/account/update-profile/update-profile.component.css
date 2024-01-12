@@ -1,3 +1,12 @@
 .img-rounded {
     border-radius: 50%;
 }
+
+input.ng-invalid {
+    border: 1px solid #dc3545 !important; /* Red border for invalid input */
+}
+
+.btn-update {
+    background-color: #216e8e;
+    color: white;
+}

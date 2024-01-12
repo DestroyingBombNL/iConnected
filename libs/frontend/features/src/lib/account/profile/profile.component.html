@@ -23,7 +23,7 @@
   
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Adres</span>
-                    <p>{{ user.street || 'Geen straat beschikbaar' }}</p>
+                    <p>{{ user.street || 'Geen straat beschikbaar' }} {{ user.houseNumber || 'Geen huisnummer beschikbaar' }}</p>
                 </div>
   
                 <div class="email-box mt-4 text-center">
@@ -36,11 +36,10 @@
                     <p>{{ user.city || 'Geen stad beschikbaar' }}</p>
                 </div>
                 
-                <!-- 
                 <div class="email-box mt-4 text-center">
                     <span class="fw-bold">Land</span>
-                    <p>{{ user?.country || 'No country available' }}</p>
-                </div>-->
+                    <p>{{ user.country || 'Geen land beschikbaar' }}</p>
+                </div>
             </div>
   
             <div class="col-md-6 info-box mt-3">
