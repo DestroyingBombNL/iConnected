@@ -9,8 +9,9 @@ import { BendeService } from '../../services/bende.service';
 import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription, debounceTime } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'ihomer-bendes-overview',
@@ -40,7 +41,8 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private filterService: FilterService,
     private bendeService: BendeService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
@@ -273,5 +275,39 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
     }
 
     return columnClass;
+  }
+
+  openDeleteBende(content: TemplateRef<any>, bendeId: string) {
+    this.specificBende = this.bendes.find((b) => b.id === bendeId) as IBende;
+
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-bende-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          console.log('closed');
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          console.log('dismissed');
+        }
+      );
+  }
+
+  closeBendeDetailModal(modal: NgbModalRef) {
+    modal.close();
+  }
+
+  deleteBende(bendeId: string) {
+    this.bendeService.delete(this.specificBende.id).subscribe((result) => {
+      if (result) {
+        this.bendes = this.bendes.filter((b) => b.id !== bendeId);
+      }
+    });
+  }
+
+  isAuthenticated(): boolean {
+    if (this.authService.isAdmin) return true;
+    else return false;
   }
 }

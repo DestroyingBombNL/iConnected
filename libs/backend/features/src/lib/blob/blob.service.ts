@@ -89,7 +89,7 @@ export class BlobService {
                 // Add the property to the parameters
                 params[key] = blob[key];
     
-                if (index < Object.keys(blob).length - 1) {
+                if (index < Object.keys(blob).length - 2) {
                     setClause += ', ';
                 }
             }
