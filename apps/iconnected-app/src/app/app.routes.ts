@@ -56,6 +56,7 @@ export const appRoutes: Route[] = [
     path: 'deelnemers',
     pathMatch: 'full',
     component: RegisterComponent,
+    title: `${appName}Gebruiker toevoegen`,
     canActivate: [LoggedInAuthGuard]
   },
     {
@@ -69,21 +70,21 @@ export const appRoutes: Route[] = [
         path: 'blobs/create',
         pathMatch: 'full',
         component: BlobCreateComponent,
-        title: `${appName}BlobCreate`,
+        title: `${appName}Blob aanmaken`,
         canActivate: [LoggedInAuthGuard]
     },
     {
       path: 'bendes/create',
       pathMatch: 'full',
       component: BendeCreateComponent,
-      title: `${appName}BendeCreate`,
+      title: `${appName}Bende aanmaken`,
       canActivate: [LoggedInAuthGuard]
     },
     {
       path: 'projects/create',
       pathMatch: 'full',
       component: ProjectCreateComponent,
-      title: `${appName}ProjectCreate`,
+      title: `${appName}Project aanmaken`,
       canActivate: [LoggedInAuthGuard]
     },
     {
@@ -97,7 +98,7 @@ export const appRoutes: Route[] = [
         path: 'profile/:id',
         pathMatch: 'full',
         component: UpdateProfileComponent,
-        title: `${appName}UpdateProfiel`,
+        title: `${appName}Profiel wijzigen`,
         canActivate: [LoggedInAuthGuard]
     },
     
