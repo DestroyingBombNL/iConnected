@@ -8,7 +8,7 @@
   
       <form class="m-4"[formGroup]="newBlob" (ngSubmit)="createBlob()" >
         <div class="row justify-content-center">
-          <div class="col-md-7">
+          <div class="col-md-6">
             <div class="form-group mb-4" [ngClass]="{'has-error': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}">
               <label for="image" [class]="{'text-danger': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}" class="fw-bold">ImageUrl</label>
               <input
@@ -22,7 +22,7 @@
           </div>
 
           <!-- TYPE -->
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="form-group mb-4" [ngClass]="{'has-error': newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched}">
               <label for="type"  class="form-control" class="fw-bold">Types *</label>
               <div *ngIf="newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched" class="text-danger"></div>
@@ -57,6 +57,16 @@
             </div>
           </div>
         </div>
+
+        <!-- USERS -->
+        <div class="col-md-3">
+          <div class="form-group mb-4" [ngClass]="{'has-error': newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched}">
+              <label for="users" class="form-control" class="fw-bold">Users *</label>
+              <div *ngIf="newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched" class="text-danger"></div>
+                <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"
+                bindValue="id" bindLabel="firstName"></ng-select>
+          </div>
+      </div>
   
         <!-- TAGS -->
         <div class="row justify-content-center">
@@ -67,6 +77,8 @@
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
           </div>
         </div>
+
+        
       </form>
     </div>
   </div>
