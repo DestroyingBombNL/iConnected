@@ -41,16 +41,18 @@
           </div>
         </div>
 
-        
+
         <!-- USERS -->
         <div class="col-md-3">
-          <div class="form-group mb-4" [ngClass]="{'has-error': newBende.get('users')?.hasError('required') && newBende.get('users')?.touched}">
-              <label for="users" class="form-control" class="fw-bold">Users *</label>
-              <div *ngIf="newBende.get('users')?.hasError('required') && newBende.get('users')?.touched" class="text-danger"></div>
-                <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"
-                bindValue="id" bindLabel="firstName"></ng-select>
+          <div class="form-group mb-4"
+            [ngClass]="{'has-error': newBende.get('users')?.hasError('required') && newBende.get('users')?.touched}">
+            <label for="users" class="form-control" class="fw-bold">Users *</label>
+            <div *ngIf="newBende.get('users')?.hasError('required') && newBende.get('users')?.touched"
+              class="text-danger"></div>
+            <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"
+              bindValue="id" bindLabel="firstName"></ng-select>
           </div>
-      </div>
+        </div>
 
         <!-- TAGS -->
         <div class="row justify-content-center">
@@ -83,7 +85,7 @@
               <label for="InputImage"
                 [class]="{'text-danger': spcBende.get('image')?.hasError('required') && spcBende.get('image')?.touched}"
                 class="fw-bold">ImageUrl</label>
-              <input type="text" class="form-control mx-auto" id="InputImage" formControlName="image"/>
+              <input type="text" class="form-control mx-auto" id="InputImage" formControlName="image" />
             </div>
           </div>
 
@@ -94,7 +96,7 @@
               <label for="InputName"
                 [class]="{'text-danger': spcBende.get('name')?.hasError('required') && spcBende.get('name')?.touched}"
                 class="fw-bold">Naam</label>
-              <input type="text" class="form-control mx-auto" id="InputName" formControlName="name" placeholder={{bende.name}}/>
+              <input type="text" class="form-control mx-auto" id="InputName" formControlName="name" />
             </div>
           </div>
 
@@ -104,12 +106,23 @@
               <label for="InputSlack"
                 [class]="{'text-danger': spcBende.get('slack')?.hasError('required') && spcBende.get('slack')?.touched}"
                 class="fw-bold">Slackkanaal URL</label>
-              <input type="text" class="form-control mx-auto" id="InputSlack" formControlName="slack" placeholder={{bende.slack}} />
+              <input type="text" class="form-control mx-auto" id="InputSlack" formControlName="slack" />
             </div>
           </div>
         </div>
 
-        <!-- TAGS -->
+        <!--        <div class="col-md-3">
+          <div class="form-group mb-4"
+            [ngClass]="{'has-error': spcBende.get('users')?.hasError('required') && spcBende.get('users')?.touched}">
+            <label for="users" class="form-control" class="fw-bold">Users *</label>
+            <div *ngIf="spcBende.get('users')?.hasError('required') && spcBende.get('users')?.touched"
+              class="text-danger"></div>
+             <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
+              name="users" [multiple]="true" bindValue="id" bindLabel="firstName" formControlName="users">
+            </ng-select> 
+          </div>
+        </div>-->
+
         <div class="row justify-content-center">
           <div class="text-center mt-4">
             <button type="button" class="btn btn-register" (click)="changeBende(bende.id)" [disabled]="!spcBende.valid">

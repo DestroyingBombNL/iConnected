@@ -47,9 +47,9 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
       creationDate: new FormControl(''),
       slack: new FormControl('', [Validators.required]),
       image: new FormControl('', [Validators.required]),
+      users: new FormControl([]),
     });
   }
-  
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -58,15 +58,14 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
         if (!this.bendeService) return;
         this.bende = bende;
         this.spcBende = new FormGroup({
-          name: new FormControl(this.bende.name, [ 
-            Validators.required,
-          ]),
-          slack: new FormControl(this.bende.slack, [
-            Validators.required
-          ]),
+          name: new FormControl(this.bende.name, [Validators.required]),
+          slack: new FormControl(this.bende.slack, [Validators.required]),
           image: new FormControl(this.bende.image, [Validators.required]),
+          users: new FormControl(this.bende.users),
         });
-      console.log("Bende2: ",this.bende.name);
+        console.log('Bende2: ', this.bende.name);
+
+        this.spcBende.get('users')?.setValue(this.bende.users);
       });
     });
 
@@ -90,6 +89,10 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  compareUsers(user1: any, user2: any): boolean {
+    return user1 && user2 && user1.id === user2.id;
   }
 
   createBende(): void {
@@ -138,7 +141,10 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
   onUserSelectionChanged(selectedUsers: IUser[]) {
     this.selectedUsers = selectedUsers;
     console.log('Selected Users:', this.selectedUsers);
-    console.log('Selected User ids:', this.selectedUsers.map((user) => user.id));
+    console.log(
+      'Selected User ids:',
+      this.selectedUsers.map((user) => user.id)
+    );
   }
 
   goBack(): void {

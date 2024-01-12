@@ -79,6 +79,12 @@
                     </ul>
                 </span>
                 <p><strong>Mandaat:</strong> {{ specificBlob.mandate }}</p>
+                <div *ngIf="isAuthenticated()">
+                    <button type="button" class="btn btn-primary me-2" [routerLink]="specificBlob.id" (click)="modal.close()">Aanpassen</button>
+                    <button type="button" class="btn btn-danger"
+                        (click)="openDeleteBlob(blobDelete, specificBlob.id); modal.close()">Verwijderen</button>
+                    
+                </div>
             </div>
         </form>
     </div>
@@ -142,6 +148,21 @@
                     </ng-template>
                 </div>
             </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #blobDelete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-user-title">Verwijder {{specificBlob.name}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body text-center">
+        <div class="mb-3">
+            <p>Ben je zeker dat je deze blob wilt verwijderen?</p>
+            <button type="button" class="btn btn-danger me-3" (click)="deleteBlob(specificBlob.id); modal.close()">Verwijderen</button>
+            <button type="button" class="btn btn-dark"  aria-label="Close"
+                (click)="modal.dismiss()">Annuleer</button>
         </div>
     </div>
 </ng-template>

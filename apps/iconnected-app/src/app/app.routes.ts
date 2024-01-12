@@ -74,6 +74,13 @@ export const appRoutes: Route[] = [
         canActivate: [LoggedInAuthGuard]
     },
     {
+      path: 'blobs/:id',
+      pathMatch: 'full',
+      component: BlobCreateComponent,
+      title: `${appName}Blob wijzigen`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
       path: 'bendes/create',
       pathMatch: 'full',
       component: BendeCreateComponent,
@@ -84,7 +91,7 @@ export const appRoutes: Route[] = [
       path: 'bendes/:id',
       pathMatch: 'full',
       component: BendeCreateComponent,
-      title: `${appName}Bendes`,
+      title: `${appName}Bendes wijzigen`,
       canActivate: [LoggedInAuthGuard]
     },
     {
@@ -98,7 +105,7 @@ export const appRoutes: Route[] = [
       path: 'projects/:id',
       pathMatch: 'full',
       component: ProjectCreateComponent,
-      title: `${appName}Bendes`,
+      title: `${appName}Project wijzigen`,
       canActivate: [LoggedInAuthGuard]
     },
     {

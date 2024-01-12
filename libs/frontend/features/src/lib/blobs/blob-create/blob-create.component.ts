@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   FormBuilder,
@@ -22,6 +22,7 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
   blobs: IBlob[] = [];
   subscription: Subscription | null = null;
   newBlob: FormGroup;
+  spcBlob: FormGroup;
   distinctTypes: string[] = [];
   selectedTypes: string[] = [];
   users: IUser[] = []; // List of available users
@@ -32,7 +33,8 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private blobService: BlobService,
-    private userService: UserService
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newBlob = this.formBuilder.group({
@@ -44,9 +46,33 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
       image: ['', [Validators.required]],
       users: [[]],
     });
+    this.spcBlob = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      creationDate: new FormControl(''),
+      slack: new FormControl('', [Validators.required]),
+      image: new FormControl('', [Validators.required]),
+      users: new FormControl([]),
+    });
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      if (!params.get('id')) return;
+      this.blobService.readOne(params.get('id')).subscribe((blob) => {
+        if (!this.blobService) return;
+        this.blob = blob;
+        this.spcBlob = new FormGroup({
+          name: new FormControl(this.blob.name, [Validators.required]),
+          slack: new FormControl(this.blob.slack, [Validators.required]),
+          image: new FormControl(this.blob.image, [Validators.required]),
+          users: new FormControl(this.blob.users),
+        });
+        console.log('blob: ', this.blob.name);
+
+        this.spcBlob.get('users')?.setValue(this.blob.users);
+      });
+    });
+
     this.blobService.getDistinctTypesForAllBlobs().subscribe(
       (response: any) => {
         this.distinctTypes = response.results;
@@ -108,11 +134,33 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
           this.router.navigate(['/blobs']);
         },
         error: (error) => {
-          console.error('Error creating bende:', error);
+          console.error('Error creating blob:', error);
         },
       });
 
       this.newBlob.reset();
+    }
+  }
+
+  changeBlob(id: string): void {
+    console.log('change Blob aangeroepen');
+
+    if (this.spcBlob.valid) {
+      const formData = this.spcBlob.value;
+
+      formData.users = this.selectedUsers;
+      console.log('FormData:', formData); // Log the form data for debugging
+      this.blobService.update(formData, id).subscribe({
+        next: (updatedBlob) => {
+          console.log('Blobs updated successfully:', updatedBlob);
+          this.router.navigate(['/blobs']);
+        },
+        error: (error) => {
+          console.error('Error updating blobs:', error);
+        },
+      });
+
+      this.spcBlob.reset();
     }
   }
 

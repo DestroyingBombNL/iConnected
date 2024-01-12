@@ -9,8 +9,9 @@ import { BlobService } from '../../services/blob.service';
 import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription, debounceTime } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'ihomer-blobs-overview',
@@ -40,7 +41,8 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private filterService: FilterService,
     private blobService: BlobService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {
     this.darkroof = 'assets/dark-roof.png';
     this.lightdoor = 'assets/whitedoor.png';
@@ -277,5 +279,39 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
 
     return columnClass;
+  }
+  
+  openDeleteBlob(content: TemplateRef<any>, blobId: string) {
+    this.specificBlob = this.blobs.find((b) => b.id === blobId) as IBlob;
+
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-blob-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+          console.log('closed');
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+          console.log('dismissed');
+        }
+      );
+  }
+
+  closeBlobDetailModal(modal: NgbModalRef) {
+    modal.close();
+  }
+
+  deleteBlob(blobId: string) {
+    this.blobService.delete(this.specificBlob.id).subscribe((result) => {
+      if (result) {
+        this.blobs = this.blobs.filter((b) => b.id !== blobId);
+      }
+    });
+  }
+
+  isAuthenticated(): boolean {
+    if (this.authService.isAdmin) return true;
+    else return false;
   }
 }
