@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { UserService } from '../../services/user.service'; // Import the user service
-import { IProject, IUser } from '@ihomer/shared/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -19,6 +19,9 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
   projects: IProject[] = [];
+  popUpProjects: IProject[] = [];
+  blobs: IBlob[] = [];
+  bendes: IBende[] = [];
   users: IUser[] = []; // Initialize users array
   specificProject = {} as IProject;
   specificUser = {} as IUser;
@@ -82,6 +85,18 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
     // Ensure that users array is populated
     if (this.users.length > 0) {
       this.specificUser = this.users.find((u) => u.id === userId) as IUser;
+
+      this.userService.getProfile(userId).subscribe((profile) => {
+        if (profile.blobs) {
+          this.blobs = profile.blobs;
+        }
+        if (profile.bendes) {
+          this.bendes = profile.bendes;
+        }
+        if (profile.projects) {
+          this.popUpProjects = profile.projects;
+        }
+      });
 
       this.modalService
         .open(content, { ariaLabelledBy: 'modal-user-title' })

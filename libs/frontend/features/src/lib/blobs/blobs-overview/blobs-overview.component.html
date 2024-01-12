@@ -2,41 +2,57 @@
     <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
     <button class= "btn btn-dark" (click)="onSearchButtonClick()">Search</button>
 </div>
-
-<div class="full-background">
-    <div class="container-fluid roof-background">
-        <div class="dark-roof-div justify-content-center d-flex">
-            <img *ngIf="darkroof" [src]="darkroof" alt="darkroof" class="darkroof">
+<div class="background-color">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 p-0">
+                <img class="cloud-image" src="assets/cloudImage.png" alt="Cloud Image">
+            </div>
         </div>
     </div>
-    <div class="container-fluid house-background">
-        <div class="container house-contents">
-            <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
-                <div *ngFor="let blob of blobRow" [ngClass]="calculateColumnClass(blobRow.length)" [style.background]="calculateGradient(blob)"
-                    class="room d-flex flex-column">
-                    <div class="roomname d-flex justify-content-center">
-                        <h5>{{ blob.name }}</h5>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 p-0">
+                <div class="house-contents mb-4">
+                    <div class="darkroof-container">
+                        <img class="darkroof" src="assets/dark-roof.png" alt="Dark Roof">
                     </div>
-                    <div class="d-flex justify-content-between flex-grow-1">
-                        <div class="d-flex flex-wrap justify-content-center flex-grow-1">
-                            <div *ngFor="let user of blob.users" class="user">
-                                <button class="userImg userImgFilter d-flex justify-content-center" id="{{user.id}}">
-                                    <img id="{{user.id}}" (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
-                                    style="border-style: solid;" class="userImg" alt="user avatar">
-                                </button>
+                    <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
+                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)" [style.background]="calculateGradient(blob)"
+                        class="room d-flex flex-column">
+                            <div class="roomname d-flex justify-content-center">
+                                <h5>{{ blob.name }}</h5>
                             </div>
-                        </div>
-                        <div class="door">
-                            <button class="btnDoor">
-                                <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door"
-                                    (click)="open(content, blob.id)">
-                            </button>
+                            <div class="d-flex justify-content-between flex-grow-1">
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <div *ngFor="let user of blob.users" class="user">
+                                        <button class="userImg">
+                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
+                                            style="border-style: solid;" class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="door">
+                                    <button class="btnDoor">
+                                        <img *ngIf="lightdoor" [src]="lightdoor" class="imgDoor" alt="blob info door"
+                                            (click)="open(content, blob.id)">
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="grass-footer"></div>
+    </div>
+</div>
+<button class="add-blob-btn" title="Toevoegen blob">+</button>
+<div class="container-fluid grass-container">
+    <div class="row">
+        <div class="col-12 p-0">
+            <img class="grass-image" src="assets/grassImage.png" alt="Grass Image" #grassImage>
+        </div>
     </div>
 </div>
 
@@ -51,13 +67,13 @@
                 <p><img [src]="specificBlob.image" alt="blob image" width="100%"></p>
                 <p><strong>Aanmaakdatum:</strong> {{ specificBlob.creationDate | date:"dd-MM-yyyy"}}</p>
                 <p><strong>Type:</strong> {{ specificBlob.type }}</p>
-                <p><strong>Slack:</strong> <a href={{specificBlob.slack}} target="_blank">
+                <p><strong>Slack: </strong> <a href={{specificBlob.slack}} target="_blank">
                         {{specificBlob.slack}}</a>
                 </p>
                 <span><strong>Deelnemers:</strong>
-                    <ul>
+                    <ul class="user-list">
                         <li *ngFor="let user of specificBlob?.users" (click)="openUser(userContent, user.id)">
-                            <img [src]="user.profilePicture" alt="Profiel" width="10%" style="border-radius: 25px;">
+                            <img class="userImgPopUp" [src]="user.profilePicture" alt="Profiel" width="20%">
                             {{ user.firstName }}
                         </li>
                     </ul>
@@ -76,20 +92,56 @@
     </div>
     <div class="modal-body text-center">
         <div class="mb-3">
-            <p><img [src]="specificUser.profilePicture" alt="blob image" width="35%" style="border-radius: 50%;">
+            <p><img class="userImgSmall" [src]="specificUser.profilePicture" alt="blob image" width="35%">
             </p>
             <p class="mt-4"><strong>Geboortedatum:</strong> {{ specificUser.birthday | date:"dd-MM-yyyy" }}</p>
             <p class="mt-4"><strong>Bio:</strong> {{ specificUser.bio }}</p>
             <p class="mt-4"><strong>Tags:</strong>
-                <span *ngIf="specificUser.tags && specificUser.tags.length > 0">
-                    <ul class="list-unstyled mt-2">
-                        <li *ngFor="let tag of specificUser.tags">
-                            {{ tag }}
-                        </li>
-                    </ul>
-                </span>
-                <span *ngIf="!(specificUser.tags && specificUser.tags.length > 0)"><br>Geen tags gekozen</span>
+                <ng-container *ngIf="specificUser.tags && specificUser.tags.length > 0; else noTags">
+                    <br>
+                    {{ specificUser.tags.join(', ') }}
+                </ng-container>
+                <ng-template #noTags>
+                    <span><br>Geen tags gekozen</span>
+                </ng-template>
             </p>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <strong>Blob(s)</strong>
+                    <ng-container *ngIf="blobs && blobs.length > 0; else noBlobs">
+                        <div *ngFor="let blob of popUpBlobs; let last = last">
+                            {{ blob.name }}{{ !last ? ',' : '' }}
+                        </div>
+                    </ng-container>
+                    <ng-template #noBlobs>
+                        <span><br>Geen blob</span>
+                    </ng-template>
+                </div>
+
+                <div class="col-md-4">
+                    <strong>Bende</strong>
+                    <ng-container *ngIf="bendes && bendes.length > 0; else noBendes">
+                        <div *ngFor="let bende of bendes; let last = last">
+                            {{ bende.name }}{{ !last ? ',' : '' }}
+                        </div>
+                    </ng-container>
+                    <ng-template #noBendes>
+                        <span><br>Geen bende</span>
+                    </ng-template>
+                </div>
+                <div class="col-md-4">
+                    <strong>Project(en)</strong>
+                    <ng-container *ngIf="projects && projects.length > 0; else noProjects">
+                        <div *ngFor="let project of projects; let last = last">
+                            {{ project.name }}{{ !last ? ',' : '' }}
+                        </div>
+                    </ng-container>
+                    <ng-template #noProjects>
+                        <span><br>Geen project</span>
+                    </ng-template>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { BendeService } from '../../services/bende.service';
 import { UserService } from '../../services/user.service'; // Import the user service
-import { IBende, IUser } from '@ihomer/shared/api';
+import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../auth/auth.service';
@@ -21,6 +21,9 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
   bendes: IBende[] = [];
   users: IUser[] = []; 
+  popUpBendes: IBende[] = [];
+  blobs: IBlob[] = []; 
+  projects: IProject[] = [];
   specificBende = {} as IBende;
   specificUser = {} as IUser;
   subscription: Subscription | null = null;
@@ -87,6 +90,18 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
     // Ensure that users array is populated
     if (this.users.length > 0) {
       this.specificUser = this.users.find((u) => u.id === userId) as IUser;
+
+      this.userService.getProfile(userId).subscribe((profile) => {
+        if (profile.blobs) {
+          this.blobs = profile.blobs;
+        }
+        if (profile.bendes) {
+          this.popUpBendes = profile.bendes;
+        }
+        if (profile.projects) {
+          this.projects = profile.projects;
+        }
+      });
 
       this.modalService
         .open(content, { ariaLabelledBy: 'modal-user-title' })
