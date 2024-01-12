@@ -9,7 +9,7 @@ import { BendeService } from '../../services/bende.service';
 import { UserService } from '../../services/user.service'; // Import the user service
 import { IBende, IUser } from '@ihomer/shared/api';
 import { Subscription } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -20,7 +20,7 @@ import { AuthService } from '../../auth/auth.service';
 export class BendesOverviewComponent implements OnInit, OnDestroy {
   private modalService = inject(NgbModal);
   bendes: IBende[] = [];
-  users: IUser[] = []; // Initialize users array
+  users: IUser[] = []; 
   specificBende = {} as IBende;
   specificUser = {} as IUser;
   subscription: Subscription | null = null;
@@ -152,8 +152,16 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
       );
   }
 
+  closeBendeDetailModal(modal: NgbModalRef) {
+    modal.close();
+  }
+
   deleteBende(bendeId: string) {
-    this.bendeService.delete(bendeId);
+    this.bendeService.delete(this.specificBende.id).subscribe((result) => {
+      if (result) {
+        this.bendes = this.bendes.filter((b) => b.id !== bendeId);
+      }
+    });
   }
 
   isAuthenticated(): boolean {

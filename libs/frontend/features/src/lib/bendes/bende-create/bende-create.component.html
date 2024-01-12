@@ -72,7 +72,7 @@
               <label for="InputImage"
                 [class]="{'text-danger': spcBende.get('image')?.hasError('required') && spcBende.get('image')?.touched}"
                 class="fw-bold">ImageUrl</label>
-              <input type="text" class="form-control mx-auto" id="InputImage" formControlName="image" placeholder={{bende.image}} />
+              <input type="text" class="form-control mx-auto" id="InputImage" formControlName="image"/>
             </div>
           </div>
 
@@ -101,7 +101,7 @@
         <!-- TAGS -->
         <div class="row justify-content-center">
           <div class="text-center mt-4">
-            <button type="button" class="btn btn-register" (click)="changeBende(bende.id)" [disabled]="!newBende.valid">
+            <button type="button" class="btn btn-register" (click)="changeBende(bende.id)" [disabled]="!spcBende.valid">
               Aanpassen
             </button>
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>

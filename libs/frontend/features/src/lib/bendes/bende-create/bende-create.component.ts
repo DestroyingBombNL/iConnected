@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   FormBuilder,
@@ -26,7 +26,8 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private bendeService: BendeService
+    private bendeService: BendeService,
+    private route: ActivatedRoute
   ) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newBende = new FormGroup({
@@ -44,7 +45,25 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.bendeService.readOne(params.get('id')).subscribe((bende) => {
+        if (!this.bendeService) return;
+        console.log("Bende:", bende.name);
+        this.bende = bende;
+        this.spcBende = new FormGroup({
+          name: new FormControl(this.bende.name, [
+            Validators.required,
+          ]),
+          slack: new FormControl(this.bende.slack, [
+            Validators.required
+          ]),
+          image: new FormControl(this.bende.image, [Validators.required]),
+        });
+      console.log("Bende2: ",this.bende.name);
+      });
+    });
+  }
 
   ngOnDestroy() {
     if (this.subscription) {

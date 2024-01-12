@@ -46,13 +46,6 @@ export const appRoutes: Route[] = [
     canActivate: [LoggedInAuthGuard]
   },
   {
-    path: 'bendes/:id',
-    pathMatch: 'full',
-    component: BendeCreateComponent,
-    title: `${appName}Bendes`,
-    canActivate: [LoggedInAuthGuard]
-  },
-  {
     path: 'projects',
     pathMatch: 'full',
     component: ProjectsOverviewComponent,
@@ -85,6 +78,13 @@ export const appRoutes: Route[] = [
       pathMatch: 'full',
       component: BendeCreateComponent,
       title: `${appName}Bende aanmaken`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'bendes/:id',
+      pathMatch: 'full',
+      component: BendeCreateComponent,
+      title: `${appName}Bendes`,
       canActivate: [LoggedInAuthGuard]
     },
     {

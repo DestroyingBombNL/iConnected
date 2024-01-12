@@ -58,14 +58,14 @@
                     </ul>
                 </span>
                 <div *ngIf="isAuthenticated()">
-                    <button type="button" class="btn btn-primary" routerLink="bendes/change">Aanpassen</button>
+                    <button type="button" class="btn btn-primary me-2" [routerLink]="specificBende.id" (click)="modal.close()">Aanpassen</button>
                     <button type="button" class="btn btn-danger"
-                        (click)="openDeleteBende(bendeContent, specificBende.id)">Verwijderen</button>
+                        (click)="openDeleteBende(bendeContent, specificBende.id); modal.close()">Verwijderen</button>
                     
                 </div>
             </div>
         </form>
-    </div>
+    </div> 
 </ng-template>
 
 <ng-template #userContent let-modal>
@@ -102,9 +102,9 @@
     <div class="modal-body text-center">
         <div class="mb-3">
             <p>Ben je zeker dat je deze bende wilt verwijderen?</p>
-            <button type="button" class="btn btn-danger" (click)="deleteBende(specificBende.id)">Verwijderen</button>
-            <button type="button" class="btn-close" aria-label="Close"
-                (click)="modal.dismiss('Cross click')">Annuleer</button>
+            <button type="button" class="btn btn-danger me-3" (click)="deleteBende(specificBende.id); modal.close()">Verwijderen</button>
+            <button type="button" class="btn btn-dark"  aria-label="Close"
+                (click)="modal.dismiss()">Annuleer</button>
         </div>
     </div>
 </ng-template>
