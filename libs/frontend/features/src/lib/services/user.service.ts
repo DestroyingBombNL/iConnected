@@ -27,7 +27,9 @@ export class UserService extends EntityService<IUser> {
             }),
           };
         const tagsUrl = `${this.url}${this.endpoint}/tags`;
-        return this.http.get<string[]>(tagsUrl, httpOptions);
+        return this.http.get<ApiResponse<string[]>>(tagsUrl, httpOptions).pipe(
+          map((result) => result.results as string[] ?? [])
+        );
     }
 
     getProfile(id: string | null, options?: any): Observable<{ user: IUser | undefined, blobs: Array<IBlob>, bendes: Array<IBende>, projects: Array<IProject> }> {

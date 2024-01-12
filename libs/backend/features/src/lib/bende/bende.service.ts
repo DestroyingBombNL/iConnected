@@ -165,6 +165,7 @@ export class BendeService {
                     houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
+                    country: users[i].properties.country,
                     tags: users[i].properties.tags,
                     password: users[i].properties.password,
                     opacity: 1,

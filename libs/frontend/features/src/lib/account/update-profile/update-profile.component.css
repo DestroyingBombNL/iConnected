@@ -1,4 +1,4 @@
-.container-full {
+/* .container-full {
     background-color: rgb(241, 238, 238);
     overflow: hidden;
     height: 90vh;
@@ -35,4 +35,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+} */
+
+.img-rounded {
+    border-radius: 50%;
 }

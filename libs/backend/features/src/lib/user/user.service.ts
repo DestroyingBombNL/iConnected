@@ -197,6 +197,7 @@ export class UserService {
         houseNumber: userData.properties.houseNumber,
         postalCode: userData.properties.postalCode,
         city: userData.properties.city,
+        country: userData.properties.country,
         tags: userData.properties.tags,
         password: userData.properties.password,
         opacity: 1,

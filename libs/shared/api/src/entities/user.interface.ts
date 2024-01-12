@@ -12,6 +12,7 @@ export interface IUser {
     houseNumber: string;
     postalCode: string;
     city: string;
+    country: string;
     tags: string[];
     password: string;
     opacity: number;
