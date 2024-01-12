@@ -9,9 +9,9 @@ import { BendeService } from '../../services/bende.service';
 import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription, debounceTime } from 'rxjs';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'ihomer-bendes-overview',
@@ -41,7 +41,7 @@ export class BendesOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private filterService: FilterService,
     private bendeService: BendeService,
-    private userService: UserService
+    private userService: UserService,
     private authService: AuthService
   ) {
     this.darkroof = 'assets/dark-roof.png';
