@@ -148,7 +148,8 @@ export class ProjectService {
                 slack: projectData.properties.slack,
                 creationDate: new Date(projectData.properties.creationDate),
                 image: projectData.properties.image,
-                users: []
+                users: [],
+                gradient: ["#b9adad", "#b9adad"]
             };
     
             for (let i = 0; i < users.length; i++) {

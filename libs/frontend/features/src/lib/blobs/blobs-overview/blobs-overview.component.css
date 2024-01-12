@@ -57,11 +57,11 @@
 }
 
 .imgDoor {
-  width: 3rem;
-  height: auto;
+  width: 3.2rem;
+  height: 5.5rem;
 }
 
-.userImg {
+.userImgButton {
   width: 3.5rem;
   height: auto;
   margin: 0.2rem;
@@ -70,10 +70,24 @@
   background-color: transparent;
 }
 
+.userImg {
+  border-radius: 50%;
+  width: 3.5rem;
+  margin: 0.2rem;
+  border-style: solid;
+  border-color: #27005a;
+}
+
 .door {
   margin-top: auto;
 }
 
+.btnDoor {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
 .user-list {
   list-style: none;
   padding: 0;

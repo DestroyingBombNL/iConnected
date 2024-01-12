@@ -133,7 +133,7 @@ export class UserService {
         image: blobData.properties.image,
         type: blobData.properties.type,
         users: [],
-        gradient: ["lightgrey", "lightgrey"]
+        gradient: ["#b9adad", "#b9adad"]
       };
       return blob;
     })[0];

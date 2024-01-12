@@ -148,7 +148,8 @@ export class BendeService {
                 creationDate: new Date(bendeData.properties.creationDate),
                 slack: bendeData.properties.slack,
                 image: bendeData.properties.image,
-                users: []
+                users: [],
+                gradient: ["#b9adad", "#b9adad"]
             };
     
             for (let i = 0; i < users.length; i++) {
