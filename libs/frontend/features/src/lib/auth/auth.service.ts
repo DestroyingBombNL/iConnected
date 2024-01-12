@@ -14,6 +14,7 @@ export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthService>(
   providedIn: 'root',
 })
 export class AuthService {
+  public isAdmin = false;
   private readonly CURRENT_USER = 'currentuser';
   private readonly AUTH_TOKEN = 'auth_token';
   private readonly headers = new HttpHeaders({
@@ -44,6 +45,7 @@ export class AuthService {
         map((response) => {
           if (!response) return undefined;
           response = response.results as ILoginResponse;
+          this.isAdmin = response.isAdmin;
           this.saveUserToLocalStorage(response.user);
           this.saveUserTokenToLocalStorage(response.token);
           return response.user;
@@ -102,4 +104,6 @@ export class AuthService {
     if (!token) return;
     localStorage.setItem(this.AUTH_TOKEN, token);
   }
+
+
 }
