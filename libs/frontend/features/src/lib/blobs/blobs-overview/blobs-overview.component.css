@@ -150,3 +150,8 @@
     margin-left: 15px;
     margin-top: 15px;
 }
+
+.filterDiv .filterElement {
+  margin-top: 1px;
+  width: 20vw;
+}

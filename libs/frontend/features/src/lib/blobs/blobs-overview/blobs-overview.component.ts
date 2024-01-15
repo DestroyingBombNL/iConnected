@@ -36,6 +36,8 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   lightdoor?: string;
   cloudImage?: string;
   grassImage?: string;
+  tags: string[] = [];
+  selectedTag: string | null = null;
   closeResult = '';
 
   constructor(
@@ -63,25 +65,17 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
         this.users = users;
       }
     });
+    this.userService.getDistinctTagsForAllUsers().subscribe((tags) => {
+      if (tags !== null) {
+        this.tags = tags;
+      }
+    })
   }
 
   onSearchInput(event: Event): void {
-    this.currentInputValue = (<HTMLInputElement>event.target).value;
-
-    if (this.currentInputValue == '') {
-      this.subscription = this.blobService.readAll().subscribe((results) => {
-        if (results !== null) {
-          this.blobs = results.sort((a, b) => {
-            return a.name.localeCompare(b.name);
-          });
-        }
-      });
-    }
-  }
-
-  onSearchAction(event: Event): void {
+    console.log("onSearchInput")
+    console.log((<HTMLInputElement>event.target).value)
     if ((<HTMLInputElement>event.target).value == '') {
-      console.log('click');
       this.subscription = this.blobService.readAll().subscribe((results) => {
         if (results !== null) {
           this.blobs = results.sort((a, b) => {
@@ -90,13 +84,35 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      console.log('enter');
-      this.searchElements(this.currentInputValue);
+      this.selectedTag = (<HTMLInputElement>event.target).value;
     }
   }
 
+  onSearchAction(event: Event): void {
+    console.log("onSearchAction")
+    this.searchElements(this.selectedTag);
+  }
+
+  onClear(event: Event): void {
+    console.log("onClear")
+    if (this.selectedTag == '' || this.selectedTag == null) {
+      this.subscription = this.blobService.readAll().subscribe((results) => {
+        if (results !== null) {
+          this.blobs = results.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+          });
+        }
+      });
+    }
+  }
+
+  onClick(event: Event): void {
+    console.log("onClick")
+  }
+
   onSearchButtonClick(): void {
-    this.searchElements(this.currentInputValue);
+    console.log('Selected Tag:', this.selectedTag);
+    this.searchElements(this.selectedTag);
   }
 
   ngOnDestroy() {
@@ -105,12 +121,12 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchElements(searchText: string): void {
+  searchElements(searchText: string | null): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    if (searchText === '') {
+    if (searchText === '' || searchText == null) {
       this.clearSearchResults();
       return;
     }
