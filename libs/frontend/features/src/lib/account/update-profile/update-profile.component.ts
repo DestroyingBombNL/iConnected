@@ -4,7 +4,7 @@ import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { IUser } from '@ihomer/api';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'ihomer-update-profile',
@@ -34,7 +34,6 @@ export class UpdateProfileComponent implements OnInit {
   save(): void {
     this.userService.update(this.user, this.user.id).subscribe((updated) => {
       if (updated) {
-        console.log(updated);
         this.router.navigate(['/profile']);
       }
     });
@@ -42,10 +41,6 @@ export class UpdateProfileComponent implements OnInit {
 
   getAllTags(): void {
     this.userService.getDistinctTagsForAllUsers().subscribe((result) => {
-      // for (const tag of result) {
-      //   this.allTags.push(tag);
-      // }
-      // console.log("Got new tags: ", this.allTags);
       this.allTags.next(result);
     });
   }
