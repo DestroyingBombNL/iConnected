@@ -3,12 +3,16 @@
   height: 40rem;
   object-fit: cover;
 }
+
 .darkroof-container {
-  position: absolute; /* Positioneer het dakbeeld absoluut ten opzichte van de .house-contents container */
-  top: -30.3rem; /* Plaats het dakbeeld 10px boven de .house-contents container */
+  position: absolute;
+  /* Positioneer het dakbeeld absoluut ten opzichte van de .house-contents container */
+  top: -30.3rem;
+  /* Plaats het dakbeeld 10px boven de .house-contents container */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 3; /* Zorg ervoor dat het dak boven de huisinhoud staat */
+  z-index: 3;
+  /* Zorg ervoor dat het dak boven de huisinhoud staat */
 }
 
 .darkroof {
@@ -17,6 +21,7 @@
   margin-right: 0.3rem;
   object-fit: cover;
 }
+
 .container {
   position: relative;
 }
@@ -28,10 +33,12 @@
 
 .house-contents {
   max-width: 60rem;
-  margin: 0 auto; /* Dit centreert de container */
+  margin: 0 auto;
+  /* Dit centreert de container */
   bottom: 3rem;
   position: relative;
-  z-index: 3; /* Zorg ervoor dat de huisinhoud boven de grasafbeelding staat */
+  z-index: 3;
+  /* Zorg ervoor dat de huisinhoud boven de grasafbeelding staat */
 }
 
 .grass-container {
@@ -44,7 +51,8 @@
   object-fit: cover;
   position: absolute;
   bottom: 0;
-  z-index: 0; /* Zorg ervoor dat de grasafbeelding onder de huisinhoud staat */
+  z-index: 0;
+  /* Zorg ervoor dat de grasafbeelding onder de huisinhoud staat */
 }
 
 .hall {
@@ -88,6 +96,7 @@
   padding: 0;
   margin: 0;
 }
+
 .user-list {
   list-style: none;
   padding: 0;
@@ -145,8 +154,13 @@
 }
 
 .filterDiv {
-    position: fixed;
-    z-index: 10;
-    margin-left: 15px;
-    margin-top: 15px;
+  position: fixed;
+  z-index: 10;
+  margin-left: 15px;
+  margin-top: 15px;
+}
+
+.btn-update {
+  background-color: #216e8e;
+  color: white;
 }

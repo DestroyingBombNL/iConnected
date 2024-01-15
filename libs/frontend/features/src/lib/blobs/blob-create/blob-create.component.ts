@@ -10,6 +10,7 @@ import {
 import { BlobService } from '../../services/blob.service';
 import { IBlob, IUser } from '@ihomer/shared/api';
 import { UserService } from '../../services/user.service';
+import { CompareWithFn } from '@ng-select/ng-select/lib/ng-select.component';
 
 @Component({
   selector: 'ihomer-blob-create',
@@ -28,6 +29,7 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
   users: IUser[] = []; // List of available users
   selectedUsers: IUser[] = []; // List of selected users
   userNames: string[] = []; // List of user names
+  compareUsers: CompareWithFn;
 
   constructor(
     private router: Router,
@@ -36,6 +38,7 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private route: ActivatedRoute
   ) {
+    this.compareUsers = (u1, u2) => u1.id === u2.id;
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newBlob = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -148,7 +151,6 @@ export class BlobCreateComponent implements OnInit, OnDestroy {
     if (this.spcBlob.valid) {
       const formData = this.spcBlob.value;
 
-      formData.users = this.selectedUsers;
       console.log('FormData:', formData); // Log the form data for debugging
       this.blobService.update(formData, id).subscribe({
         next: (updatedBlob) => {

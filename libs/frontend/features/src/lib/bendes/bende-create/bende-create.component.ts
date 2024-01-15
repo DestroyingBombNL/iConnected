@@ -10,6 +10,7 @@ import {
 import { BendeService } from '../../services/bende.service';
 import { IBende, IUser } from '@ihomer/shared/api';
 import { UserService } from '../../services/user.service';
+import { CompareWithFn } from '@ng-select/ng-select/lib/ng-select.component';
 
 @Component({
   selector: 'ihomer-bende-create',
@@ -25,7 +26,8 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
   spcBende: FormGroup;
   users: IUser[] = []; // List of available users
   selectedUsers: IUser[] = []; // List of selected users
-  userNames: string[] = []; // List of user names
+  userNames: string[] = []; // List of user names  
+  compareUsers: CompareWithFn;
 
   constructor(
     private router: Router,
@@ -34,6 +36,7 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userService: UserService
   ) {
+    this.compareUsers = (u1, u2) => u1.id === u2.id;
     this.backgroundImage = '/assets/backgroundiHomer.png';
     this.newBende = this.formBuilder.group({
       name: new FormControl('', [Validators.required]),
@@ -91,10 +94,6 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  compareUsers(user1: any, user2: any): boolean {
-    return user1 && user2 && user1.id === user2.id;
-  }
-
   createBende(): void {
     console.log('create Bende aangeroepen');
 
@@ -102,6 +101,7 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
       const formData = this.newBende.value;
 
       formData.users = this.selectedUsers;
+
       this.bendeService.create(formData).subscribe({
         next: (createdBende) => {
           console.log('Bende created successfully:', createdBende);
@@ -122,7 +122,6 @@ export class BendeCreateComponent implements OnInit, OnDestroy {
     if (this.spcBende.valid) {
       const formData = this.spcBende.value;
 
-      formData.users = this.selectedUsers;
       console.log('FormData:', formData); // Log the form data for debugging
       this.bendeService.update(formData, id).subscribe({
         next: (updatedBende) => {

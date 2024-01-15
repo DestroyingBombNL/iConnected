@@ -1,6 +1,7 @@
 <div class="filterDiv d-flex">
-    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
-    <button class= "btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)"
+        placeholder="Zoeken">
+    <button class="btn btn-dark" (click)="onSearchButtonClick()">Search</button>
 </div>
 <div class="background-color">
     <div class="container-fluid">
@@ -19,8 +20,8 @@
                         <img class="darkroof" src="assets/dark-roof.png" alt="Dark Roof">
                     </div>
                     <div *ngFor="let blobRow of getBlobsInRows()" class="row hall">
-                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)" [style.background]="calculateGradient(blob)"
-                        class="room d-flex flex-column">
+                        <div *ngFor="let blob of blobRow; let i = index" [ngClass]="calculateColumnClass(blobRow, i)"
+                            [style.background]="calculateGradient(blob)" class="room d-flex flex-column">
                             <div class="roomname d-flex justify-content-center">
                                 <h5>{{ blob.name }}</h5>
                             </div>
@@ -28,8 +29,10 @@
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <div *ngFor="let user of blob.users" class="user">
                                         <button class="userImgButton">
-                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
-                                            class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
+                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
+                                                [style.opacity]="user.opacity" [style.border-width]="user.border"
+                                                class="userImg" alt="user avatar"
+                                                title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
                                         </button>
                                     </div>
                                 </div>
@@ -80,10 +83,11 @@
                 </span>
                 <p><strong>Mandaat:</strong> {{ specificBlob.mandate }}</p>
                 <div *ngIf="isAuthenticated()">
-                    <button type="button" class="btn btn-primary me-2" [routerLink]="specificBlob.id" (click)="modal.close()">Aanpassen</button>
+                    <button type="button" class="btn btn-update me-2" [routerLink]="specificBlob.id"
+                        (click)="modal.close()">Aanpassen</button>
                     <button type="button" class="btn btn-danger"
                         (click)="openDeleteBlob(blobDelete, specificBlob.id); modal.close()">Verwijderen</button>
-                    
+
                 </div>
             </div>
         </form>
@@ -160,9 +164,9 @@
     <div class="modal-body text-center">
         <div class="mb-3">
             <p>Ben je zeker dat je deze blob wilt verwijderen?</p>
-            <button type="button" class="btn btn-danger me-3" (click)="deleteBlob(specificBlob.id); modal.close()">Verwijderen</button>
-            <button type="button" class="btn btn-dark"  aria-label="Close"
-                (click)="modal.dismiss()">Annuleer</button>
+            <button type="button" class="btn btn-danger me-3"
+                (click)="deleteBlob(specificBlob.id); modal.close()">Verwijderen</button>
+            <button type="button" class="btn btn-dark" aria-label="Close" (click)="modal.dismiss()">Annuleer</button>
         </div>
     </div>
 </ng-template>

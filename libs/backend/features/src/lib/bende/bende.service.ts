@@ -80,6 +80,21 @@ export class BendeService {
     this.logger.log('updateBende');
 
     const params: { [key: string]: any } = { id };
+    if (bende.users) {
+      // Delete all existing relationships for the Bende
+      const deleteAllRelationshipsQuery = `
+                MATCH (user:User)-[r:MEMBER_OF]->(bende:Bende)
+                WHERE bende.uuid = $id
+                DETACH DELETE r
+            `;
+
+      // Run the query to delete all existing relationships
+      await this.neo4jService.write(deleteAllRelationshipsQuery, params);
+    }
+    // Add selected user ids to params
+    params.selectedUserIds = bende.users;
+    console.log('params', bende);
+
     let setClause = 'SET ';
 
     // Construct the SET clause dynamically based on the properties in the 'bende' object
@@ -98,11 +113,19 @@ export class BendeService {
     });
 
     const updateQuery = `
-            MATCH (bende:Bende)
-            WHERE bende.uuid = $id
-            ${setClause} 
-            RETURN bende`;
-    const updateResult = await this.neo4jService.write(updateQuery, params);
+    MATCH (bende:Bende)
+    WHERE bende.uuid = $id
+    ${setClause} 
+    RETURN bende
+    `;
+
+const createRelationshipsQuery = `
+    MATCH (bende:Bende), (user:User)
+    WHERE bende.uuid = $id AND user.uuid IN $selectedUserIds
+    MERGE (user)-[:MEMBER_OF]->(bende)
+`;
+await this.neo4jService.write(createRelationshipsQuery, params);
+     const updateResult = await this.neo4jService.write(updateQuery, params);
 
     if (updateResult.records.length > 0) {
       const updatedBendeId =
