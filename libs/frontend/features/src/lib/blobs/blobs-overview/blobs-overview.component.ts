@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { BlobService } from '../../services/blob.service';
 import { UserService } from '../../services/user.service';
-import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
+import { IBende, IBlob, IProject, IUser, Type } from '@ihomer/shared/api';
 import { Subscription, debounceTime } from 'rxjs';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
@@ -36,6 +36,8 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   cloudImage?: string;
   grassImage?: string;
   closeResult = '';
+  roomsLayout: number[][] = [[], [], []];
+  roomsLayoutNothing: number[][] = [[], [], []];
 
   constructor(
     private filterService: FilterService,
@@ -52,8 +54,9 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     this.subscription = this.blobService.readAll().subscribe((results) => {
       if (results !== null) {
         this.blobs = results.sort((a, b) => {
-          return a.name.localeCompare(b.name);
+          return a.users.length - b.users.length;
         });
+        this.calculateBlobLayout(this.blobs);
       }
     });
     this.userService.readAll().subscribe((users) => {
@@ -241,6 +244,101 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
+  calculateBlobLayout(blobs: IBlob[]): void {
+    console.log(blobs.length);
+    const lastBlob: IBlob = {
+      users: [],
+      id: '',
+      name: '',
+      creationDate: new Date(),
+      slack: '',
+      mandate: '',
+      type: Type.Bestuur,
+      image: '',
+      gradient: []
+    };
+    blobs.push(lastBlob);
+    console.log(blobs.length)
+    let x = 0;
+    let y = 0;
+    blobs.forEach((blob) => {
+      if (x > 2) {
+        x = 0;
+        y++;
+      }
+      if ((this.roomsLayout[0][y - 1] + this.roomsLayout[1][y - 1] + this.roomsLayout[2][y - 1]) > 12) {
+        if (this.roomsLayout[2][y - 1] != undefined) {
+          this.roomsLayout[0][y] = this.roomsLayout[2][y - 1];
+          this.roomsLayout[2][y - 1] = 0;
+          this.roomsLayout[1][y - 1] = 12 - this.roomsLayout[0][y - 1];
+          x = 1;
+        } else if (this.roomsLayout[1][y - 1] != undefined) {
+          this.roomsLayout[0][y + 1] = this.roomsLayout[1][y];
+          this.roomsLayout[1][y] = 0;
+          this.roomsLayout[1][y] = 12;
+          x = 1;
+          y++;
+        } else {
+          this.roomsLayout[0][y] = 12;
+        }
+      }
+      if (blob.users.length == 0) {
+        if ((this.roomsLayout[0][y] + this.roomsLayout[1][y]) > 12) {
+          this.roomsLayout[0][y + 1] = this.roomsLayout[1][y]
+          this.roomsLayout[1][y] = 0;
+          this.roomsLayout[2][y] = 0;
+          this.roomsLayout[1][y + 1] = 0;
+          this.roomsLayout[2][y + 1] = 0;
+          this.roomsLayout[0][y] = 12;
+        }
+      } else if (blob.users.length <= 3) {
+        this.roomsLayout[x][y] = 4
+      } else if (blob.users.length <= 6 ) {
+        this.roomsLayout[x][y] = 6
+      } else {
+        this.roomsLayout[x][y] = 12
+      }
+      blob.lgSize += (this.roomsLayout[x][y]).toString();
+      x++;
+    })
+
+    for (let i = 0; i < this.roomsLayout[0].length; i++) {
+      let rowLog = "Row " + (i + 1) + ": ";
+      for (let j = 0; j < this.roomsLayout.length; j++) {
+          rowLog += this.roomsLayout[j][i] + " ";
+      }
+      console.log(rowLog.trim());
+    }
+    for (let i = 0; i < this.roomsLayoutNothing[0].length; i++) {
+      let rowLog = "Row " + (i + 1) + ": ";
+      for (let j = 0; j < this.roomsLayoutNothing.length; j++) {
+          rowLog += this.roomsLayoutNothing[j][i] + " ";
+      }
+      console.log(rowLog.trim());
+    }
+    console.log(this.roomsLayout[0].length)
+    console.log(this.roomsLayout[0][0]);
+  }
+
+  getBlobsInRows(): any[][] {
+    return this.roomsLayout;
+  }
+
+  calculateColumnClass(blobRow: any[], blobIndex: number): string {
+    return '';
+  }
+
+  getColumnIndex(): number {
+    return 0;
+  }
+
+  addColumnSizeToBlob(): void {
+    this.blobs.forEach((blob) => {
+      blob.lgSize += 
+    })
+  }
+  /*
+
   getBlobsInRows(): any[][] {
     const blobsInRows = [];
     for (let i = 0; i < this.blobs.length; i += 3) {
@@ -250,32 +348,21 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   }
 
   calculateColumnClass(blobRow: any[], blobIndex: number): string {
-    let columnClass = 'col';
-
     const currentBlobUserCount = blobRow[blobIndex].users.length;
-    const blobsWithSameSize = blobRow.filter((blob) => {
-      if (currentBlobUserCount <= 6) {
-        return blob.users.length <= 6;
-      } else if (currentBlobUserCount <= 9) {
-        return blob.users.length > 6 && blob.users.length <= 9;
-      } else {
-        return blob.users.length > 9;
-      }
-    });
 
-    if (currentBlobUserCount <= 6) {
-      columnClass =
-        blobsWithSameSize.length === 1
-          ? 'col-12'
-          : blobsWithSameSize.length === 2
-          ? 'col-6'
-          : 'col-4';
-    } else if (currentBlobUserCount <= 9) {
-      columnClass = blobsWithSameSize.length === 1 ? 'col-12' : 'col-6';
+    if (currentBlobUserCount <= 3) {
+      this.sizeHelper += 4;
+      this.sizeHelper(4);
+        return 'col-4';
+    } else if (currentBlobUserCount <= 6) {
+      this.sizeHelper += 6;
+        return 'col-6';
     } else {
-      columnClass = 'col-12';
-    }
+      this.sizeHelper += 4;
 
-    return columnClass;
+        return 'col-12';
+    }
   }
+
+  }*/
 }

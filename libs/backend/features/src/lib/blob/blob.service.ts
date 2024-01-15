@@ -153,7 +153,8 @@ export class BlobService {
                 image: blobData.properties.image,
                 type: blobData.properties.type,
                 users: [],
-                gradient: ["#b9adad", "#b9adad"]
+                gradient: ["#b9adad", "#b9adad"],
+                lgSize: "col-"
             };
     
             for (let i = 0; i < users.length; i++) {

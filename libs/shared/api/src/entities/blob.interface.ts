@@ -10,6 +10,7 @@ export interface IBlob {
     image: string;
     users: IUser[];
     gradient: string[];
+    lgSize: string;
 }
 
 export enum Type {
