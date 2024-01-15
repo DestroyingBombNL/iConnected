@@ -63,7 +63,7 @@ export class AuthService {
     }).pipe(
       map((response) => {
         if (!response) return undefined;
-        this.isAdmin = response.isAdmin;  
+        this.isAdmin = (response as any).results.isAdmin;
         return response;
       }),
       catchError((err) => {
