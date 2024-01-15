@@ -14,3 +14,7 @@ input.ng-invalid {
 .form-label {
     font-weight: bold;
 }
+
+input::placeholder {
+    color: rgb(194, 194, 194) !important;
+}
