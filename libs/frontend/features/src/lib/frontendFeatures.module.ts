@@ -19,7 +19,10 @@ import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
 import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
 import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
 import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
+import { FilterService } from './services/filter.service';
 import { LoggedInAuthGuard } from './auth/auth.guards';
+import { BendeCreateComponent } from './bendes/bende-create/bende-create.component';
+import { ProjectCreateComponent } from './projects/project-create/project-create.component';
 
 @NgModule({
   imports: [
@@ -42,27 +45,30 @@ import { LoggedInAuthGuard } from './auth/auth.guards';
     BendesOverviewComponent,
     LogoutComponent,
     BlobCreateComponent,
+    BendeCreateComponent,
+    ProjectCreateComponent,
   ],
   providers: [
     BlobService,
     UserService,
     ProjectService,
     BendeService,
-    BlobsOverviewComponent, 
-    RegisterComponent, 
-    LoginComponent,
     AuthService,
+    FilterService,
     LoggedInAuthGuard,
-    HttpClient
+    HttpClient,
   ],
   exports: [
-    BlobsOverviewComponent, 
-    RegisterComponent, 
+    BlobsOverviewComponent,
+    BendesOverviewComponent,
+    ProjectsOverviewComponent,
     LoginComponent,
     ProfileComponent,
     UpdateProfileComponent,
     LogoutComponent,
     BlobCreateComponent,
+    BendeCreateComponent,
+    ProjectCreateComponent,
   ],
 })
 export class FrontendFeaturesModule {}

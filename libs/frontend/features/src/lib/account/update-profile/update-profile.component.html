@@ -1,118 +1,116 @@
-<div class="container">
-
-    <h1 class="text-center mb-5 mt-5"> Wijzig hier je gegevens!</h1>
-
-    <div class="top-container text-center">
-  
-    <form [formGroup]="updateProfile" (ngSubmit)="updateUser()">
-        <div class="row mt-3 mb-5 text-center d-flex justify-content-center">
-            <div class="col-12 mt-3 mb-3">
-              <span class="fw-bold">Profielfoto</span>
-              <input type="text" class="form-control w-50 mx-auto" [(ngModel)]="user.profilePicture" name="profilePicture">
-            </div>
-        </div>
-
-
-        <div class="row mt-3 d-flex justify-content-center">
-            <div class="col-md-3">
-                <span class="fw-bold">Voornaam</span>
-                <input type="text" class="form-control text-center" [(ngModel)]="user.firstName" name="firstName">
-            </div>
-    
-            <div class="col-md-2">
-                <span class="fw-bold">Tussenvoegsel</span>
-                <input type="text" class="form-control text-center" [(ngModel)]="user.infix" name="infix">
-            </div>
-    
-            <div class="col-md-3 mb-3">
-                <span class="fw-bold">Achternaam</span>
-                <input type="text" class="form-control text-center" [(ngModel)]="user.lastName" name="lastName">
-            </div>
-        </div>
-
-  
-    <hr />
-
-    <div class="bio-box mt-4 mb-5 text-center">
-        <span class="fw-bold">Bio</span>
-        <textarea class="form-control w-50 mx-auto" [(ngModel)]="user.bio" name="bio" rows="5"></textarea>
-    </div>
-
-    <div class="info-container text-center">
-        <div class="row">
-            <div class="col-md-6 info-box mt-3">
-                <h2>Basis Informatie</h2>
-
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Email</span>
-                    <input type="email" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.email" name="email">
-                </div>
-
-                <div class="form-group mb-4" [ngClass]="{'has-error': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched}">
-                    <label for="InputEmail" class="fw-bold" [ngClass]="{'text-danger': updateProfile.get('email')?.invalid && updateProfile.get('email')?.touched}">Emailadres</label>
-                    <input type="email" class="form-control" id="InputEmail" formControlName="email">
-                    
-                    <div *ngIf="updateProfile.get('email')?.hasError('required') && updateProfile.get('email')?.touched" class="text-danger">
-                    </div>
+<form *ngIf="this.user" name="form" #profileForm="ngForm" (ngSubmit)="save()">
+    <div class="container mt-3">
+        <h1>Profiel wijzigen</h1>
         
-                    <div *ngIf="updateProfile.get('email')?.hasError('invalidEmail') && !updateProfile.get('email')?.hasError('required') && updateProfile.get('email')?.touched" class="text-danger">
+        <!-- Profiel foto -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <img class="img-fluid img-rounded m-3" style="width: 200px; height: 200px;" [src]="this.user.profilePicture">
+                    <div class="my-auto w-100">
+                        <label class="form-label">Profielfoto</label>
+                        <input type="text" class="form-control w-100" [(ngModel)]="this.user.profilePicture" #profileCountry="ngModel" name="profilePicture" placeholder="https://placehold.co/200" required>   
                     </div>
                 </div>
-                
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Geboortedatum</span>
-                    <input type="date" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.birthday" name="birthday">
-                </div>
-
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Adres</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.street" name="street">
-                </div>
-
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Huisnummer</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.houseNumber" name="houseNumber">
-                </div>
-
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Postcode</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.postalCode" name="postalCode">
-                </div>
-
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Stad</span>
-                    <input type="text" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.city" name="city">
-                </div>
-
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Wachtwoord</span>
-                    <input type="password" class="form-control w-50 mx-auto text-center" [(ngModel)]="user.password" name="password">
-                </div>
-
-                    <!-- 
-                <div class="email-box mt-4 text-center">
-                    <span class="fw-bold">Land</span>
-                    <p>{{ user?.country || 'No country available' }}</p>
-                </div>-->
             </div>
+        </div>
 
-            <div class="col-md-6 info-box mt-3">
-                <h2>Andere Informatie</h2>
-
-                <div class="form-group mb-4">
-                    <label for="tags" class="fw-bold">Tags</label>
-                    <ng-select class="mx-auto w-75" [(ngModel)]="selectedTags" [items]="distinctTags" (change)="onTagSelectionChanged($event)" name="tags" [searchable]="true" [multiple]="true" [addTag]="true"></ng-select>
+        <!-- Person -->
+        <div class="row">
+            <div class="col-12 col-sm-4">
+                <div class="mb-3">
+                    <label class="form-label">Voornaam</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.firstName" #profileFirstName="ngModel" name="firstName" placeholder="Voornaam" required>
                 </div>
+            </div>
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Tussenvoegsel</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.infix" #profileInfix="ngModel" name="infix" placeholder="Tussenvoegsel">
+                </div>
+            </div>
+            <div class="col-12 col-sm-5">
+                <div class="mb-3">
+                    <label class="form-label">Achternaam</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.lastName" #profileLastName="ngModel" name="lastName" placeholder="Achternaam" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <label class="form-label">Geboortedatum</label>
+                <input type="date" class="form-control" [(ngModel)]="this.user.birthday" [ngModel]="this.user.birthday| date: 'yyyy-MM-dd'" #profileLastName="ngModel" name="birthday" placeholder="Geboortedatum" required>
+            </div>
+        </div>
 
-                  
-
-                
+        <!-- Account -->
+        <div class="row mt-4">
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">E-mailadres</label>
+                    <input type="email" class="form-control" [(ngModel)]="this.user.email" #profileEmail="ngModel" name="email" placeholder="E-mailadres" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Wachtwoord</label>
+                    <input type="password" class="form-control" [(ngModel)]="this.user.password" #profilePassword="ngModel" name="password" placeholder="Wachtwoord">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Adres -->
+        <div class="row mt-4">
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Land</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.country" [ngModelOptions]="{updateOn: 'blur'}" #profileCountry="ngModel" name="country" placeholder="Land" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Woonplaats</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.city" #profileCity="ngModel" name="city" placeholder="Woonplaats" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Postcode</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.postalCode" #profilePostalCode="ngModel" name="postalCode" placeholder="1234AB" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Straat</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.street" #profileStreet="ngModel" name="street" placeholder="Straat" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Huisnummer</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.houseNumber" #profileHousenumber="ngModel" name="houseNumber" placeholder="1a" required>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile -->
+        <div class="row mt-4">
+            <div class="col-12 col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label">Bio</label>
+                    <textarea class="form-control" [(ngModel)]="this.user.bio" #profileBio="ngModel" name="bio" placeholder="Bio" required></textarea>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group mb-3">
+                    <label class="form-label">Tags</label>
+                    <ng-select [items]="this.allTags" [(ngModel)]="this.user.tags" name="tags" [multiple]="true" [closeOnSelect]="false"></ng-select>
+                </div>
             </div>
         </div>
     </div>
 
-        <div class="button-div d-flex justify-content-center">
-            <button type="button" class="btn btn-update mb-5" (click)="updateUser()"> Wijzig jouw gegevens </button>
-        </div>
-    </form>
+    <div class="w-100 d-flex my-5">
+        <button type="submit" class="btn btn-update mx-auto">Opslaan</button>
     </div>
+</form>

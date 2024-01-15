@@ -1,137 +1,97 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { IUser } from '@ihomer/api';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ihomer-update-profile',
   templateUrl: './update-profile.component.html', 
   styleUrls: ['./update-profile.component.css'],
 })
-export class UpdateProfileComponent implements OnInit {
+export class UpdateProfileComponent implements AfterViewInit {
   user!: IUser;
-  userId: string | null = null;
-  distinctTags: string[] = [];
-  selectedTags: string[] = [];
-  updateProfile: FormGroup;
+  userForm!: FormGroup; 
+  allTags: string[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService,
-    readonly authService: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder, 
-    ) {
-      this.updateProfile = this.formBuilder.group({
-        firstName: ['', [Validators.required]],
-        infix: [''],
-        lastName: ['', [Validators.required]],
-        birthday: ['', [Validators.required, this.dateValidator]],
-        email: ['', [Validators.required, this.validEmail]],
-        street: ['', [Validators.required]],
-        houseNumber: ['', [Validators.required, this.houseNumberValidator]],
-        postalCode: ['', [Validators.required, this.postalCodeValidator]],
-        city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]]
+  constructor(readonly authService: AuthService, readonly userService: UserService, private route: ActivatedRoute, private router: Router) {}
+
+  ngAfterViewInit(): void {
+    const localUser = this.authService.getUserFromLocalStorage();
+    if (!localUser) return;
+    this.getAllTags();
+    this.route.paramMap.subscribe((params) => {
+      this.userService.getProfile(params.get("id")).subscribe((profile) => {
+        if (!profile.user) return;
+        this.getAllTags();
+        this.user = profile.user!;
       });
-    }
+    });
+  }
 
-
-    ngOnInit(): void {
-      this.authService.getUserFromLocalStorage().subscribe((user: IUser | null) => {
-        if (user !== null) {
-          this.userId = user.id;
-          this.userService.readOne(this.userId).subscribe((observable) => {
-            this.user = observable;
-            console.log(this.user.birthday)
-          this.selectedTags = this.user?.tags || [];
-          });
-        } else {
-          console.log('User is not logged in');
-        }
-      });
-    
-      this.fetchDistinctTags();
-    }
-
-    updateUser() {
-      console.log('Updating user:', this.user);
-      if (this.userId) {
-        this.userService.update(this.user, this.userId).subscribe({
-          next: (updatedUser) => {
-            console.log('User updated successfully:', updatedUser);
-            this.router.navigate(['/profile']); 
-          },
-          error: (error) => {
-            console.error('Error updating user:', error);
-          }
-        });
-      } else {
-        console.error('User ID is null. Cannot update user.');
+  save(): void {
+    this.userService.update(this.user, this.user.id).subscribe((updated) => {
+      if (updated) {
+        console.log(updated);
+        this.router.navigate(['/profile']);
       }
-    }
+    });
+  }
 
-    onTagSelectionChanged(tags: any) {
-      this.selectedTags = tags;
-    }
-    
-    private fetchDistinctTags(): void {
-      this.userService.getDistinctTagsForAllUsers().subscribe(
-        (response: any) => {
-          this.distinctTags = response.results;
-          console.log('Distinct Tags for All Users:', this.distinctTags);
-        },
-        (error: any) => {
-          console.error('Error fetching distinct tags:', error);
-        }
-      );
-    }
+  getAllTags(): void {
+    this.userService.getDistinctTagsForAllUsers().subscribe((result) => {
+      for (const tag of result) {
+        this.allTags.push(tag);
+      }
+    });
+  }
 
-    validEmail(control: FormControl): { [s: string]: boolean } | null {
-      const email = control.value;
-      const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
-      return regexp.test(email) ? null : { invalidEmail: true };
-    }
-    
+  validEmail(control: FormControl): { [key: string]: any } | null {
+    const email = control.value;
+    const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
+    return regexp.test(email) ? null : { invalidEmail: true };
+  }
   
-    validPassword(control: FormControl): { [s: string]: boolean } | null {
-      const password = control.value;
+  validatePassword(): ValidatorFn {
+    return (control:AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
       const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_=+{};:'",.<>?/|\\[\]`~])(?!.*\s).{8,}$/;
-      return regexp.test(password) ? null : { invalidPassword: true };
+      return regexp.test(value) ? { invalidPassword: true } : null;
     }
+  }
 
-    houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
-      const houseNumber = control.value;
-      const regexp = /^[1-9]\d{0,4}([a-zA-Z]{1,2})?$/;
 
-      return regexp.test(houseNumber) ? null : { invalidhouseNumber: true };
-    }
+  houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
+    const houseNumber = control.value;
+    const regexp = /^[1-9]\d{0,4}([a-zA-Z]{1,2})?$/;
 
-    dateValidator(control: FormControl): { [s: string]: boolean } | null {
-      const selectedDate = new Date(control.value);
+    return regexp.test(houseNumber) ? null : { invalidhouseNumber: true };
+  }
+
+  valiDate(): ValidatorFn {
+    return (control:AbstractControl): ValidationErrors | null => {
+      const value = new Date(control.value);
       const currentDate = new Date();
-      const minDate = new Date('1900-01-01');
-  
-      if (selectedDate > currentDate) {
+      const minDate = new Date(1900, 1, 1);
+
+      if (value > currentDate) {
         return { dateInFuture: true };
       }
-  
-      if (selectedDate < minDate) {
+
+      if (value < minDate) {
         return { dateBefore1900: true };
       }
-  
+
       return null;
     }
+  }
 
-    postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
-      const postalCode = control.value;
+  postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
+    const postalCode = control.value;
+    const regex = /^(?:[1-9]\d{3}\s?[a-zA-Z]{2}|[1-9]\d{3}|[1-9]\d{3}\s[a-zA-Z]{2})$/;
   
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
-  
-      return regex.test(postalCode) ? null : { invalidPostalCode: true };
-    }
-
-    
+    return regex.test(postalCode) ? null : { invalidPostalCode: true };
+  }
 }

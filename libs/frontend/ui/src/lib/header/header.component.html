@@ -15,13 +15,12 @@
         
             <div class="d-flex">
                 <form role="search" class="my-auto me-md-2">
-                    <input class="form-control flex-grow-1" type="search" placeholder="Zoeken">
                 </form>
                 <div ngbDropdown display="dynamic" placement="bottom-end" class="ms-auto">
                     <img class="img-fluid" style="border-radius: 50%; height: 50px; cursor: pointer;" ngbDropdownToggle [src]="(this.authService.getUserFromLocalStorage() | async)?.profilePicture"/>
                     <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
-                        <a ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault()">Mijn profiel</a>
-                        <a ngbDropdownItem routerLink="/logout" routerLinkActive="active" class="text-danger" style="cursor: pointer;" (click)="$event.preventDefault();">Uitloggen</a>
+                        <a ngbDropdownItem routerLink="/profile" routerLinkActive="active" (click)="$event.preventDefault(); isMenuCollapsed=true">Mijn profiel</a>
+                        <a ngbDropdownItem routerLink="/logout" routerLinkActive="active" (click)="isMenuCollapsed = true" class="text-danger" style="cursor: pointer;" (click)="$event.preventDefault();">Uitloggen</a>
                     </div>
                 </div>
             </div>

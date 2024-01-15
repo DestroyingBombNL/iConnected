@@ -20,8 +20,16 @@ export class UserService extends EntityService<IUser> {
     }
 
     getDistinctTagsForAllUsers(): Observable<string[]> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${this.authServ.getTokenFromLocalStorage()}`
+            }),
+          };
         const tagsUrl = `${this.url}${this.endpoint}/tags`;
-        return this.http.get<string[]>(tagsUrl);
+        return this.http.get<ApiResponse<string[]>>(tagsUrl, httpOptions).pipe(
+          map((result) => result.results as string[] ?? [])
+        );
     }
 
     getProfile(id: string | null, options?: any): Observable<{ user: IUser | undefined, blobs: Array<IBlob>, bendes: Array<IBende>, projects: Array<IProject> }> {

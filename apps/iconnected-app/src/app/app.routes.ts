@@ -11,17 +11,19 @@ import {
     ProjectsOverviewComponent,
     BlobCreateComponent,
     LoggedInAuthGuard,
+    BendeCreateComponent,
+    ProjectCreateComponent,
     
 } from '@ihomer/frontend/features';
 import { LogoutComponent } from '@ihomer/frontend/features';
 
-const appName = 'iConnected | '
+const appName = 'iConnected | ';
 export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login',
-    title: `${appName}Login`
+    redirectTo: 'blobs',
+    title: `${appName}Home`
   },
   {
     path: 'login',
@@ -54,6 +56,7 @@ export const appRoutes: Route[] = [
     path: 'deelnemers',
     pathMatch: 'full',
     component: RegisterComponent,
+    title: `${appName}Gebruiker toevoegen`,
     canActivate: [LoggedInAuthGuard]
   },
     {
@@ -67,8 +70,43 @@ export const appRoutes: Route[] = [
         path: 'blobs/create',
         pathMatch: 'full',
         component: BlobCreateComponent,
-        title: `${appName}BlobCreate`,
+        title: `${appName}Blob aanmaken`,
         canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'blobs/:id',
+      pathMatch: 'full',
+      component: BlobCreateComponent,
+      title: `${appName}Blob wijzigen`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'bendes/create',
+      pathMatch: 'full',
+      component: BendeCreateComponent,
+      title: `${appName}Bende aanmaken`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'bendes/:id',
+      pathMatch: 'full',
+      component: BendeCreateComponent,
+      title: `${appName}Bendes wijzigen`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'projects/create',
+      pathMatch: 'full',
+      component: ProjectCreateComponent,
+      title: `${appName}Project aanmaken`,
+      canActivate: [LoggedInAuthGuard]
+    },
+    {
+      path: 'projects/:id',
+      pathMatch: 'full',
+      component: ProjectCreateComponent,
+      title: `${appName}Project wijzigen`,
+      canActivate: [LoggedInAuthGuard]
     },
     {
         path: 'profile',
@@ -81,7 +119,7 @@ export const appRoutes: Route[] = [
         path: 'profile/:id',
         pathMatch: 'full',
         component: UpdateProfileComponent,
-        title: `${appName}UpdateProfiel`,
+        title: `${appName}Profiel wijzigen`,
         canActivate: [LoggedInAuthGuard]
     },
     

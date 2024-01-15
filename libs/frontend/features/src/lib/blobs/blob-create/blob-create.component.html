@@ -1,55 +1,154 @@
-<div class="container-full">
+<ng-container *ngIf="!blob.id; else editMode">
   <div class="image-box">
-    <img *ngIf="backgroundImage" [src]="backgroundImage" alt="iHomer" class="background-image">
+    <img *ngIf="backgroundImage" src="/assets/backgroundiHomer.png" alt="iHomer" class="background-image">
   </div>
+  <div class="container-full">
+
     <div class="border-box">
       <h1 class="d-flex justify-content-center mt-5">Blob aanmaken</h1>
-  
-      <form class="m-4" >
+
+      <form class="m-4" [formGroup]="newBlob" (ngSubmit)="createBlob()">
         <div class="row justify-content-center">
-          <div class="col-md-10">
-            <div class="form-group mb-4">
-              <label for="InputFirstName" class="fw-bold">Naam</label>
-              <input
-                type="text"
-                class="form-control mx-auto"
-                id="InputFirstName"
-                formControlName="firstName"
-              />
+          <div class="col-md-6">
+            <div class="form-group mb-4"
+              [ngClass]="{'has-error': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}">
+              <label for="image"
+                [class]="{'text-danger': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}"
+                class="fw-bold">ImageUrl</label>
+              <input type="text" class="form-control mx-auto" id="InputImageUrl" formControlName="image" />
+              <div *ngIf="newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched"
+                class="text-danger"></div>
             </div>
           </div>
-  
-        <!-- NAME AND SLACKCHANNEL-->
-          <div class="col-md-5">
-            <div class="form-group mb-4">
-              <label for="InputFirstName" class="fw-bold">Naam</label>
-              <input
-                type="text"
-                class="form-control mx-auto"
-                id="InputFirstName"
-                formControlName="firstName"
-              />
+
+          <!-- TYPE -->
+          <div class="col-md-4">
+            <div class="form-group mb-4"
+              [ngClass]="{'has-error': newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched}">
+              <label for="type" class="form-control" class="fw-bold">Types *</label>
+              <div *ngIf="newBlob.get('type')?.hasError('required') && newBlob.get('type')?.touched"
+                class="text-danger">
+              </div>
+              <ng-select [items]="distinctTypes" (change)="onTypeSelectionChanged($event)" name="types"></ng-select>
             </div>
           </div>
-  
+
+          <!-- NAME AND SLACKCHANNEL-->
           <div class="col-md-5">
-            <div class="form-group mb-4">
-              <label for="InputInfix" class="fw-bold">Slackkanaal URL</label>
-              <input
-                type="text"
-                class="form-control mx-auto"
-                id="InputInfix"
-                formControlName="infix"
-              />
+            <div class="form-group mb-4 "
+              [ngClass]="{'has-error': newBlob.get('name')?.hasError('required') && newBlob.get('name')?.touched}">
+              <label for="InputName"
+                [class]="{'text-danger': newBlob.get('name')?.hasError('required') && newBlob.get('name')?.touched}"
+                class="fw-bold">Naam</label>
+              <input type="text" class="form-control mx-auto" id="InputName" formControlName="name" />
+              <div *ngIf="newBlob.get('name')?.hasError('required') && newBlob.get('name')?.touched"
+                class="text-danger">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="form-group mb-4 "
+              [ngClass]="{'has-error': newBlob.get('slack')?.hasError('required') && newBlob.get('slack')?.touched}">
+              <label for="InputSlack"
+                [class]="{'text-danger': newBlob.get('slack')?.hasError('required') && newBlob.get('slack')?.touched}"
+                class="fw-bold">Slackkanaal URL</label>
+              <input type="text" class="form-control mx-auto" id="InputSlack" formControlName="slack" />
+              <div *ngIf="newBlob.get('slack')?.hasError('required') && newBlob.get('slack')?.touched"
+                class="text-danger"></div>
             </div>
           </div>
         </div>
-  
+
+        <!-- USERS -->
+        <div class="col-md-3">
+          <div class="form-group mb-4"
+            [ngClass]="{'has-error': newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched}">
+            <label for="users" class="form-control" class="fw-bold">Users *</label>
+            <div *ngIf="newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched"
+              class="text-danger">
+            </div>
+            <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"
+              bindValue="id" bindLabel="firstName"></ng-select>
+          </div>
+        </div>
+
         <!-- TAGS -->
         <div class="row justify-content-center">
           <div class="text-center mt-4">
-            <button type="button" class="btn btn-register" >
+            <button type="button" class="btn btn-register" (click)="createBlob()"
+              [disabled]="!newBlob.valid || !selectedTypes.length">
               Aanmaken
+            </button>
+            <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #editMode>
+  <div class="image-box">
+    <img *ngIf="backgroundImage" src="/assets/backgroundiHomer.png" alt="iHomer" class="background-image">
+  </div>
+  <div class="container-full">
+
+    <div class="border-box">
+      <h1 class="d-flex justify-content-center mt-5">Bende aanpassen</h1>
+
+      <form class="m-4" [formGroup]="spcBlob" (ngSubmit)="changeBlob(blob.id)">
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div class="form-group mb-4"
+              [ngClass]="{'has-error': spcBlob.get('image')?.hasError('required') && spcBlob.get('image')?.touched}">
+              <label for="InputImage"
+                [class]="{'text-danger': spcBlob.get('image')?.hasError('required') && spcBlob.get('image')?.touched}"
+                class="fw-bold">ImageUrl</label>
+              <input type="text" class="form-control mx-auto" id="InputImage" formControlName="image" />
+            </div>
+          </div>
+
+          <!-- NAME AND SLACKCHANNEL-->
+          <div class="col-md-5">
+            <div class="form-group mb-4"
+              [ngClass]="{'has-error': spcBlob.get('name')?.hasError('required') && spcBlob.get('name')?.touched}">
+              <label for="InputName"
+                [class]="{'text-danger': spcBlob.get('name')?.hasError('required') && spcBlob.get('name')?.touched}"
+                class="fw-bold">Naam</label>
+              <input type="text" class="form-control mx-auto" id="InputName" formControlName="name" />
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="form-group mb-4"
+              [ngClass]="{'has-error': spcBlob.get('slack')?.hasError('required') && spcBlob.get('slack')?.touched}">
+              <label for="InputSlack"
+                [class]="{'text-danger': spcBlob.get('slack')?.hasError('required') && spcBlob.get('slack')?.touched}"
+                class="fw-bold">Slackkanaal URL</label>
+              <input type="text" class="form-control mx-auto" id="InputSlack" formControlName="slack" />
+            </div>
+          </div>
+        </div>
+
+        <!--  <div class="col-md-3">
+          <div class="form-group mb-4"
+            [ngClass]="{'has-error': spcBlob.get('users')?.hasError('required') && spcBlob.get('users')?.touched}">
+            <label for="users" class="form-control" class="fw-bold">Users *</label>
+            <div *ngIf="spcBlob.get('users')?.hasError('required') && spcBlob.get('users')?.touched"
+              class="text-danger"></div>
+                        <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
+              name="users" [multiple]="true" bindValue="id" bindLabel="firstName" formControlName="users">
+            </ng-select>
+          </div>
+        </div> -->
+
+        <div class="row justify-content-center">
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-register" (click)="changeBlob(blob.id)" [disabled]="!spcBlob.valid">
+              Aanpassen
             </button>
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
           </div>
@@ -57,3 +156,4 @@
       </form>
     </div>
   </div>
+</ng-template>

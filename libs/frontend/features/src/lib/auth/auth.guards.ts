@@ -23,7 +23,6 @@ export class LoggedInAuthGuard implements CanActivate, CanActivateChild {
   constructor(private authService: AuthService, private router: Router,) {}
 
   canActivate(): Observable<boolean> {
-    console.log('canActivate LoggedIn');
     return this.authService.getUserFromLocalStorage().pipe(
       map((user: IUser | null) => {
         if (user && this.authService.getTokenFromLocalStorage()) {
@@ -41,7 +40,6 @@ export class LoggedInAuthGuard implements CanActivate, CanActivateChild {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    console.log('canActivateChild LoggedIn');
     return this.canActivate();
   }
 }

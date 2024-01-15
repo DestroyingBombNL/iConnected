@@ -79,7 +79,7 @@ export class UserService {
   async update(id: string, user: IUpdateUser): Promise<IUser | undefined> {
     this.logger.log('Update');
 
-    const params = {
+    const params: any = {
       id,
       email: user.email,
       profilePicture: user.profilePicture,
@@ -93,12 +93,14 @@ export class UserService {
       postalCode: user.postalCode,
       city: user.city,
       tags: user.tags,
-      password: user.password,
+      country: user.country
     };
 
+    if (user.password) params.password = user.password;
+
+    const query = `MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, country: $country${params.password ? (', password: $password') : ''}} RETURN user`;
     const result = await this.neo4jService.write(
-      'MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password} RETURN user',
-      params
+      query, params
     );
     const users = this.convertFromDb(result);
     if (!users) return undefined;
@@ -117,7 +119,7 @@ export class UserService {
 
   async isAdmin(user: IUser): Promise<boolean> {
     const result = await this.neo4jService.read(
-      'MATCH(user:User{uuid: $id})-[]->(blob:Blob{type: "BestuursBlob"}) return user,blob',
+      'MATCH(user:User{uuid: $id})-[]->(blob:Blob{type: "Bestuur"}) return user,blob',
       { id: user.id }
     );
     const blob = result.records.map((record: any) => {
@@ -131,6 +133,7 @@ export class UserService {
         image: blobData.properties.image,
         type: blobData.properties.type,
         users: [],
+        gradient: ["#b9adad", "#b9adad"]
       };
       return blob;
     })[0];
@@ -179,10 +182,7 @@ export class UserService {
     return { user: users[0], blobs, bendes, projects };
   }
 
-  private convertFromDb(
-    result: QueryResult<RecordShape>,
-    includePassword?: boolean
-  ): IUser[] | undefined {
+  private convertFromDb(result: QueryResult<RecordShape>, includePassword?: boolean): IUser[] | undefined {
     const createdUsers = result.records.map((record: any) => {
       const userData = record._fields[0];
       const user: IUser = {
@@ -198,8 +198,11 @@ export class UserService {
         houseNumber: userData.properties.houseNumber,
         postalCode: userData.properties.postalCode,
         city: userData.properties.city,
+        country: userData.properties.country,
         tags: userData.properties.tags,
         password: userData.properties.password,
+        opacity: 1,
+        border: "0px"
       };
       if (!includePassword) user.password = '';
       return user;

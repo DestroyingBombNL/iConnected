@@ -1,4 +1,4 @@
-import { IBende, IBlob, ILogin, IProject, IUser } from '@ihomer/api';
+import { IBende, IBlob, ILogin, ILoginResponse, IProject, IUser } from '@ihomer/api';
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO, UpdateUserDTO } from './user.dto';
@@ -48,7 +48,7 @@ export class UserController {
     }
 
     @Post('/login')
-    async (@Body() login: ILogin): Promise<IUser | undefined> {
+    async login(@Body() login: ILogin): Promise<ILoginResponse | undefined> {
         return this.authService.login(login);
     }
 

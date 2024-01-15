@@ -6,6 +6,7 @@ import { ConfigModule } from "@nestjs/config";
 import { BlobModule } from './blob/blob.module';
 import { BendeModule } from './bende/bende.module';
 import { ProjectModule } from './project/project.module';
+import { FilterModule } from './filter/filter.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
     BlobModule,
     BendeModule,
     ProjectModule,
+    FilterModule,
     Neo4jModule.forRoot({
         scheme: backendEnvironment.neo4j.scheme as Neo4jScheme,
         host: backendEnvironment.neo4j.host,
