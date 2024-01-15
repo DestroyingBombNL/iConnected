@@ -11,6 +11,7 @@
                 <li class="nav-item"><a routerLink="/blobs" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Blobs</a></li>
                 <li class="nav-item"><a routerLink="/bendes" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Bendes</a></li>
                 <li class="nav-item"><a routerLink="/projects" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Projecten</a></li>    
+                <li class="nav-item"><a routerLink="/deelnemers" *ngIf="this.authService.isAdmin" (click)="isMenuCollapsed = true" routerLinkActive="active text-white" class="nav-link px-2">Deelnemer toevoegen</a></li>    
             </ul>    
         
             <div class="d-flex">

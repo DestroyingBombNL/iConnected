@@ -27,7 +27,7 @@ jobs:
         env:
           GRAPH_PASSWORD: ''
         run: |
-          npm install
+          npm install --include=optional
           npx nx build --project iconnected-app -c production
           npx nx build --project data-api -c production
           npm run test --if-present

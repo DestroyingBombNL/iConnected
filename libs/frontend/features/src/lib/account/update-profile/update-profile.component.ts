@@ -4,20 +4,21 @@ import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { IUser } from '@ihomer/api';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'ihomer-update-profile',
   templateUrl: './update-profile.component.html', 
   styleUrls: ['./update-profile.component.css'],
 })
-export class UpdateProfileComponent implements AfterViewInit {
+export class UpdateProfileComponent implements OnInit {
   user!: IUser;
   userForm!: FormGroup; 
-  allTags: string[] = [];
+  allTags = new BehaviorSubject<string[]>([]);
 
   constructor(readonly authService: AuthService, readonly userService: UserService, private route: ActivatedRoute, private router: Router) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     const localUser = this.authService.getUserFromLocalStorage();
     if (!localUser) return;
     this.getAllTags();
@@ -33,7 +34,6 @@ export class UpdateProfileComponent implements AfterViewInit {
   save(): void {
     this.userService.update(this.user, this.user.id).subscribe((updated) => {
       if (updated) {
-        console.log(updated);
         this.router.navigate(['/profile']);
       }
     });
@@ -41,9 +41,7 @@ export class UpdateProfileComponent implements AfterViewInit {
 
   getAllTags(): void {
     this.userService.getDistinctTagsForAllUsers().subscribe((result) => {
-      for (const tag of result) {
-        this.allTags.push(tag);
-      }
+      this.allTags.next(result);
     });
   }
 
@@ -61,7 +59,6 @@ export class UpdateProfileComponent implements AfterViewInit {
       return regexp.test(value) ? { invalidPassword: true } : null;
     }
   }
-
 
   houseNumberValidator(control: FormControl): { [s: string]: boolean } | null {
     const houseNumber = control.value;

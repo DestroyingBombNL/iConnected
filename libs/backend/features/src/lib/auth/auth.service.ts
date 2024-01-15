@@ -3,6 +3,7 @@ import { UserService } from "../user/user.service";
 import { ILogin, ILoginResponse, ITokenValidationResponse } from "@ihomer/api";
 import { backendEnvironment } from "@ihomer/shared/util-env";
 import { sign, verify } from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,14 @@ export class AuthService {
         this.logger.log(`Login for user: ${login.emailAddress}`)
         const user = await this.userService.find(login.emailAddress);
         if (!user) return undefined;
-        if (user.password !== login.password) return undefined;
+
+        // Compare passwords
+        if (!bcrypt.compareSync(login.password, user.password)) {
+            console.log(login.password);
+            console.log(user.password);
+            return undefined;
+        }
+
         const authenticationHex = backendEnvironment.jwtKey;
         if (authenticationHex) {
             const secretKey = authenticationHex;
