@@ -51,8 +51,8 @@
             </div>
             <div class="col-12 col-sm-6">
                 <div class="mb-3">
-                    <label class="form-label">Wachtwoord</label>
-                    <input type="password" class="form-control" [(ngModel)]="this.user.password" #profilePassword="ngModel" name="password" placeholder="Wachtwoord">
+                    <label class="form-label">Wachtwoord wijzigen</label>
+                    <input type="password" class="form-control" [(ngModel)]="this.user.password" #profilePassword="ngModel" name="password" placeholder="Nieuw wachtwoord">
                 </div>
             </div>
         </div>
@@ -104,7 +104,7 @@
             <div class="col-12 col-lg-6">
                 <div class="form-group mb-3">
                     <label class="form-label">Tags</label>
-                    <ng-select [items]="this.allTags" [(ngModel)]="this.user.tags" name="tags" [multiple]="true" [closeOnSelect]="false"></ng-select>
+                    <ng-select [items]="this.allTags | async" [(ngModel)]="this.user.tags" name="tags" [multiple]="true" [closeOnSelect]="false"></ng-select>
                 </div>
             </div>
         </div>
