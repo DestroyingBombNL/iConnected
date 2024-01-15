@@ -7,4 +7,5 @@ export interface IBende {
     slack: string;
     image: string;
     users: IUser[];
+    gradient: string[];
 }

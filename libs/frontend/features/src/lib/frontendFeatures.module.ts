@@ -1,25 +1,74 @@
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, RouterLink } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RouterLink, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BlobsOverviewComponent } from './blobs/blobs-overview/blobs-overview.component';
-import { DeelnemerNewComponent } from './deelnemer/deelnemer-new.component';
+import { LoginComponent } from './deelnemer/login/deelnemer-login.component';
+import { RegisterComponent } from './deelnemer/register/deelnemer-register.component';
+import { ProfileComponent } from './account/profile/profile.component';
+import { UpdateProfileComponent } from './account/update-profile/update-profile.component';
 import { BlobService } from './services/blob.service';
 import { UserService } from './services/user.service';
 import { ProjectService } from './services/project.service';
 import { BendeService } from './services/bende.service';
-import { NotificationService } from './services/notifications/notification.service';
+import { AuthService } from './auth/auth.service';
+import { LogoutComponent } from './deelnemer/logout/deelnemer-logout.component';
+import { ProjectsOverviewComponent } from './projects/projects-overview/projects-overview.component';
+import { BendesOverviewComponent } from './bendes/bendes-overview/bendes-overview.component';
+import { BlobCreateComponent } from './blobs/blob-create/blob-create.component';
+import { FilterService } from './services/filter.service';
+import { LoggedInAuthGuard } from './auth/auth.guards';
+import { BendeCreateComponent } from './bendes/bende-create/bende-create.component';
+import { ProjectCreateComponent } from './projects/project-create/project-create.component';
 
 @NgModule({
-  imports: [RouterModule, HttpClientModule, RouterLink, CommonModule, NgbModule, FormsModule, ReactiveFormsModule, NgSelectModule],
-  declarations: [BlobsOverviewComponent, DeelnemerNewComponent],
-  providers: [BlobService, UserService, ProjectService, BendeService, NotificationService],
-  exports: [BlobsOverviewComponent, DeelnemerNewComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    RouterLink,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    NgSelectModule,
+  ],
+  declarations: [
+    BlobsOverviewComponent, 
+    RegisterComponent, 
+    LoginComponent,
+    ProfileComponent,
+    UpdateProfileComponent,
+    ProjectsOverviewComponent,
+    BendesOverviewComponent,
+    LogoutComponent,
+    BlobCreateComponent,
+    BendeCreateComponent,
+    ProjectCreateComponent,
+  ],
+  providers: [
+    BlobService,
+    UserService,
+    ProjectService,
+    BendeService,
+    AuthService,
+    FilterService,
+    LoggedInAuthGuard,
+    HttpClient,
+  ],
+  exports: [
+    BlobsOverviewComponent,
+    BendesOverviewComponent,
+    ProjectsOverviewComponent,
+    LoginComponent,
+    ProfileComponent,
+    UpdateProfileComponent,
+    LogoutComponent,
+    BlobCreateComponent,
+    BendeCreateComponent,
+    ProjectCreateComponent,
+  ],
 })
 export class FrontendFeaturesModule {}
-

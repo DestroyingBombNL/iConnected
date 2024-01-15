@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 import { IUser } from '@ihomer/shared/api';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -7,12 +7,12 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 
 @Component({
-  selector: 'ihomer-new-deelnemer',
-  templateUrl: './deelnemer-new.component.html',
-  styleUrls: ['./deelnemer-new.component.css'],
+  selector: 'ihomer-register-deelnemer',
+  templateUrl: './deelnemer-register.component.html',
+  styleUrls: ['./deelnemer-register.component.css'],
 })
 
-export class DeelnemerNewComponent implements OnInit {
+export class RegisterComponent implements OnInit {
     user = {} as IUser;
     users: IUser[] = [];
     subscription: Subscription | null = null;
@@ -37,7 +37,8 @@ export class DeelnemerNewComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
-        password: ['', [Validators.required, this.validPassword]]
+        password: ['', [Validators.required, this.validPassword]],
+        tags: [[]]
       });
 
       this.backgroundImage = '/assets/backgroundiHomer.png';
@@ -55,18 +56,17 @@ export class DeelnemerNewComponent implements OnInit {
       );
     }
 
+    onTagSelectionChanged(tags: any) {
+      this.selectedTags = tags;
+    }
+
     createUser(): void {
       console.log("create User aangeroepen");
     
       if (this.newDeelnemer.valid) {
         const formData = this.newDeelnemer.value;
-    
-        // Add empty bio and profilePicture to formData
-        formData.bio = 'Vul hier je bio';
-        formData.profilePicture = 'https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg';
-    
-        console.log(this.selectedTags);
-    
+        
+        formData.tags = this.selectedTags;
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
             console.log('User created successfully:', createdUser);
@@ -80,14 +80,14 @@ export class DeelnemerNewComponent implements OnInit {
         this.newDeelnemer.reset();
       }
     }
-    
+
     goBack(): void {
       this.router.navigate(['/']);
     }
 
     validEmail(control: FormControl): { [s: string]: boolean } | null {
       const email = control.value;
-      const regexp = /^[a-zA-Z\d]+@[a-zA-Z]+\.[a-zA-Z]+$/;
+      const regexp = /^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
       return regexp.test(email) ? null : { invalidEmail: true };
     }
     
@@ -124,7 +124,7 @@ export class DeelnemerNewComponent implements OnInit {
     postalCodeValidator(control: FormControl): { [s: string]: boolean } | null {
       const postalCode = control.value;
   
-      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}\s?.+))$/;
+      const regex = /^(?:(?:[1-9]\d{3})\s?[a-zA-Z]{2}|(\d{4}[a-zA-Z]{2})|(\d{4}))$/;
   
       return regex.test(postalCode) ? null : { invalidPostalCode: true };
     }

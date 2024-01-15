@@ -1,0 +1,53 @@
+.has-error input {
+    border-color: red;
+}
+
+.has-error .text-danger {
+    color: red;
+}
+
+.btn-register {
+  background-color: #216e8e;
+  color: white;
+}
+
+.forms input {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; 
+  overflow: hidden;
+}
+
+.forms label {
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.container-full {
+  height: 100vh;
+  position: relative;
+}
+
+.background-image {
+  width: 100%;
+  height: 123%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 50%;
+}
+
+.border-box {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+
+
+
+
+
+
+

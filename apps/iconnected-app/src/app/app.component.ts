@@ -1,18 +1,53 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule, RouterLink, RouterOutlet } from '@angular/router';
-import { FrontendFeaturesModule } from '@ihomer/frontend/features';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { INotification, NotificationType } from '@ihomer/api';
+import {
+  FrontendFeaturesModule,
+  NotificationService,
+} from '@ihomer/frontend/features';
 import { UiModule } from '@ihomer/frontend/ui';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, RouterOutlet, RouterLink, FrontendFeaturesModule, UiModule],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    UiModule,
+    FrontendFeaturesModule,
+    CommonModule,
+  ],
   selector: 'ihomer-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'iConnected';
+  protected activeNotification$?: INotification | undefined;
 
-  constructor() {
+  constructor(readonly notificationService: NotificationService) {
+    this.notificationService.notification$.subscribe((notification) => {
+      this.activeNotification$ = notification;
+      setTimeout(() => {
+        this.activeNotification$ = undefined;
+      }, notification?.duration);
+    });
+  }
+
+  getNotificationColor(notification?: INotification): string {
+    if (!notification) return '';
+    switch (notification.type) {
+      case NotificationType.Warning:
+        return 'bg-warning';
+      case NotificationType.Error:
+        return 'bg-danger';
+      case NotificationType.Success:
+        return 'bg-success';
+      default:
+        return '';
+    }
+  }
+
+  deactivateNotification(): void {
+    this.activeNotification$ = undefined;
   }
 }

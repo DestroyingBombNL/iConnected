@@ -40,13 +40,14 @@ export class ProjectService {
     
     async createProject(project: IProject): Promise<IProject | undefined> {
         this.logger.log('createProject');
-        
+        const currentDate = this.formatDate(new Date());
+
         const writeQuery = `CREATE(project:Project {uuid: randomUUID(), name: $name, slack: $slack, creationDate: $creationDate, image: $image})`;
 
         const params = {
             name: project.name,
+            creationDate: currentDate,
             slack: project.slack,
-            creationDate: project.creationDate,
             image: project.image
         };
     
@@ -118,23 +119,20 @@ export class ProjectService {
     
         const params = { id };
     
-        const checkQuery = `
+/*         const checkQuery = `
             MATCH (project:Project {uuid: $id})-[:WORKS_ON]-(user:User)
             RETURN count(user) AS userCount`;
     
         const checkResult = await this.neo4jService.read(checkQuery, params);
         const userCount = checkResult.records[0].get('userCount').toNumber();
-    
-        if (userCount > 0) {
+     */
+        // if (userCount > 0) {
             const deleteQuery = `
                 MATCH (project:Project {uuid: $id})
                 DETACH DELETE project`;
     
             await this.neo4jService.write(deleteQuery, params);
             return true;
-        } else {
-            return false;
-        }
     }
     
     private convertFromDB(result: QueryResult<RecordShape>): IProject[] | undefined {
@@ -145,9 +143,10 @@ export class ProjectService {
                 id: projectData.properties.uuid,
                 name: projectData.properties.name,
                 slack: projectData.properties.slack,
-                creationDate: new Date(projectData.properties.creationDate.year.low, projectData.properties.creationDate.month.low - 1, projectData.properties.creationDate.day.low + 1),
+                creationDate: new Date(projectData.properties.creationDate),
                 image: projectData.properties.image,
-                users: []
+                users: [],
+                gradient: ["#b9adad", "#b9adad"]
             };
     
             for (let i = 0; i < users.length; i++) {
@@ -161,16 +160,27 @@ export class ProjectService {
                     bio: users[i].properties.bio,
                     birthday: users[i].properties.birthDay,
                     street: users[i].properties.street,
-                    houseNumber: users[i].properties.houseNumber.low,
+                    houseNumber: users[i].properties.houseNumber,
                     postalCode: users[i].properties.postalCode,
                     city: users[i].properties.city,
+                    country: users[i].properties.country,
                     tags: users[i].properties.tags,
-                    password: users[i].properties.password
+                    password: users[i].properties.password,
+                    opacity: 1,
+                    border: "0px"
                 };
                 project.users.push(user);
             }
             return project;
         });
         return createdProjects;
+    }
+
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-indexed
+        const day = ('0' + date.getDate()).slice(-2);
+    
+        return `${year}-${month}-${day}`;
     }
 }

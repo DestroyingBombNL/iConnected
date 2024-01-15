@@ -1,0 +1,116 @@
+<form *ngIf="this.user" name="form" #profileForm="ngForm" (ngSubmit)="save()">
+    <div class="container mt-3">
+        <h1>Profiel wijzigen</h1>
+        
+        <!-- Profiel foto -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <img class="img-fluid img-rounded m-3" style="width: 200px; height: 200px;" [src]="this.user.profilePicture">
+                    <div class="my-auto w-100">
+                        <label class="form-label">Profielfoto</label>
+                        <input type="text" class="form-control w-100" [(ngModel)]="this.user.profilePicture" #profileCountry="ngModel" name="profilePicture" placeholder="https://placehold.co/200" required>   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Person -->
+        <div class="row">
+            <div class="col-12 col-sm-4">
+                <div class="mb-3">
+                    <label class="form-label">Voornaam</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.firstName" #profileFirstName="ngModel" name="firstName" placeholder="Voornaam" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Tussenvoegsel</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.infix" #profileInfix="ngModel" name="infix" placeholder="Tussenvoegsel">
+                </div>
+            </div>
+            <div class="col-12 col-sm-5">
+                <div class="mb-3">
+                    <label class="form-label">Achternaam</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.lastName" #profileLastName="ngModel" name="lastName" placeholder="Achternaam" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-4">
+                <label class="form-label">Geboortedatum</label>
+                <input type="date" class="form-control" [(ngModel)]="this.user.birthday" [ngModel]="this.user.birthday| date: 'yyyy-MM-dd'" #profileLastName="ngModel" name="birthday" placeholder="Geboortedatum" required>
+            </div>
+        </div>
+
+        <!-- Account -->
+        <div class="row mt-4">
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">E-mailadres</label>
+                    <input type="email" class="form-control" [(ngModel)]="this.user.email" #profileEmail="ngModel" name="email" placeholder="E-mailadres" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Wachtwoord wijzigen</label>
+                    <input type="password" class="form-control" [(ngModel)]="this.user.password" #profilePassword="ngModel" name="password" placeholder="Nieuw wachtwoord">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Adres -->
+        <div class="row mt-4">
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Land</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.country" [ngModelOptions]="{updateOn: 'blur'}" #profileCountry="ngModel" name="country" placeholder="Land" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Woonplaats</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.city" #profileCity="ngModel" name="city" placeholder="Woonplaats" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Postcode</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.postalCode" #profilePostalCode="ngModel" name="postalCode" placeholder="1234AB" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Straat</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.street" #profileStreet="ngModel" name="street" placeholder="Straat" required>
+                </div>
+            </div>
+            <div class="col-12 col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Huisnummer</label>
+                    <input type="text" class="form-control" [(ngModel)]="this.user.houseNumber" #profileHousenumber="ngModel" name="houseNumber" placeholder="1a" required>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile -->
+        <div class="row mt-4">
+            <div class="col-12 col-lg-6">
+                <div class="mb-3">
+                    <label class="form-label">Bio</label>
+                    <textarea class="form-control" [(ngModel)]="this.user.bio" #profileBio="ngModel" name="bio" placeholder="Bio" required></textarea>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="form-group mb-3">
+                    <label class="form-label">Tags</label>
+                    <ng-select [items]="this.allTags | async" [(ngModel)]="this.user.tags" name="tags" [multiple]="true" [closeOnSelect]="false"></ng-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-100 d-flex my-5">
+        <button type="submit" class="btn btn-update mx-auto">Opslaan</button>
+    </div>
+</form>
