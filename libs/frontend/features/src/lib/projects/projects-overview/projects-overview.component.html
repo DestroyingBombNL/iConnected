@@ -115,14 +115,14 @@
 
             <div class="row mt-4">
                 <div class="col-md-4">
-                    <strong>Project(s)</strong>
-                    <ng-container *ngIf="projects && projects.length > 0; else noProjects">
-                        <div *ngFor="let project of popUpProjects; let last = last">
-                            {{ project.name }}{{ !last ? ',' : '' }}
+                    <strong>Blob(s)</strong>
+                    <ng-container *ngIf="blobs && blobs.length > 0; else noProjects">
+                        <div *ngFor="let blob of blobs; let last = last">
+                            {{ blob.name }}{{ !last ? ',' : '' }}
                         </div>
                     </ng-container>
                     <ng-template #noProjects>
-                        <span><br>Geen project</span>
+                        <span><br>Geen blob</span>
                     </ng-template>
                 </div>
 
@@ -140,7 +140,7 @@
                 <div class="col-md-4">
                     <strong>Project(en)</strong>
                     <ng-container *ngIf="projects && projects.length > 0; else noProjects">
-                        <div *ngFor="let project of projects; let last = last">
+                        <div *ngFor="let project of popUpProjects; let last = last">
                             {{ project.name }}{{ !last ? ',' : '' }}
                         </div>
                     </ng-container>

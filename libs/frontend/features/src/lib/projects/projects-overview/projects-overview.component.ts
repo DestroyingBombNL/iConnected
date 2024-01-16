@@ -10,7 +10,11 @@ import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
 import { Subscription, debounceTime } from 'rxjs';
 import { FilterService } from '../../services/filter.service';
-import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  ModalDismissReasons,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ihomer-projects-overview',
@@ -136,8 +140,7 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
         newProjects.forEach((project) => {
           project.gradient =
             project.users.some((user) => this.ids.includes(user.id)) &&
-            (
-              project.slack.toLowerCase().includes(searchText.toLowerCase()) ||
+            (project.slack.toLowerCase().includes(searchText.toLowerCase()) ||
               project.name.toLowerCase().includes(searchText.toLowerCase()) ||
               project.creationDate
                 .toString()
@@ -179,7 +182,9 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   open(content: TemplateRef<any>, projectId: string) {
-    this.specificProject = this.projects.find((b) => b.id === projectId) as IProject;
+    this.specificProject = this.projects.find(
+      (b) => b.id === projectId
+    ) as IProject;
 
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-project-title' })
@@ -276,7 +281,9 @@ export class ProjectsOverviewComponent implements OnInit, OnDestroy {
   }
 
   openDeleteProject(content: TemplateRef<any>, projectId: string) {
-    this.specificProject = this.projects.find((b) => b.id === projectId) as IProject;
+    this.specificProject = this.projects.find(
+      (b) => b.id === projectId
+    ) as IProject;
 
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-project-title' })
