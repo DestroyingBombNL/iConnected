@@ -11,14 +11,14 @@
   color: white;
 }
 
-.forms input {
+input, textarea {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px; 
   overflow: hidden;
 }
 
-input, textarea {
-  border-color: rgb(180, 180, 180) !important;
+ng-select {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .forms label {
