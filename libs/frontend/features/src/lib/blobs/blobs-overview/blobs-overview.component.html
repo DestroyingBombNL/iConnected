@@ -1,15 +1,17 @@
 <div class="filterDiv d-flex">
     <ng-select class="filterElement" 
-    [(ngModel)]="selectedTag" 
-    [items]="this.tags" name="tags" 
-    [multiple]="false" 
-    [closeOnSelect]="true"
-    (input)="onSearchInput($event)" 
-    (keydown.enter)="onSearchAction($event)"
-    (clear)="onClear($event)"
-    (click)="onClick($event)"
-    [placeholder]="'Select a filter'"></ng-select>
-    <button class= "btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+      [items]="this.tags" 
+      name="tags"
+      [(ngModel)]="selectedTag" 
+      [multiple]="false" 
+      [closeOnSelect]="true"
+      (input)="onSearchInput($event)" 
+      (keydown.enter)="onSearchAction($event)"
+      (clear)="onClear($event)"
+      (click)="onClick($event)"
+      [placeholder]="'Select a filter'">
+    </ng-select>
+    <button class="btn btn-dark" (click)="onSearchButtonClick()">Search</button>
 </div>
 
 <div class="background-color">

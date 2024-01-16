@@ -8,7 +8,7 @@ import {
 import { BlobService } from '../../services/blob.service';
 import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, debounceTime, forkJoin } from 'rxjs';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
 import { AuthService } from '../../auth/auth.service';
@@ -19,7 +19,6 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./blobs-overview.component.css'],
 })
 export class BlobsOverviewComponent implements OnInit, OnDestroy {
-  private currentInputValue: string = '';
   private modalService = inject(NgbModal);
   ids: string[] = [];
   blobs: IBlob[] = [];
@@ -65,11 +64,16 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
         this.users = users;
       }
     });
-    this.userService.getDistinctTagsForAllUsers().subscribe((tags) => {
-      if (tags !== null) {
-        this.tags = tags;
+    forkJoin([
+      this.userService.getDistinctTagsForAllUsers(),
+      this.filterService.getFilterTags()
+    ]).subscribe(([userTags, filterTags]) => {
+      if (userTags !== null) {
+        this.tags = userTags;
+        this.tags.push(...filterTags)
       }
-    })
+    });
+    
   }
 
   onSearchInput(event: Event): void {
