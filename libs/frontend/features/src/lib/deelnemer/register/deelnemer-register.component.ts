@@ -50,11 +50,7 @@ export class RegisterComponent implements OnInit {
     ngOnInit(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
         (response: any) => {
-          this.distinctTags = response.results;
-          console.log('Distinct Tags for All Users:', this.distinctTags);
-        },
-        (error: any) => {
-          console.error('Error fetching distinct tags:', error);
+          this.distinctTags = response;
         }
       );
     }
@@ -64,20 +60,14 @@ export class RegisterComponent implements OnInit {
     }
 
     createUser(): void {
-      console.log("create User aangeroepen");
-    
       if (this.newDeelnemer.valid) {
         const formData = this.newDeelnemer.value;
         
         formData.tags = this.selectedTags;
         this.userService.create(formData).subscribe({
           next: (createdUser) => {
-            console.log('User created successfully:', createdUser);
             this.router.navigate(['/']);
-          },
-          error: (error) => {
-            console.error('Error creating user:', error);
-          },
+          }
         });
     
         // this.newDeelnemer.reset();
