@@ -37,6 +37,9 @@ export class RegisterComponent implements OnInit {
         houseNumber: ['', [Validators.required, this.houseNumberValidator]],
         postalCode: ['', [Validators.required, this.postalCodeValidator]],
         city: ['', [Validators.required]],
+        country: ['', [Validators.required]],
+        bio: ['', [Validators.required]],
+        profilePicture: ['', [Validators.required]],
         password: ['', [Validators.required, this.validPassword]],
         tags: [[]]
       });
@@ -77,7 +80,7 @@ export class RegisterComponent implements OnInit {
           },
         });
     
-        this.newDeelnemer.reset();
+        // this.newDeelnemer.reset();
       }
     }
 

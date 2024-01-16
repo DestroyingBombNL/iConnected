@@ -59,6 +59,10 @@ export class CreateUserDTO implements ICreateUser {
 
     @IsString()
     @IsNotEmpty()
+    country?: string | undefined;
+
+    @IsString()
+    @IsNotEmpty()
     street?: string | undefined;
 
     @IsArray()

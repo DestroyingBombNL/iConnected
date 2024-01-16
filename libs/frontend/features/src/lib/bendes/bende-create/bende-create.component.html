@@ -111,26 +111,27 @@
           </div>
         </div>
 
-        <!--        <div class="col-md-3">
+        <div class="col-md-3">
           <div class="form-group mb-4"
             [ngClass]="{'has-error': spcBende.get('users')?.hasError('required') && spcBende.get('users')?.touched}">
             <label for="users" class="form-control" class="fw-bold">Users *</label>
             <div *ngIf="spcBende.get('users')?.hasError('required') && spcBende.get('users')?.touched"
               class="text-danger"></div>
-             <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
+                <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
               name="users" [multiple]="true" bindValue="id" bindLabel="firstName" formControlName="users">
-            </ng-select> 
+            </ng-select>
           </div>
-        </div>-->
+        </div>
 
         <div class="row justify-content-center">
           <div class="text-center mt-4">
-            <button type="button" class="btn btn-register" (click)="changeBende(bende.id)" [disabled]="!spcBende.valid">
+            <button type="button" class="btn btn-update" (click)="changeBende(bende.id)" [disabled]="!spcBende.valid">
               Aanpassen
             </button>
             <button type="button" class="btn btn-dark ms-4" (click)="goBack()">Annuleren</button>
           </div>
         </div>
+        
       </form>
     </div>
   </div>

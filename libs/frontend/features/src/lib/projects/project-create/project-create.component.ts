@@ -10,6 +10,7 @@ import {
 import { ProjectService } from '../../services/project.service';
 import { IProject, IUser } from '@ihomer/shared/api';
 import { UserService } from '../../services/user.service';
+import { CompareWithFn } from '@ng-select/ng-select/lib/ng-select.component';
 
 @Component({
   selector: 'ihomer-project-create',
@@ -26,6 +27,7 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
   selectedUsers: IUser[] = []; // List of selected users
   userNames: string[] = []; // List of user names
   spcProject: FormGroup;
+  compareUsers: CompareWithFn;
 
   constructor(
     private router: Router,
@@ -35,6 +37,7 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.backgroundImage = '/assets/backgroundiHomer.png';
+    this.compareUsers = (u1, u2) => u1.id === u2.id;
     this.newProject = new FormGroup({
       name: new FormControl('', [Validators.required]),
       creationDate: new FormControl(''),
@@ -47,6 +50,7 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
       creationDate: new FormControl(''),
       slack: new FormControl('', [Validators.required]),
       image: new FormControl('', [Validators.required]),
+      users: new FormControl([]),
     });
   }
 
@@ -69,17 +73,17 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((params) => {
       this.projectService.readOne(params.get('id')).subscribe((project) => {
         if (!params.get('id')) return;
-        console.log("Project:", project.name);
+        console.log('Project:', project.name);
         this.project = project;
+        const selectedUsers = project.users || [];
+        console.log('Selected Users:', selectedUsers);
         this.spcProject = new FormGroup({
-          name: new FormControl(this.project.name, [ 
-            Validators.required,
-          ]),
-          slack: new FormControl(this.project.slack, [
-            Validators.required
-          ]),
+          name: new FormControl(this.project.name, [Validators.required]),
+          slack: new FormControl(this.project.slack, [Validators.required]),
           image: new FormControl(this.project.image, [Validators.required]),
+          users: new FormControl(selectedUsers),
         });
+        console.log('Project:', this.project.users);
       });
     });
   }
@@ -114,7 +118,10 @@ export class ProjectCreateComponent implements OnInit, OnDestroy {
   onUserSelectionChanged(selectedUsers: IUser[]) {
     this.selectedUsers = selectedUsers;
     console.log('Selected Users:', this.selectedUsers);
-    console.log('Selected User ids:', this.selectedUsers.map((user) => user.id));
+    console.log(
+      'Selected User ids:',
+      this.selectedUsers.map((user) => user.id)
+    );
   }
 
   changeProject(id: string): void {

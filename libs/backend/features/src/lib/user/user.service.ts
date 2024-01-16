@@ -9,6 +9,7 @@ import {
 import { Injectable, Logger } from '@nestjs/common';
 import { QueryResult, RecordShape } from 'neo4j-driver-core';
 import { Neo4jService } from 'nest-neo4j/dist';
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,7 @@ export class UserService {
       if (!users) return undefined;
       return users[0];
     }
+    user.password = this.hashPassword(user.password);
     const result = await this.neo4jService.write(
       'MERGE(user:User{uuid: randomUUID(), email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, password: $password}) RETURN user',
       user
@@ -96,7 +98,7 @@ export class UserService {
       country: user.country
     };
 
-    if (user.password) params.password = user.password;
+    if (user.password) params.password = this.hashPassword(user.password);
 
     const query = `MATCH(user:User{uuid:$id}) SET user += {email: $email, profilePicture: $profilePicture, firstName: $firstName, infix: $infix, lastName: $lastName, bio: $bio, birthday: $birthday, street: $street, houseNumber: $houseNumber, postalCode: $postalCode, city: $city, tags: $tags, country: $country${params.password ? (', password: $password') : ''}} RETURN user`;
     const result = await this.neo4jService.write(
@@ -219,5 +221,10 @@ export class UserService {
 
     const distinctTags = result.records.map((record: any) => record.get('tag'));
     return distinctTags;
+  }
+
+  hashPassword(plainTextPassword: string): string {
+    const salt = bcrypt.genSaltSync(11);
+    return bcrypt.hashSync(plainTextPassword, salt);
   }
 }

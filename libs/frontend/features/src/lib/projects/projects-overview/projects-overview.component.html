@@ -1,6 +1,7 @@
 <div class="filterDiv d-flex">
-    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)" placeholder="Zoeken">
-    <button class= "btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)"
+        placeholder="Zoeken">
+    <button class="btn btn-dark" (click)="onSearchButtonClick()">Search</button>
 </div>
 <div class="background-color">
     <div class="container-fluid">
@@ -19,8 +20,9 @@
                         <img class="darkroof" src="assets/dark-roof.png" alt="Dark Roof">
                     </div>
                     <div *ngFor="let projectRow of getProjectsInRows()" class="row hall">
-                        <div *ngFor="let project of projectRow; let i = index" [ngClass]="calculateColumnClass(projectRow, i)" [style.background]="calculateGradient(project)"
-                        class="room d-flex flex-column">
+                        <div *ngFor="let project of projectRow; let i = index"
+                            [ngClass]="calculateColumnClass(projectRow, i)"
+                            [style.background]="calculateGradient(project)" class="room d-flex flex-column">
                             <div class="roomname d-flex justify-content-center">
                                 <h5>{{ project.name }}</h5>
                             </div>
@@ -28,8 +30,10 @@
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <div *ngFor="let user of project.users" class="user">
                                         <button class="userImgButton">
-                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture" [style.opacity]="user.opacity" [style.border-width]="user.border"
-                                            class="userImg" alt="user avatar" title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
+                                            <img (click)="openUser(userContent, user.id)" [src]="user.profilePicture"
+                                                [style.opacity]="user.opacity" [style.border-width]="user.border"
+                                                class="userImg" alt="user avatar"
+                                                title="{{ user.firstName }} {{user?.infix}} {{ user.lastName}}">
                                         </button>
                                     </div>
                                 </div>
@@ -68,7 +72,7 @@
                 <p><strong>Aanmaakdatum:</strong> {{ specificProject.creationDate | date:"dd-MM-yyyy"}}</p>
                 <p><strong>Slack: </strong> <a href={{specificProject.slack}} target="_blank">
                         {{specificProject.slack}}</a>
-                </p> 
+                </p>
                 <span><strong>Deelnemers:</strong>
                     <ul class="user-list">
                         <li *ngFor="let user of specificProject?.users" (click)="openUser(userContent, user.id)">
@@ -77,7 +81,7 @@
                         </li>
                     </ul>
                 </span>
-                <button type="button" class="btn btn-primary me-2" [routerLink]="specificProject.id"
+                <button type="button" class="btn btn-update me-2" [routerLink]="specificProject.id"
                     (click)="modal.close()">Aanpassen</button>
                 <button type="button" class="btn btn-danger"
                     (click)="openDeleteProject(projectDelete, specificProject.id); modal.close()">Verwijderen</button>

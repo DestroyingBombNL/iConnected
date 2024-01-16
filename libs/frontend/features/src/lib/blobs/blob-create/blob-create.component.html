@@ -65,11 +65,11 @@
           <div class="form-group mb-4"
             [ngClass]="{'has-error': newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched}">
             <label for="users" class="form-control" class="fw-bold">Users *</label>
-            <div *ngIf="newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched"
-              class="text-danger">
-            </div>
-            <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"
-              bindValue="id" bindLabel="firstName"></ng-select>
+            <div *ngIf="spcBlob.get('users')?.hasError('required') && spcBlob.get('users')?.touched"
+              class="text-danger"></div>
+            <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
+              name="users" [multiple]="true" bindValue="id" bindLabel="firstName" formControlName="users">
+            </ng-select>
           </div>
         </div>
 
@@ -97,7 +97,7 @@
   <div class="container-full">
 
     <div class="border-box">
-      <h1 class="d-flex justify-content-center mt-5">Bende aanpassen</h1>
+      <h1 class="d-flex justify-content-center mt-5">Blob aanpassen</h1>
 
       <form class="m-4" [formGroup]="spcBlob" (ngSubmit)="changeBlob(blob.id)">
         <div class="row justify-content-center">
@@ -133,17 +133,17 @@
           </div>
         </div>
 
-        <!--  <div class="col-md-3">
+        <div class="col-md-3">
           <div class="form-group mb-4"
             [ngClass]="{'has-error': spcBlob.get('users')?.hasError('required') && spcBlob.get('users')?.touched}">
             <label for="users" class="form-control" class="fw-bold">Users *</label>
             <div *ngIf="spcBlob.get('users')?.hasError('required') && spcBlob.get('users')?.touched"
               class="text-danger"></div>
-                        <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
+            <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"
               name="users" [multiple]="true" bindValue="id" bindLabel="firstName" formControlName="users">
             </ng-select>
           </div>
-        </div> -->
+        </div>
 
         <div class="row justify-content-center">
           <div class="text-center mt-4">
