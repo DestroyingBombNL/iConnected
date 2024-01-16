@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
     ngOnInit(): void {
       this.userService.getDistinctTagsForAllUsers().subscribe(
         (response: any) => {
-          this.distinctTags = response.results;
+          this.distinctTags = response;
           console.log('Distinct Tags for All Users:', this.distinctTags);
         },
         (error: any) => {
