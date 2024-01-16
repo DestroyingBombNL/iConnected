@@ -1,7 +1,7 @@
 <div class="filterDiv d-flex">
     <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)"
         placeholder="Zoeken">
-    <button class="btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+    <button class="btn btn-dark" (click)="onSearchButtonClick()">Zoeken</button>
 </div>
 <div class="background-color">
     <div class="container-fluid">
@@ -50,7 +50,7 @@
         </div>
     </div>
 </div>
-<button class="add-bende-btn" routerLink="/bendes/create" title="Toevoegen bende">+</button>
+<button *ngIf="this.isAuthenticated()" class="add-bende-btn justify-content-center d-flex" routerLink="/bendes/create" title="Toevoegen Bende">+</button>
 <div class="container-fluid grass-container">
     <div class="row">
         <div class="col-12 p-0">
@@ -116,10 +116,10 @@
 
             <div class="row mt-4">
                 <div class="col-md-4">
-                    <strong>Bende(s)</strong>
-                    <ng-container *ngIf="bendes && bendes.length > 0; else noBendes">
-                        <div *ngFor="let bende of popUpBendes; let last = last">
-                            {{ bende.name }}{{ !last ? ',' : '' }}
+                    <strong>Blob(s)</strong>
+                    <ng-container *ngIf="Blobs && Blobs.length > 0; else noBendes">
+                        <div *ngFor="let blob of Blobs; let last = last">
+                            {{ blob.name }}{{ !last ? ',' : '' }}
                         </div>
                     </ng-container>
                     <ng-template #noBendes>
@@ -130,7 +130,7 @@
                 <div class="col-md-4">
                     <strong>Bende</strong>
                     <ng-container *ngIf="bendes && bendes.length > 0; else noBendes">
-                        <div *ngFor="let bende of bendes; let last = last">
+                        <div *ngFor="let bende of popUpBendes; let last = last">
                             {{ bende.name }}{{ !last ? ',' : '' }}
                         </div>
                     </ng-container>

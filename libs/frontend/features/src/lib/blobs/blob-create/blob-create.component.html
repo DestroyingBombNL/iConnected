@@ -14,7 +14,7 @@
               [ngClass]="{'has-error': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}">
               <label for="image"
                 [class]="{'text-danger': newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched}"
-                class="fw-bold">ImageUrl</label>
+                class="fw-bold">Url van afbeelding</label>
               <input type="text" class="form-control mx-auto" id="InputImageUrl" formControlName="image" />
               <div *ngIf="newBlob.get('image')?.hasError('required') && newBlob.get('image')?.touched"
                 class="text-danger"></div>
@@ -64,7 +64,7 @@
         <div class="col-md-3">
           <div class="form-group mb-4"
             [ngClass]="{'has-error': newBlob.get('users')?.hasError('required') && newBlob.get('users')?.touched}">
-            <label for="users" class="form-control" class="fw-bold">Users *</label>
+            <label for="users" class="form-control" class="fw-bold">Deelnemers *</label>
             <div *ngIf="spcBlob.get('users')?.hasError('required') && spcBlob.get('users')?.touched"
               class="text-danger"></div>
             <ng-select [items]="users" [compareWith]="compareUsers" (change)="onUserSelectionChanged($event)"

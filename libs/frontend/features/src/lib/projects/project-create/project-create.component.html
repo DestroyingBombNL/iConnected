@@ -14,7 +14,7 @@
               [ngClass]="{'has-error': newProject.get('image')?.hasError('required') && newProject.get('image')?.touched}">
               <label for="InputImage"
                 [class]="{'text-danger': newProject.get('image')?.hasError('required') && newProject.get('image')?.touched}"
-                class="fw-bold">ImageUrl</label>
+                class="fw-bold">Url van afbeelding</label>
               <input type="text" class="form-control mx-auto" id="InputImage" formControlName="image" />
               <div *ngIf="newProject.get('image')?.hasError('required') && newProject.get('image')?.touched"
                 class="text-danger"></div>
@@ -51,7 +51,7 @@
         <div class="col-md-3">
           <div class="form-group mb-4"
             [ngClass]="{'has-error': newProject.get('users')?.hasError('required') && newProject.get('users')?.touched}">
-            <label for="users" class="form-control" class="fw-bold">Users *</label>
+            <label for="users" class="form-control" class="fw-bold">Deelnemers *</label>
             <div *ngIf="newProject.get('users')?.hasError('required') && newProject.get('users')?.touched"
               class="text-danger"></div>
             <ng-select [items]="users" (change)="onUserSelectionChanged($event)" name="users" [multiple]="true"

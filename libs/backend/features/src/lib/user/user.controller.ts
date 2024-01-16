@@ -22,6 +22,7 @@ export class UserController {
     }
 
     @Get(':id')
+    @UseGuards(AuthGuard)
     async get(@Param('id') id: string): Promise<IUser | undefined> {
         const user = await this.userService.read(id);
         return user;

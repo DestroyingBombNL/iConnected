@@ -1,8 +1,19 @@
 <div class="filterDiv d-flex">
-    <input class="form-control" type="search" (input)="onSearchInput($event)" (search)="onSearchAction($event)"
-        placeholder="Zoeken">
-    <button class="btn btn-dark" (click)="onSearchButtonClick()">Search</button>
+    <ng-select class="filterElement" 
+      [items]="this.tags" 
+      name="tags"
+      [(ngModel)]="selectedTag" 
+      [multiple]="false" 
+      [closeOnSelect]="true"
+      (input)="onSearchInput($event)" 
+      (keydown.enter)="onSearchAction($event)"
+      (clear)="onClear($event)"
+      (click)="onClick($event)"
+      [placeholder]="'Selecteer een filter'">
+    </ng-select>
+    <button class="btn btn-dark" (click)="onSearchButtonClick()">Zoeken</button>
 </div>
+
 <div class="background-color">
     <div class="container-fluid">
         <div class="row">
@@ -50,7 +61,7 @@
         </div>
     </div>
 </div>
-<button class="add-blob-btn" routerLink="/blobs/create" title="Toevoegen blob">+</button>
+<button *ngIf="this.isAuthenticated()" class="add-blob-btn justify-content-center d-flex" routerLink="/blobs/create" title="Toevoegen Blob">+</button>
 <div class="container-fluid grass-container">
     <div class="row">
         <div class="col-12 p-0">

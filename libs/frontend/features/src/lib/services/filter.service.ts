@@ -32,6 +32,20 @@ export class FilterService {
             );
     }
 
+    public getFilterTags(options?: any): Observable<string[]> {
+        console.log(`getFilterTags ${frontendEnvironment.backendUrl}filters/tags/entities`);
+        return this.http
+        .get<any[]>(`${frontendEnvironment.backendUrl}filters/tags/entities`, {
+            ...options,
+            ...httpOptions,
+        })
+        .pipe(
+            tap(console.log),
+            map((response: any) => response.results as string[]),
+            catchError((err) => this.handleError(err))
+        );
+    }
+
     public handleError(error: HttpErrorResponse): Observable<any> {
         console.log(`handleError in FilterService`, error);
         this.notificationService.error('Verbindings fout', error.error.message ?? 'Deze actie kan momenteel niet uitgevoerd worden.');

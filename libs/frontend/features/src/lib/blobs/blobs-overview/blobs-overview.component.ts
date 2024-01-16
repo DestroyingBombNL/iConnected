@@ -8,7 +8,7 @@ import {
 import { BlobService } from '../../services/blob.service';
 import { UserService } from '../../services/user.service';
 import { IBende, IBlob, IProject, IUser } from '@ihomer/shared/api';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, debounceTime, forkJoin } from 'rxjs';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FilterService } from '../../services/filter.service';
 import { AuthService } from '../../auth/auth.service';
@@ -19,7 +19,6 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./blobs-overview.component.css'],
 })
 export class BlobsOverviewComponent implements OnInit, OnDestroy {
-  private currentInputValue: string = '';
   private modalService = inject(NgbModal);
   ids: string[] = [];
   blobs: IBlob[] = [];
@@ -36,6 +35,8 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
   lightdoor?: string;
   cloudImage?: string;
   grassImage?: string;
+  tags: string[] = [];
+  selectedTag: string | null = null;
   closeResult = '';
 
   constructor(
@@ -63,25 +64,22 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
         this.users = users;
       }
     });
+    forkJoin([
+      this.userService.getDistinctTagsForAllUsers(),
+      this.filterService.getFilterTags()
+    ]).subscribe(([userTags, filterTags]) => {
+      if (userTags !== null) {
+        this.tags = userTags;
+        this.tags.push(...filterTags)
+      }
+    });
+    
   }
 
   onSearchInput(event: Event): void {
-    this.currentInputValue = (<HTMLInputElement>event.target).value;
-
-    if (this.currentInputValue == '') {
-      this.subscription = this.blobService.readAll().subscribe((results) => {
-        if (results !== null) {
-          this.blobs = results.sort((a, b) => {
-            return a.name.localeCompare(b.name);
-          });
-        }
-      });
-    }
-  }
-
-  onSearchAction(event: Event): void {
+    console.log("onSearchInput")
+    console.log((<HTMLInputElement>event.target).value)
     if ((<HTMLInputElement>event.target).value == '') {
-      console.log('click');
       this.subscription = this.blobService.readAll().subscribe((results) => {
         if (results !== null) {
           this.blobs = results.sort((a, b) => {
@@ -90,13 +88,35 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      console.log('enter');
-      this.searchElements(this.currentInputValue);
+      this.selectedTag = (<HTMLInputElement>event.target).value;
     }
   }
 
+  onSearchAction(event: Event): void {
+    console.log("onSearchAction")
+    this.searchElements(this.selectedTag);
+  }
+
+  onClear(event: Event): void {
+    console.log("onClear")
+    if (this.selectedTag == '' || this.selectedTag == null) {
+      this.subscription = this.blobService.readAll().subscribe((results) => {
+        if (results !== null) {
+          this.blobs = results.sort((a, b) => {
+            return a.name.localeCompare(b.name);
+          });
+        }
+      });
+    }
+  }
+
+  onClick(event: Event): void {
+    console.log("onClick")
+  }
+
   onSearchButtonClick(): void {
-    this.searchElements(this.currentInputValue);
+    console.log('Selected Tag:', this.selectedTag);
+    this.searchElements(this.selectedTag);
   }
 
   ngOnDestroy() {
@@ -105,12 +125,12 @@ export class BlobsOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchElements(searchText: string): void {
+  searchElements(searchText: string | null): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    if (searchText === '') {
+    if (searchText === '' || searchText == null) {
       this.clearSearchResults();
       return;
     }
