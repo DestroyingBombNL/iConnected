@@ -11,6 +11,7 @@ import {
     ProjectsOverviewComponent,
     BlobCreateComponent,
     LoggedInAuthGuard,
+    AdminAuthGuard,
     BendeCreateComponent,
     ProjectCreateComponent,
     
@@ -71,28 +72,28 @@ export const appRoutes: Route[] = [
         pathMatch: 'full',
         component: BlobCreateComponent,
         title: `${appName}Blob aanmaken`,
-        canActivate: [LoggedInAuthGuard]
+        canActivate: [LoggedInAuthGuard, AdminAuthGuard]
     },
     {
       path: 'blobs/:id',
       pathMatch: 'full',
       component: BlobCreateComponent,
       title: `${appName}Blob wijzigen`,
-      canActivate: [LoggedInAuthGuard]
+      canActivate: [LoggedInAuthGuard, AdminAuthGuard]
     },
     {
       path: 'bendes/create',
       pathMatch: 'full',
       component: BendeCreateComponent,
       title: `${appName}Bende aanmaken`,
-      canActivate: [LoggedInAuthGuard]
+      canActivate: [LoggedInAuthGuard, AdminAuthGuard]
     },
     {
       path: 'bendes/:id',
       pathMatch: 'full',
       component: BendeCreateComponent,
       title: `${appName}Bendes wijzigen`,
-      canActivate: [LoggedInAuthGuard]
+      canActivate: [LoggedInAuthGuard, AdminAuthGuard]
     },
     {
       path: 'projects/create',

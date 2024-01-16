@@ -50,7 +50,7 @@
         </div>
     </div>
 </div>
-<button class="add-bende-btn justify-content-center d-flex" routerLink="/bendes/create" title="Toevoegen Bende">+</button>
+<button *ngIf="this.isAuthenticated()" class="add-bende-btn justify-content-center d-flex" routerLink="/bendes/create" title="Toevoegen Bende">+</button>
 <div class="container-fluid grass-container">
     <div class="row">
         <div class="col-12 p-0">

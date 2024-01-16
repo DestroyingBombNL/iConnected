@@ -61,7 +61,7 @@
         </div>
     </div>
 </div>
-<button class="add-blob-btn justify-content-center d-flex" routerLink="/blobs/create" title="Toevoegen Blob">+</button>
+<button *ngIf="this.isAuthenticated()" class="add-blob-btn justify-content-center d-flex" routerLink="/blobs/create" title="Toevoegen Blob">+</button>
 <div class="container-fluid grass-container">
     <div class="row">
         <div class="col-12 p-0">
