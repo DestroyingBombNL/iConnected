@@ -17,8 +17,6 @@ export class AuthService {
 
         // Compare passwords
         if (!bcrypt.compareSync(login.password, user.password)) {
-            console.log(login.password);
-            console.log(user.password);
             return undefined;
         }
 
