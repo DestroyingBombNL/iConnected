@@ -16,9 +16,7 @@ export class FilterService {
         WHERE 
         (
             toLower(toString(user.bio)) CONTAINS $param OR
-            toLower(toString(user.birthday)) CONTAINS $param OR
             toLower(toString(user.city)) CONTAINS $param OR
-            toLower(toString(user.color)) = $param OR
             toLower(toString(user.email)) CONTAINS $param OR
             toLower(toString(user.firstName)) CONTAINS $param OR
             toLower(toString(user.infix)) CONTAINS $param OR
@@ -43,6 +41,21 @@ export class FilterService {
         const ids = this.convertFromDB(result);
         if (!ids) return undefined;
         return ids;    
+    }
+
+    async getFilterTags(): Promise<string[] | undefined> {
+        this.logger.log("getFilterTags");
+        const readQuery = `MATCH (user:User)-[r]->(entity)
+        WITH
+            COLLECT(DISTINCT CASE WHEN entity.type IS NOT NULL AND toLower(toString(entity.type)) <> '' THEN toLower(toString(entity.type)) ELSE NULL END) +
+            COLLECT(DISTINCT CASE WHEN entity.name IS NOT NULL AND toLower(toString(entity.name)) <> '' THEN toLower(toString(entity.name)) ELSE NULL END) +
+            COLLECT(DISTINCT CASE WHEN entity.mandate IS NOT NULL AND toLower(toString(entity.mandate)) <> '' THEN toLower(toString(entity.mandate)) ELSE NULL END) AS values
+        UNWIND values AS value
+        RETURN DISTINCT value;`;
+        const result = await this.neo4jService.read(readQuery);
+        const tags = this.convertFromDB(result);
+        if (!tags) return undefined;
+        return tags;
     }
     
     private convertFromDB(result: QueryResult<RecordShape>): string[] | undefined {

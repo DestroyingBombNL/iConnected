@@ -9,4 +9,9 @@ export class FilterController {
     filter(@Param('param') param: string): Promise<string[] | undefined> {
         return this.filterService.filter(param);
     }
+
+    @Get('/tags/entities')
+    getFilterTags(): Promise<string[] | undefined> {
+        return this.filterService.getFilterTags();
+    }
 }

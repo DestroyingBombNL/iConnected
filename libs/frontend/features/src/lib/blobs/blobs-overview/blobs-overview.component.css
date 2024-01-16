@@ -160,6 +160,11 @@
   margin-top: 15px;
 }
 
+.filterDiv .filterElement {
+  margin-top: 1px;
+  width: 15vw;
+}
+
 .btn-update {
   background-color: #216e8e;
   color: white;
